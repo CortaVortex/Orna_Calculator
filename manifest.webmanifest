@@ -1,42 +1,34 @@
 {
   "name": "Orna Calculator",
   "short_name": "Orna Calc",
-  "description": "Калькулятор для игры Orna: обзор, фарм, вард. Считает бонусы от экипировки, питомцев, мнемов и гемм.",
+  "description": "Калькулятор для игры Orna",
   "lang": "ru",
-  "start_url": "./pages/view.html",
-  "scope": "./",
+  "start_url": "/Orna_Calculator/",
+  "scope": "/Orna_Calculator/",
   "display": "standalone",
-  "orientation": "portrait",
   "background_color": "#0a0a0a",
   "theme_color": "#0a0a0a",
-  "categories": ["games", "utilities"],
+  "categories": ["games"],
   "icons": [
     {
-      "src": "./img/logo/icon-64.png",
+      "src": "/Orna_Calculator/img/logo/icon-64.png",
       "type": "image/png",
       "sizes": "64x64"
     },
     {
-      "src": "./img/logo/icon-128.png",
+      "src": "/Orna_Calculator/img/logo/icon-128.png",
       "type": "image/png",
       "sizes": "128x128"
     },
     {
-      "src": "./img/logo/icon-256.png",
+      "src": "/Orna_Calculator/img/logo/icon-256.png",
       "type": "image/png",
       "sizes": "256x256"
     },
     {
-      "src": "./img/logo/icon-512.png",
+      "src": "/Orna_Calculator/img/logo/icon-512.png",
       "type": "image/png",
-      "sizes": "512x512",
-      "purpose": "any"
-    },
-    {
-      "src": "./img/logo/maskable-512.png",
-      "type": "image/png",
-      "sizes": "512x512",
-      "purpose": "maskable"
+      "sizes": "512x512"
     }
   ]
 }
