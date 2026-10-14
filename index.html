@@ -7,8 +7,18 @@
   <title>Orna Calculator</title>
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="theme-color" content="#0a0a0a">
+  <link rel="apple-touch-icon" href="./img/logo/icon-256.png">
 </head>
 <body>
   <p><a href="pages/view.html">Перейти в калькулятор</a></p>
+  <script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js')
+        .then(() => console.log('✅ Service Worker зарегистрирован'))
+        .catch((err) => console.error('❌ Service Worker:', err));
+    });
+  }
+</script>
 </body>
 </html>

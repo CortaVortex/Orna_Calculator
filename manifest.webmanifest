@@ -9,25 +9,34 @@
   "orientation": "portrait",
   "background_color": "#0a0a0a",
   "theme_color": "#0a0a0a",
-  "categories": [
-    "games",
-    "utilities"
-  ],
+  "categories": ["games", "utilities"],
   "icons": [
     {
-      "src": "./img/icon-64.png",
+      "src": "./img/logo/icon-64.png",
       "type": "image/png",
       "sizes": "64x64"
     },
     {
-      "src": "./img/icon-128.png",
+      "src": "./img/logo/icon-128.png",
       "type": "image/png",
       "sizes": "128x128"
     },
     {
-      "src": "./img/icon-256.png",
+      "src": "./img/logo/icon-256.png",
       "type": "image/png",
       "sizes": "256x256"
+    },
+    {
+      "src": "./img/logo/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any"
+    },
+    {
+      "src": "./img/logo/maskable-512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "maskable"
     }
   ]
 }
