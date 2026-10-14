@@ -251,7 +251,9 @@ body {
 
 .slot-head,
 .slot-body,
-.slot-legs {
+.slot-legs,
+.slot-weapon,
+.slot-accessory {
   border-color: var(--gold-dim);
   background: linear-gradient(180deg, #1f1f1f, #141414);
 }
@@ -631,18 +633,17 @@ body {
 
 .consumable-item {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 10px 4px;
+  gap: 8px;
+  padding: 6px 8px;
   background: var(--bg-slot);
   border: 1px solid var(--border);
   border-radius: 6px;
   cursor: pointer;
   user-select: none;
   transition: all 0.15s ease;
-  text-align: center;
+  text-align: left;
 }
 
 .consumable-item:hover {
@@ -689,6 +690,45 @@ body {
   font-size: 11px;
   color: var(--text);
   line-height: 1.2;
+}
+
+.consumables-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 12px;
+  font-style: italic;
+  padding: 10px 0;
+}
+
+.consumable-icon {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  flex-shrink: 0;
+}
+
+.consumable-icon-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: var(--text-dim);
+  background: #0a0a0a;
+  border-radius: 4px;
+}
+
+.consumable-name {
+  font-size: 10px;
+  color: var(--text);
+  line-height: 1.1;
+}
+
+.consumable-effect {
+  font-size: 9px;
+  color: var(--gold);
+  line-height: 1.1;
 }
 
 /* ============ ПОДВАЛ ============ */
@@ -1170,4 +1210,180 @@ body {
 
 .pet-box {
   position: relative;
+}
+
+/* ============ БОНУС-СЕКЦИИ ============ */
+.bonus-section {
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.bonus-section:last-child {
+  padding-bottom: 0;
+  margin-bottom: 0;
+  border-bottom: none;
+}
+
+.bonus-caption {
+  font-size: 11px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.steps-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.consumables-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 12px;
+  font-style: italic;
+  padding: 6px 0;
+}
+
+.consumable-icon {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  flex-shrink: 0;
+}
+
+.consumable-icon-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: var(--text-dim);
+  background: #0a0a0a;
+  border-radius: 4px;
+}
+
+.consumable-name {
+  font-size: 10px;
+  color: var(--text);
+  text-align: center;
+  line-height: 1.1;
+}
+
+.consumable-effect {
+  font-size: 9px;
+  color: var(--gold);
+  text-align: center;
+  line-height: 1.1;
+}
+
+/* Иконка шагов */
+.step-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  flex-shrink: 0;
+}
+
+.consumable-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.consumable-name {
+  font-size: 11px;
+  color: var(--text);
+  line-height: 1.1;
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+
+.consumable-effect {
+  font-size: 9px;
+  color: var(--gold);
+  line-height: 1.1;
+  white-space: normal;
+}
+
+/* ============ ГЕММЫ (список) ============ */
+.gems-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.gem-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  background: var(--bg-slot);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.gem-icon {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  flex-shrink: 0;
+}
+
+.gem-name {
+  flex: 1;
+  min-width: 0;
+  font-size: 12px;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.gem-percent {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gold);
+  flex-shrink: 0;
+  margin-right: auto;   /* ← прижимает всё остальное вправо */
+}
+
+.gem-count {
+  width: 25%;            /* ← 1/4 ширины строки */
+  min-width: 60px;       /* ← не меньше 60px */
+  max-width: 90px;       /* ← не больше 90px */
+  padding: 6px 4px;
+  font-size: 14px;
+  font-family: 'Cormorant Unicase', serif;
+  font-weight: 700;
+  text-align: center;
+  color: var(--gold);
+  background: #0a0a0a;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  -moz-appearance: textfield;
+  flex-shrink: 0;
+}
+
+/* ============ НАСТРАДАНИЕ — ПОВЕРХ ПРЕДМЕТА ============ */
+.slot[data-atonement="1"]::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('https://playorna.com/static/img/fx/anguished.png');
+  background-size: cover;
+  background-position: center;
+  pointer-events: none;
+  border-radius: 8px;
+  z-index: 1;
+  opacity: 0.7;
+  image-rendering: pixelated;
 }

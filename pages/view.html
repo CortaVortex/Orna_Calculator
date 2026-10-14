@@ -246,47 +246,53 @@
       </div>
     </section>
 
-    <!-- ============ ГЕММЫ ============ -->
-    <section class="panel">
-      <h2 class="panel-title" data-ru="Геммы" data-en="Adornments">Геммы</h2>
+<!-- ============ ГЕММЫ ============ -->
+<section class="panel">
+  <h2 class="panel-title" data-ru="Геммы" data-en="Adornments">Геммы</h2>
 
-      <div class="gems-total-slots">
-        <span data-ru="Всего слотов в оружии:" data-en="Total weapon slots:">Всего слотов в оружии:</span>
-        <span class="gems-slots-value" id="gems-total-slots">0</span>
-      </div>
+  <div class="gems-total-slots">
+    <span data-ru="Всего слотов в оружии:" data-en="Total weapon slots:">Всего слотов в оружии:</span>
+    <span class="gems-slots-value" id="gems-total-slots">0</span>
+  </div>
 
-      <div class="gems-row">
-        <label class="gem-item">
-          <span class="gem-label" data-ru="Гемма +1%" data-en="Gem +1%">Гемма +1%</span>
-          <input type="number" class="gem-count" id="gem-1" min="0" max="99" value="0" placeholder="0">
-        </label>
-        <label class="gem-item">
-          <span class="gem-label" data-ru="Гемма +2%" data-en="Gem +2%">Гемма +2%</span>
-          <input type="number" class="gem-count" id="gem-2" min="0" max="99" value="0" placeholder="0">
-        </label>
-      </div>
+  <!-- Сюда JS добавит строки гемм -->
+  <div class="gems-list" id="gems-list"></div>
 
-      <div class="gems-summary" id="gems-summary"></div>
-    </section>
+  <div class="gems-summary" id="gems-summary"></div>
+</section>
 
     <!-- ============ ПРОЧИЕ БОНУСЫ ============ -->
-    <section class="panel">
-      <h2 class="panel-title" data-ru="Прочие бонусы" data-en="Other Bonuses">Прочие бонусы</h2>
+<section class="panel">
+  <h2 class="panel-title" data-ru="Прочие бонусы" data-en="Other Bonuses">Прочие бонусы</h2>
 
-      <div class="steps-list">
-        <label class="step-row">
-          <input type="checkbox" class="step-check">
-          <span data-ru="3000 шагов +10%" data-en="3000 steps +10%">3000 шагов +10%</span>
-        </label>
-        <label class="step-row">
-          <input type="checkbox" class="step-check">
-          <span data-ru="6000 шагов +10%" data-en="6000 steps +10%">6000 шагов +10%</span>
-        </label>
-      </div>
+  <!-- Шаги -->
+<div class="bonus-section">
+  <div class="steps-list">
+    <label class="step-row">
+      <input type="checkbox" class="step-check">
+      <img class="step-icon" src="https://playorna.com/static/img/useables/proof_traveler1.png" alt="">
+      <span data-ru="3000 шагов +10%" data-en="3000 steps +10%">3000 шагов +10%</span>
+    </label>
+    <label class="step-row">
+      <input type="checkbox" class="step-check">
+      <img class="step-icon" src="https://playorna.com/static/img/useables/proof_traveler1.png" alt="">
+      <span data-ru="6000 шагов +10%" data-en="6000 steps +10%">6000 шагов +10%</span>
+    </label>
+  </div>
+</div>
 
-      <div class="consumables-grid" id="consumables-grid"></div>
-    </section>
+  <!-- Гильдия копателей -->
+  <div class="bonus-section">
+    <div class="bonus-caption" data-ru="Гильдия копателей" data-en="Spelunker Guild">Гильдия копателей</div>
+    <div class="consumables-grid" id="spelunker-grid"></div>
+  </div>
 
+  <!-- Расходники -->
+  <div class="bonus-section">
+    <div class="bonus-caption" data-ru="Расходники" data-en="Consumables">Расходники</div>
+    <div class="consumables-grid" id="consumables-grid"></div>
+  </div>
+</section>
   </main>
 
   <footer class="app-footer">

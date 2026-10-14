@@ -17,6 +17,7 @@ const state = {
   steps3000: false,
   steps6000: false,
   mnemView: [0, 0, 0, 0, 0, 0],
+  consumablesMult: 1,
 };
 
 const BASE_VIEW = 180;
@@ -242,7 +243,7 @@ function getMnemViewMultiplier() {
 }
 
 function getGemsMultiplier() {
-  return Math.pow(1.01, state.gems1) * Math.pow(1.02, state.gems2);
+  return state.gemsMultiplier || 1;
 }
 
 function getStepsMultiplier() {
@@ -269,7 +270,8 @@ function recalc() {
     getMnemViewMultiplier() *
     getGemsMultiplier() *
     getStepsMultiplier() *
-    getEquipmentMultiplier();
+    getEquipmentMultiplier() *
+    (state.consumablesMult || 1);
 
   const raw = BASE_VIEW * mult;
   const capped = Math.min(raw, VIEW_CAP);
@@ -340,14 +342,14 @@ function initMnems() {
     const input = document.querySelector(`.mnem-input[data-mnem="${mnemId}"][data-row="${rowId}"]`);
 
     sel.addEventListener('change', () => {
-  refreshMnemOptions(mnemId);
-  if (sel.value !== 'view') {
-    input.value = '';
-    input.classList.remove('is-error');
-  }
-  syncMnemState();
-  updateFollowerLock();   // ← добавить
-});
+      refreshMnemOptions(mnemId);
+      if (sel.value !== 'view') {
+        input.value = '';
+        input.classList.remove('is-error');
+      }
+      syncMnemState();
+      updateFollowerLock();
+    });
 
     input.addEventListener('input', () => {
       validateMnemView(input);
@@ -381,19 +383,104 @@ function updateLeftMnemLock() {
 // ============================================================
 // ГЕММЫ
 // ============================================================
+let gemItems = [];   // кеш: геммы из парсера
+
+function getGemItemsFromCodex() {
+  return allItems
+    .filter(item => {
+      const sprite = item.sprite || '';
+      const name = item.name || '';
+      const facts = item.facts || [];
+
+      // sprite в weapons/ → это ОРУЖИЕ, не гемма
+      const isWeaponSprite = /\/weapons\//.test(sprite);
+
+      // Стандартные геммы — sprite в jewels/augments/runes
+      const isGemSprite = /\/(jewels|augments|runes)\//.test(sprite);
+
+      // Гемма по названию
+      const isGemName = /gem|jewel|символ|гемма|всевид|seer/i.test(name);
+
+      // Слот "Оружие" без сокетов (для acc-гемм типа "Гемма Всевидца")
+      const slotFact = facts.find(f => f.label === 'Слот' || f.label === 'Place');
+      const slot = slotFact?.value || '';
+      const hasSockets = facts.some(f => f.label === 'Сокеты' || f.label === 'Adornment Slots');
+      const isWeaponWithoutSockets = (slot === 'Оружие' || slot === 'Weapon') && !hasSockets;
+
+      // Исключаем оружие по sprite
+      if (isWeaponSprite) return false;
+
+      return (isGemSprite || isGemName || isWeaponWithoutSockets) && isViewItem(item);
+    })
+    .map(item => {
+      const viewEffect = item.effects?.find(e => /Обзор|View Distance/i.test(e)) || '';
+      const m = viewEffect.match(/\+?(\d+(?:\.\d+)?)%/);
+      return {
+        id: item.id,
+        name: item.name,
+        nameEn: item.name,
+        percent: m ? parseFloat(m[1]) : 0,
+        icon: item.sprite,
+      };
+    })
+    .filter(g => g.percent > 0)
+    .sort((a, b) => a.percent - b.percent);
+}
+
 function initGems() {
-  const gemInputs = document.querySelectorAll('.gem-count');
+  const listEl = document.getElementById('gems-list');
   const totalEl = document.getElementById('gems-total-slots');
   const summaryEl = document.getElementById('gems-summary');
 
+  if (!listEl) return;
+
+  gemItems = getGemItemsFromCodex();
+
+  if (!gemItems.length) {
+    listEl.innerHTML = '<div class="gems-empty">Нет гемм с обзором</div>';
+    return;
+  }
+
+  const lang = currentLang();
+
+  listEl.innerHTML = gemItems.map(gem => {
+  const name = lang === 'ru'
+    ? (gem.name || gem.nameEn || '—')
+    : (gem.nameEn || gem.name || '—');
+
+  return `
+    <div class="gem-row">
+      <img class="gem-icon" src="${gem.icon}" alt="" onerror="this.style.display='none'">
+      <span class="gem-name">${name}</span>
+      <span class="gem-percent">+${gem.percent}%</span>
+      <input type="number" class="gem-count" data-gem-id="${gem.id}" min="0" max="99" value="0" placeholder="0">
+    </div>
+  `;
+}).join('');
+
+  // Слушаем изменения
   let totalSlots = 0;
 
   function update() {
     let used = 0;
-    gemInputs.forEach(inp => { used += parseInt(inp.value) || 0; });
+    let multiplier = 1;
+
+    listEl.querySelectorAll('.gem-count').forEach(inp => {
+      const count = parseInt(inp.value) || 0;
+      used += count;
+
+      const gemId = inp.dataset.gemId;
+      const gem = gemItems.find(g => g.id === gemId);
+      if (gem && count > 0) {
+        multiplier *= Math.pow(1 + gem.percent / 100, count);
+      }
+    });
+
     const over = used > totalSlots;
 
-    gemInputs.forEach(inp => inp.classList.toggle('is-error', over));
+    listEl.querySelectorAll('.gem-count').forEach(inp => {
+      inp.classList.toggle('is-error', over);
+    });
 
     if (summaryEl) {
       if (totalSlots === 0 && used === 0) {
@@ -405,12 +492,11 @@ function initGems() {
       }
     }
 
-    state.gems1 = parseInt(document.getElementById('gem-1')?.value) || 0;
-    state.gems2 = parseInt(document.getElementById('gem-2')?.value) || 0;
+    state.gemsMultiplier = multiplier;
     recalc();
   }
 
-  gemInputs.forEach(inp => {
+  listEl.querySelectorAll('.gem-count').forEach(inp => {
     inp.addEventListener('input', () => {
       let v = parseInt(inp.value);
       if (isNaN(v) || v < 0) v = 0;
@@ -444,6 +530,149 @@ function initSteps() {
 }
 
 // ============================================================
+// РАСХОДНИКИ
+// ============================================================
+
+// Гильдия копателей — три факела (хардкод)
+const SPELUNKER_TORCHES = [
+  {
+    id: 'spelunker-emerald',
+    name: 'Изумрудный факел',
+    nameEn: 'Emerald Spelunking Torch',
+    effect: 'Обзор +20% · События +25%',
+    effectEn: 'View +20% · Events +25%',
+    viewPercent: 20,
+    icon: 'https://playorna.com/static/img/useables/spelunkers_torch2.png',
+  },
+  {
+    id: 'spelunker-azure',
+    name: 'Лазурный факел',
+    nameEn: 'Azure Spelunking Torch',
+    effect: 'Обзор +20% · Орда +25%',
+    effectEn: 'View +20% · Horde +25%',
+    viewPercent: 20,
+    icon: 'https://playorna.com/static/img/useables/spelunkers_torch3.png',
+  },
+  {
+    id: 'spelunker-crimson',
+    name: 'Багровый факел',
+    nameEn: 'Crimson Spelunking Torch',
+    effect: 'Обзор +20% · Награды +25%',
+    effectEn: 'View +20% · Rewards +25%',
+    viewPercent: 20,
+    icon: 'https://playorna.com/static/img/useables/spelunkers_torch4.png',
+  },
+];
+
+// Динамические расходники из парсера
+function getDynamicConsumables() {
+  return allItems
+    .filter(item => {
+      const sprite = item.sprite || '';
+      const facts = item.facts || [];
+
+      // Только из useables/
+      const isUseable = /\/useables\//.test(sprite);
+      if (!isUseable) return false;
+
+      // У расходников НЕТ поля "Слот" (или оно равно "Расходник"/"Consumable")
+      const slotFact = facts.find(f => f.label === 'Слот' || f.label === 'Place');
+      const slot = (slotFact?.value || '').toLowerCase();
+
+      // Если слот есть и это НЕ расходник — отсеиваем
+      const isRealSlot = slot !== '' &&
+                        slot !== 'расходник' &&
+                        slot !== 'consumable';
+      if (isRealSlot) return false;
+
+      return isViewItem(item);
+    })
+    .map(item => {
+      const viewEffect = item.effects?.find(e => /Обзор|View Distance/i.test(e)) || '';
+      const m = viewEffect.match(/\+?(\d+(?:\.\d+)?)%/);
+      return {
+        id: item.id,
+        name: item.name,
+        nameEn: item.name,
+        effect: viewEffect,
+        effectEn: viewEffect,
+        viewPercent: m ? parseFloat(m[1]) : null,
+        icon: item.sprite,
+      };
+    });
+}
+
+// Общая функция рендера списка
+function renderConsumablesGrid(gridEl, items, prefix) {
+  if (!gridEl) return;
+
+  if (!items.length) {
+    gridEl.innerHTML = '<div class="consumables-empty">—</div>';
+    return;
+  }
+
+  const lang = currentLang();
+
+gridEl.innerHTML = items.map(item => {
+  const iconHtml = item.icon
+    ? `<img class="consumable-icon" src="${item.icon}" alt="" onerror="this.style.display='none'">`
+    : '<span class="consumable-icon consumable-icon-empty">✦</span>';
+
+  return `
+    <label class="consumable-item">
+      <input type="checkbox" data-consumable-id="${item.id}" data-consumable-group="${prefix}">
+      ${iconHtml}
+      <div class="consumable-info">
+        <div class="consumable-name">${lang === 'ru' ? item.name : (item.nameEn || item.name)}</div>
+        <div class="consumable-effect">${lang === 'ru' ? item.effect : (item.effectEn || item.effect)}</div>
+      </div>
+    </label>
+  `;
+}).join('');
+
+  gridEl.querySelectorAll('input[type="checkbox"]').forEach(chk => {
+    chk.addEventListener('change', () => recalcConsumables());
+  });
+}
+
+function initConsumables() {
+  // Гильдия копателей
+  const spelunkerGrid = document.getElementById('spelunker-grid');
+  renderConsumablesGrid(spelunkerGrid, SPELUNKER_TORCHES, 'spelunker');
+
+  // Динамические расходники
+  const dynamicGrid = document.getElementById('consumables-grid');
+  renderConsumablesGrid(dynamicGrid, getDynamicConsumables(), 'dynamic');
+}
+
+function recalcConsumables() {
+  let multiplier = 1;
+
+  document.querySelectorAll('.consumables-grid input[type="checkbox"]:checked').forEach(chk => {
+    const id = chk.dataset.consumableId;
+    const group = chk.dataset.consumableGroup;
+
+    let item = null;
+    if (group === 'spelunker') {
+      item = SPELUNKER_TORCHES.find(i => i.id === id);
+    } else {
+      item = getDynamicConsumables().find(i => i.id === id);
+    }
+    if (!item) return;
+
+    let pct = item.viewPercent;
+    if (pct == null && item.effect) {
+      const m = item.effect.match(/\+?(\d+(?:\.\d+)?)%/);
+      if (m) pct = parseFloat(m[1]);
+    }
+    if (pct) multiplier *= 1 + pct / 100;
+  });
+
+  state.consumablesMult = multiplier;
+  recalc();
+}
+
+// ============================================================
 // ПРЕДМЕТЫ
 // ============================================================
 function isBanned(item) {
@@ -472,23 +701,19 @@ function getItemSlot(item) {
 
   const sprite = item.sprite || '';
 
-  // Гемма
   if (/\/(jewels|augments|runes)\//.test(sprite)) return 'adornment';
   if ((slot === 'Оружие' || slot === 'Weapon') && !hasSockets) return 'adornment';
 
-  // Оффхенд
   if (slot === 'Оффхенд' || slot === 'Offhand' || slot === 'Off-hand') return 'offhand';
   if (slot === 'Левая рука' || slot === 'Left Hand' || slot === 'Left-hand') return 'offhand';
   if (slot === 'Вторая рука' || slot === 'Second Hand' || slot === 'Second-hand') return 'offhand';
 
-  // Оффхенды по типу
   const offhandTypes = [
     'Щиты', 'Малые щиты', 'Факелы', 'Книги', 'Тотемы', 'Орбы',
     'Shields', 'Small Shields', 'Torches', 'Books', 'Totems', 'Orbs',
   ];
   if (offhandTypes.some(t => type.includes(t))) return 'offhand';
 
-  // Основные слоты
   if (slot === 'Оружие' || slot === 'Weapon')       return 'weapon';
   if (slot === 'Голова' || slot === 'Head')         return 'head';
   if (slot === 'Торс' || slot === 'Body')           return 'body';
@@ -559,7 +784,6 @@ function openSlotPicker(slotKey) {
       allowed.includes(getItemSlot(it))
     )
     .filter(it => {
-      // Двуручное нельзя во вторую руку
       if (slotKey === 'weapon-2' && isTwoHanded(it)) return false;
       return true;
     })
@@ -606,7 +830,6 @@ function applyItemToSlot(slotKey, item) {
 
   if (isWeapon && qualitySel) {
     qualitySel.hidden = false;
-    // Пересчитываем сокеты сразу после установки оружия
     updateSlotQuality(slotKey);
   } else if (qualitySel) {
     qualitySel.hidden = true;
@@ -620,7 +843,6 @@ function applyItemToSlot(slotKey, item) {
 }
 
 function updateTwoHandedLock(slotKey, item) {
-  // Работает только для оружейных слотов
   if (slotKey !== 'weapon-1' && slotKey !== 'weapon-2') return;
 
   const otherKey = slotKey === 'weapon-1' ? 'weapon-2' : 'weapon-1';
@@ -628,17 +850,14 @@ function updateTwoHandedLock(slotKey, item) {
   if (!otherSlot) return;
 
   if (isTwoHanded(item)) {
-    // Двуручное — очищаем и блокируем вторую руку
     clearSlot(otherKey);
     otherSlot.classList.add('is-locked');
 
-    // Прячем переключатель ⚔/🛡 у weapon-2
     if (otherKey === 'weapon-2') {
       const toggle = otherSlot.querySelector('.slot-mode-toggle');
       if (toggle) toggle.style.display = 'none';
     }
   } else {
-    // Одноручное — разблокируем
     otherSlot.classList.remove('is-locked');
 
     if (otherKey === 'weapon-2') {
@@ -691,24 +910,29 @@ function clearSlot(slotKey) {
   delete slotEl.dataset.itemMult;
   delete slotEl.dataset.sockets;
 
-  slotEl.style.backgroundImage = '';
-slotEl.style.backgroundBlendMode = '';
+  delete slotEl.dataset.sockets;
+  delete slotEl.dataset.atonement;
 
-// Если очистили оружие — разблокируем вторую руку
-if (slotKey === 'weapon-1' || slotKey === 'weapon-2') {
-  const otherKey = slotKey === 'weapon-1' ? 'weapon-2' : 'weapon-1';
-  const otherSlot = document.querySelector(`[data-slot="${otherKey}"]`);
-  if (otherSlot) {
-    otherSlot.classList.remove('is-locked');
-    if (otherKey === 'weapon-2') {
-      const toggle = otherSlot.querySelector('.slot-mode-toggle');
-      if (toggle) toggle.style.display = '';
+  slotEl.style.backgroundImage = '';
+  slotEl.style.backgroundBlendMode = '';
+
+  slotEl.style.backgroundImage = '';
+  slotEl.style.backgroundBlendMode = '';
+
+  if (slotKey === 'weapon-1' || slotKey === 'weapon-2') {
+    const otherKey = slotKey === 'weapon-1' ? 'weapon-2' : 'weapon-1';
+    const otherSlot = document.querySelector(`[data-slot="${otherKey}"]`);
+    if (otherSlot) {
+      otherSlot.classList.remove('is-locked');
+      if (otherKey === 'weapon-2') {
+        const toggle = otherSlot.querySelector('.slot-mode-toggle');
+        if (toggle) toggle.style.display = '';
+      }
     }
   }
-}
 
-updateTotalGemsSlots();
-recalc();
+  updateTotalGemsSlots();
+  recalc();
 }
 
 // ============ КАЧЕСТВО ОРУЖИЯ ============
@@ -760,14 +984,22 @@ function updateSlotQuality(slotKey) {
   const itemId = slotEl.dataset.itemId;
   const item = allItems.find(i => i.id === itemId);
   const socketsFact = item?.facts?.find(f =>
-  f.label === 'Сокеты' ||
-  f.label === 'Adornment Slots' ||
-  f.label === 'Sockets'
-);
-const baseSockets = parseInt(socketsFact?.value) || 0;
+    f.label === 'Сокеты' ||
+    f.label === 'Adornment Slots' ||
+    f.label === 'Sockets'
+  );
+  const baseSockets = parseInt(socketsFact?.value) || 0;
   const total = baseSockets + bonus;
 
   slotEl.dataset.sockets = String(total);
+
+  // Настрадание — поверх предмета
+  if (quality === 'atonement') {
+    slotEl.dataset.atonement = '1';
+  } else {
+    delete slotEl.dataset.atonement;
+  }
+
   updateTotalGemsSlots();
 }
 
@@ -819,7 +1051,7 @@ function getFollowerViewFromLevels(follower, bbLevel) {
     );
     if (!line) continue;
     const key = state.lang === 'ru' ? 'Обзор' : 'View Distance';
-    const match = line.match(new RegExp(`${key}[:\\s]+\\+?(\\d+(?:\\.\\d+)?)%`, 'i'));
+const match = line.match(new RegExp(`${key}[:\\s]+\\+?(\\d+(?:\\.\\d+)?)%`, 'i'));
     if (match) m *= 1 + parseFloat(match[1]) / 100;
   }
   return m;
@@ -841,8 +1073,6 @@ function getFollowerViewPercentForLevel(follower, level) {
 }
 
 function getMnemBondsLevel() {
-  // Ищем максимальный уровень узов среди всех мнемов.
-  // У мнема с «Узами» уровень = 1.
   let max = 0;
   document.querySelectorAll('.mnem-select').forEach(sel => {
     if (sel.value === 'bonds') max = Math.max(max, 1);
@@ -912,7 +1142,7 @@ function applyFollower(follower, bbLevel) {
     const lines = [];
     for (let lvl = 1; lvl <= bbLevel; lvl++) {
       const pct = getFollowerViewPercentForLevel(follower, lvl);
-    if (pct > 0) lines.push(`${lvl}:  ${pct}%`);
+      if (pct > 0) lines.push(`${lvl}:  ${pct}%`);
     }
     if (lines.length) {
       petBonus.innerHTML = lines.join('<br>');
@@ -978,14 +1208,12 @@ function updateFollowerLock() {
   const availableBB = getAvailableBB();
   const caption = petBox.querySelector('.pet-caption');
 
-  // Если питомец выбран, но его BB больше доступного — пересчитать
   if (petBox.dataset.followerId) {
     const savedBB = parseInt(petBox.dataset.bbLevel) || 0;
     if (savedBB > availableBB) {
       if (availableBB === 0) {
         clearFollower();
       } else {
-        // Пересчитываем питомца с новым BB
         const follower = allFollowers.find(f => f.id === petBox.dataset.followerId);
         if (follower) applyFollower(follower, availableBB);
       }
@@ -1028,6 +1256,7 @@ async function initViewPage() {
   initMnems();
   initGems();
   initSteps();
+  initConsumables();
   initEquipmentSlots();
   initFollower();
 
@@ -1044,28 +1273,31 @@ async function initViewPage() {
 initViewPage();
 
 window.addEventListener('orna-lang-changed', async () => {
-  // 1. СОХРАНЯЕМ текущее состояние всех слотов
-  const savedState = {
-    classId: state.classId,
-    specId: state.specId,
-    followerId: null,
-    slots: {},
-  };
+const savedState = {
+  classId: state.classId,
+  specId: state.specId,
+  followerId: null,
+  slots: {},
+  gems: {},
+};
 
-  // Класс / спец
+// Сохраняем геммы
+document.querySelectorAll('#gems-list .gem-count').forEach(inp => {
+  const gemId = inp.dataset.gemId;
+  if (gemId) savedState.gems[gemId] = inp.value;
+});
+
   const classSel = document.getElementById('class-select');
   const specSel = document.getElementById('spec-select');
   if (classSel) savedState.classId = classSel.value;
   if (specSel) savedState.specId = specSel.value;
 
-  // Питомец
   const petBox = document.getElementById('pet-box');
   if (petBox?.dataset.followerId) {
     savedState.followerId = petBox.dataset.followerId;
     savedState.followerBB = parseInt(petBox.dataset.bbLevel) || 0;
   }
 
-  // Слоты (кроме мнемов)
   document.querySelectorAll('.slot[data-slot]').forEach(slotEl => {
     const key = slotEl.dataset.slot;
     if (key === 'mnem-1' || key === 'mnem-2') return;
@@ -1078,7 +1310,6 @@ window.addEventListener('orna-lang-changed', async () => {
     };
   });
 
-  // Мнемы
   const mnemState = [];
   document.querySelectorAll('.mnem-select').forEach(sel => {
     const input = document.querySelector(
@@ -1092,10 +1323,8 @@ window.addEventListener('orna-lang-changed', async () => {
     });
   });
 
-  // 2. ПЕРЕЗАГРУЖАЕМ данные на новом языке
   await loadAllData();
 
-  // 3. ОБНОВЛЯЕМ пустые опции
   document.querySelectorAll('select option[value=""]').forEach(opt => {
     const lang = currentLang();
     opt.textContent = opt.dataset[lang] || opt.dataset.ru || opt.textContent;
@@ -1104,7 +1333,6 @@ window.addEventListener('orna-lang-changed', async () => {
   fillClassSelect();
   fillSpecSelect();
 
-  // 4. ВОССТАНАВЛИВАЕМ класс / спец по id
   if (classSel && savedState.classId) {
     classSel.value = savedState.classId;
     updateClassInfo();
@@ -1114,12 +1342,10 @@ window.addEventListener('orna-lang-changed', async () => {
     updateSpecInfo();
   }
 
-  // 5. ВОССТАНАВЛИВАЕМ слоты
   for (const [slotKey, data] of Object.entries(savedState.slots)) {
     const item = allItems.find(i => i.id === data.itemId);
     if (!item) continue;
 
-    // Восстанавливаем режим weapon/offhand
     if (data.mode) {
       const toggle = document.querySelector(`[data-slot="${slotKey}"] .slot-mode-toggle`);
       if (toggle) {
@@ -1130,10 +1356,8 @@ window.addEventListener('orna-lang-changed', async () => {
       }
     }
 
-    // Применяем предмет
     applyItemToSlot(slotKey, item);
 
-    // Восстанавливаем качество
     const qualitySel = document.querySelector(`[data-slot="${slotKey}"] .slot-quality`);
     if (qualitySel && data.quality) {
       qualitySel.value = data.quality;
@@ -1141,7 +1365,6 @@ window.addEventListener('orna-lang-changed', async () => {
     }
   }
 
-  // 6. ВОССТАНАВЛИВАЕМ питомца
   if (savedState.followerId) {
     const follower = allFollowers.find(f => f.id === savedState.followerId);
     if (follower) {
@@ -1149,7 +1372,6 @@ window.addEventListener('orna-lang-changed', async () => {
     }
   }
 
-  // 7. ВОССТАНАВЛИВАЕМ мнемы
   mnemState.forEach(m => {
     const sel = document.querySelector(
       `.mnem-select[data-mnem="${m.mnemId}"][data-row="${m.rowId}"]`
@@ -1161,19 +1383,41 @@ window.addEventListener('orna-lang-changed', async () => {
     if (input && m.num) input.value = m.num;
   });
 
-  // Обновляем блокировку мнемов и питомца
   updateLeftMnemLock();
   updateFollowerLock();
 
-  // Пересчитываем
   ['1', '2'].forEach(id => refreshMnemOptions(id));
   syncMnemState();
+  initConsumables();
+  recalcConsumables();
+  initGems();
+
+  // Восстанавливаем значения гемм
+  document.querySelectorAll('#gems-list .gem-count').forEach(inp => {
+    const gemId = inp.dataset.gemId;
+    if (gemId && savedState.gems[gemId] != null) {
+      inp.value = savedState.gems[gemId];
+    }
+  });
+
+  // Пересчитываем множитель гемм
+  const totalSlots = parseInt(document.getElementById('gems-total-slots')?.textContent) || 0;
+  if (window.setGemsTotalSlots) window.setGemsTotalSlots(totalSlots);
+
   recalc();
 });
 
 // ============ СЛУШАТЕЛЬ СБРОСА СЛОТА ============
-// Срабатывает, когда shared.js вызвал resetSlot (например, при смене ⚔/🛡).
-// view.js сам решает, что пересчитать.
+// Снаружи orna-lang-changed!
+window.addEventListener('orna-slot-cleared', (e) => {
+  const slotEl = e.detail.slot;
+  if (slotEl) {
+    delete slotEl.dataset.sockets;
+  }
+  updateTotalGemsSlots();
+  recalc();
+});
+
 window.addEventListener('orna-slot-cleared', (e) => {
   const slotEl = e.detail.slot;
   if (slotEl) {
