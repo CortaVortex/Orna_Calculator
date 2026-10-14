@@ -147,6 +147,7 @@ body {
   gap: 6px;
   width: 100%;
   align-items: start;
+  min-width: 0;
 }
 
 /* Мнемы — как были */
@@ -179,9 +180,12 @@ body {
   padding: 3px;
   cursor: pointer;
   transition: all 0.15s ease;
-  min-height: 0;
   position: relative;
   width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  box-sizing: border-box;
+  min-width: 0;
 }
 
 .slot:hover,
@@ -203,14 +207,13 @@ body {
   background: #242424;
 }
 
-  .slot-icon-img {
-  width: 100%;
+.slot-icon-img {
+  width: auto;
+  height: 60%;
   max-width: 100%;
-  aspect-ratio: 1 / 1;
   object-fit: contain;
   image-rendering: pixelated;
   display: block;
-  flex-shrink: 0;
 }
 
 .slot-icon-img:not([src]),
@@ -219,7 +222,7 @@ body {
   display: none;
 }
 
- .slot-name {
+.slot-name {
   font-size: 9px;
   font-weight: 500;
   color: var(--text);
@@ -228,8 +231,10 @@ body {
   white-space: normal;
   overflow-wrap: break-word;
   word-break: break-word;
+  width: 100%;
   max-width: 100%;
   padding: 0 2px;
+  box-sizing: border-box;
 }
 
 .slot-stats {
@@ -240,8 +245,10 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  width: 100%;
   max-width: 100%;
   padding: 0 2px;
+  box-sizing: border-box;
 }
 
 .slot-mnem {
@@ -493,12 +500,13 @@ body {
 }
 
 .class-bonus {
-  font-size: 11px;
+  font-size: 9px;
   font-weight: 600;
   color: var(--gold);
   flex-shrink: 0;
   min-width: 28px;
   text-align: right;
+  line-height: 1.2;
 }
 
 .pet-box {
@@ -754,13 +762,14 @@ body {
     margin: 0 auto;
   }
 
-   .slot-wrapper {
+.slot-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 2px;
   width: 100%;
-  /* height: 100% и aspect-ratio — убрать */
+  min-width: 0;
+  overflow: hidden;
 }
 
   .slot-name  { font-size: 10px; }

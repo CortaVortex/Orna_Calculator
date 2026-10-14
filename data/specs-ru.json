@@ -4,7 +4,16 @@
     "name": "★5 Искатель",
     "tier": 5,
     "viewMultiplier": 1.2,
-    "bestialBondLevel": 0
+    "bestialBondLevel": 0,
+    "multipliers": { "orns": 1, "gold": 1, "luck": 1, "exp": 1 }
+  },
+  {
+    "id": "merchant-5",
+    "name": "★5 Купец",
+    "tier": 5,
+    "viewMultiplier": 1,
+    "bestialBondLevel": 0,
+    "multipliers": { "orns": 1, "gold": 1.2, "luck": 1.2, "exp": 0.75 }
   },
   {
     "id": "oracle-5",
@@ -12,7 +21,8 @@
     "tier": 5,
     "viewMultiplier": 1,
     "bestialBondLevel": 0,
-    "unlocksSecondAmity": true
+    "unlocksSecondAmity": true,
+    "multipliers": { "orns": 1, "gold": 1, "luck": 1, "exp": 1 }
   },
   {
     "id": "great-oracle",
@@ -20,20 +30,23 @@
     "tier": null,
     "viewMultiplier": 1,
     "bestialBondLevel": 0,
-    "unlocksSecondAmity": true
+    "unlocksSecondAmity": true,
+    "multipliers": { "orns": 1, "gold": 1, "luck": 1, "exp": 1 }
   },
   {
     "id": "beastmaster-7",
     "name": "★7 Дрессировщик",
     "tier": 7,
     "viewMultiplier": 1,
-    "bestialBondLevel": 1
+    "bestialBondLevel": 1,
+    "multipliers": { "orns": 1, "gold": 1, "luck": 1, "exp": 1 }
   },
   {
     "id": "tamer-9",
     "name": "★9 Укротитель",
     "tier": 9,
     "viewMultiplier": 1,
-    "bestialBondLevel": 1
+    "bestialBondLevel": 1,
+    "multipliers": { "orns": 1, "gold": 1, "luck": 1, "exp": 1 }
   }
 ]

@@ -177,3 +177,34 @@
   color: var(--text);
   line-height: 1.1;
 }
+
+.event-effect {
+  font-size: 9px;
+  color: var(--gold);
+  line-height: 1.1;
+  margin-top: 2px;
+}
+
+.event-icon {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  flex-shrink: 0;
+}
+
+.slot.is-locked {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+  position: relative;
+}
+
+.slot.is-locked::after {
+  content: '🔒';
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  font-size: 10px;
+  opacity: 0.8;
+}

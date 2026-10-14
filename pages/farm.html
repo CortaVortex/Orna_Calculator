@@ -130,101 +130,109 @@
       <div class="equipment-layout">
 
         <!-- Мнем 1 -->
-        <div class="slot slot-mnem" data-slot="mnem-1">
-          <div class="mnem-rows">
-            <div class="mnem-row">
-              <select class="mnem-select" data-mnem="1" data-row="1">
-                <option value="" data-ru="— пусто —" data-en="— empty —">— пусто —</option>
-                <option value="orns" data-ru="Орны 1–5%" data-en="Orns 1–5%">Орны 1–5%</option>
-                <option value="gold" data-ru="Золото 1–5%" data-en="Gold 1–5%">Золото 1–5%</option>
-                <option value="exp" data-ru="Опыт 1–5%" data-en="Exp 1–5%">Опыт 1–5%</option>
-                <option value="luck" data-ru="Удача 1–5%" data-en="Luck 1–5%">Удача 1–5%</option>
-                <option value="acc" data-ru="Эфф. аксессуаров" data-en="Acc. Efficiency">Эфф. аксессуаров</option>
-                <option value="bonds" data-ru="Узы" data-en="Bestial Bond">Узы</option>
-              </select>
-              <input type="number" class="mnem-input" data-mnem="1" data-row="1" min="1" max="5">
-            </div>
-            <div class="mnem-row">
-              <select class="mnem-select" data-mnem="1" data-row="2">
-                <option value="" data-ru="— пусто —" data-en="— empty —">— пусто —</option>
-                <option value="orns" data-ru="Орны 1–5%" data-en="Orns 1–5%">Орны 1–5%</option>
-                <option value="gold" data-ru="Золото 1–5%" data-en="Gold 1–5%">Золото 1–5%</option>
-                <option value="exp" data-ru="Опыт 1–5%" data-en="Exp 1–5%">Опыт 1–5%</option>
-                <option value="luck" data-ru="Удача 1–5%" data-en="Luck 1–5%">Удача 1–5%</option>
-                <option value="acc" data-ru="Эфф. аксессуаров" data-en="Acc. Efficiency">Эфф. аксессуаров</option>
-                <option value="bonds" data-ru="Узы" data-en="Bestial Bond">Узы</option>
-              </select>
-              <input type="number" class="mnem-input" data-mnem="1" data-row="2" min="1" max="5">
-            </div>
-            <div class="mnem-row">
-              <select class="mnem-select" data-mnem="1" data-row="3">
-                <option value="" data-ru="— пусто —" data-en="— empty —">— пусто —</option>
-                <option value="orns" data-ru="Орны 1–5%" data-en="Orns 1–5%">Орны 1–5%</option>
-                <option value="gold" data-ru="Золото 1–5%" data-en="Gold 1–5%">Золото 1–5%</option>
-                <option value="exp" data-ru="Опыт 1–5%" data-en="Exp 1–5%">Опыт 1–5%</option>
-                <option value="luck" data-ru="Удача 1–5%" data-en="Luck 1–5%">Удача 1–5%</option>
-                <option value="acc" data-ru="Эфф. аксессуаров" data-en="Acc. Efficiency">Эфф. аксессуаров</option>
-                <option value="bonds" data-ru="Узы" data-en="Bestial Bond">Узы</option>
-              </select>
-              <input type="number" class="mnem-input" data-mnem="1" data-row="3" min="1" max="5">
-            </div>
-          </div>
-          <span class="slot-name">—</span>
-          <span class="slot-stats"></span>
-        </div>
+<div class="slot slot-mnem is-locked" data-slot="mnem-1" data-lock="oracle">
+  <div class="mnem-rows">
+    <div class="mnem-row">
+      <select class="mnem-select" data-mnem="1" data-row="1" disabled>
+        <option value="" data-ru="— пусто —" data-en="— empty —">— пусто —</option>
+        <option value="acc" data-ru="Аксессуары (5–25%)" data-en="Accessories (5–25%)">Аксессуары (5–25%)</option>
+        <option value="luck" data-ru="Удача (1–5%)" data-en="Luck (1–5%)">Удача (1–5%)</option>
+        <option value="orns" data-ru="Орны (1–5%)" data-en="Orns (1–5%)">Орны (1–5%)</option>
+        <option value="gold" data-ru="Золото (1–5%)" data-en="Gold (1–5%)">Золото (1–5%)</option>
+        <option value="exp" data-ru="Опыт (1–5%)" data-en="Exp (1–5%)">Опыт (1–5%)</option>
+        <option value="bonds" data-ru="Узы" data-en="Bestial Bond">Узы</option>
+      </select>
+      <input type="number" class="mnem-input" data-mnem="1" data-row="1" disabled>
+    </div>
+    <div class="mnem-row">
+      <select class="mnem-select" data-mnem="1" data-row="2" disabled>
+        <option value="" data-ru="— пусто —" data-en="— empty —">— пусто —</option>
+        <option value="acc" data-ru="Аксессуары (5–25%)" data-en="Accessories (5–25%)">Аксессуары (5–25%)</option>
+        <option value="luck" data-ru="Удача (1–5%)" data-en="Luck (1–5%)">Удача (1–5%)</option>
+        <option value="orns" data-ru="Орны (1–5%)" data-en="Orns (1–5%)">Орны (1–5%)</option>
+        <option value="gold" data-ru="Золото (1–5%)" data-en="Gold (1–5%)">Золото (1–5%)</option>
+        <option value="exp" data-ru="Опыт (1–5%)" data-en="Exp (1–5%)">Опыт (1–5%)</option>
+        <option value="bonds" data-ru="Узы" data-en="Bestial Bond">Узы</option>
+      </select>
+      <input type="number" class="mnem-input" data-mnem="1" data-row="2" disabled>
+    </div>
+    <div class="mnem-row">
+      <select class="mnem-select" data-mnem="1" data-row="3" disabled>
+        <option value="" data-ru="— пусто —" data-en="— empty —">— пусто —</option>
+        <option value="acc" data-ru="Аксессуары (5–25%)" data-en="Accessories (5–25%)">Аксессуары (5–25%)</option>
+        <option value="luck" data-ru="Удача (1–5%)" data-en="Luck (1–5%)">Удача (1–5%)</option>
+        <option value="orns" data-ru="Орны (1–5%)" data-en="Orns (1–5%)">Орны (1–5%)</option>
+        <option value="gold" data-ru="Золото (1–5%)" data-en="Gold (1–5%)">Золото (1–5%)</option>
+        <option value="exp" data-ru="Опыт (1–5%)" data-en="Exp (1–5%)">Опыт (1–5%)</option>
+        <option value="bonds" data-ru="Узы" data-en="Bestial Bond">Узы</option>
+      </select>
+      <input type="number" class="mnem-input" data-mnem="1" data-row="3" disabled>
+    </div>
+  </div>
+  <span class="slot-name">—</span>
+  <span class="slot-stats"></span>
+</div>
 
         <!-- Голова -->
-        <div class="slot-wrapper slot-wrapper-head">
-          <div class="slot slot-head" data-slot="head">
-            <img class="slot-icon-img" alt="" hidden>
-          </div>
-          <span class="slot-name" data-ru="Пусто" data-en="Empty">Пусто</span>
-          <span class="slot-stats"></span>
-        </div>
+<div class="slot-wrapper slot-wrapper-head">
+  <div class="slot slot-head" data-slot="head">
+    <img class="slot-icon-img" alt="" hidden>
+    <select class="slot-quality" data-slot="head" hidden>
+      <option value="common">Обычное</option>
+      <option value="superior">Хорошее</option>
+      <option value="famed">Добротное</option>
+      <option value="legendary">Эпичное</option>
+      <option value="ornate">Орнатное</option>
+      <option value="masterforged">Травленое</option>
+      <option value="demonforged">Закаленное</option>
+      <option value="godforged">Божественное</option>
+    </select>
+  </div>
+  <span class="slot-name" data-ru="Пусто" data-en="Empty">Пусто</span>
+  <span class="slot-stats"></span>
+</div>
 
         <!-- Мнем 2 -->
         <div class="slot slot-mnem" data-slot="mnem-2">
-          <div class="mnem-rows">
-            <div class="mnem-row">
-              <select class="mnem-select" data-mnem="2" data-row="1">
-                <option value="" data-ru="— пусто —" data-en="— empty —">— пусто —</option>
-                <option value="orns" data-ru="Орны 1–5%" data-en="Orns 1–5%">Орны 1–5%</option>
-                <option value="gold" data-ru="Золото 1–5%" data-en="Gold 1–5%">Золото 1–5%</option>
-                <option value="exp" data-ru="Опыт 1–5%" data-en="Exp 1–5%">Опыт 1–5%</option>
-                <option value="luck" data-ru="Удача 1–5%" data-en="Luck 1–5%">Удача 1–5%</option>
-                <option value="acc" data-ru="Эфф. аксессуаров" data-en="Acc. Efficiency">Эфф. аксессуаров</option>
-                <option value="bonds" data-ru="Узы" data-en="Bestial Bond">Узы</option>
-              </select>
-              <input type="number" class="mnem-input" data-mnem="2" data-row="1" min="1" max="5">
-            </div>
-            <div class="mnem-row">
-              <select class="mnem-select" data-mnem="2" data-row="2">
-                <option value="" data-ru="— пусто —" data-en="— empty —">— пусто —</option>
-                <option value="orns" data-ru="Орны 1–5%" data-en="Orns 1–5%">Орны 1–5%</option>
-                <option value="gold" data-ru="Золото 1–5%" data-en="Gold 1–5%">Золото 1–5%</option>
-                <option value="exp" data-ru="Опыт 1–5%" data-en="Exp 1–5%">Опыт 1–5%</option>
-                <option value="luck" data-ru="Удача 1–5%" data-en="Luck 1–5%">Удача 1–5%</option>
-                <option value="acc" data-ru="Эфф. аксессуаров" data-en="Acc. Efficiency">Эфф. аксессуаров</option>
-                <option value="bonds" data-ru="Узы" data-en="Bestial Bond">Узы</option>
-              </select>
-              <input type="number" class="mnem-input" data-mnem="2" data-row="2" min="1" max="5">
-            </div>
-            <div class="mnem-row">
-              <select class="mnem-select" data-mnem="2" data-row="3">
-                <option value="" data-ru="— пусто —" data-en="— empty —">— пусто —</option>
-                <option value="orns" data-ru="Орны 1–5%" data-en="Orns 1–5%">Орны 1–5%</option>
-                <option value="gold" data-ru="Золото 1–5%" data-en="Gold 1–5%">Золото 1–5%</option>
-                <option value="exp" data-ru="Опыт 1–5%" data-en="Exp 1–5%">Опыт 1–5%</option>
-                <option value="luck" data-ru="Удача 1–5%" data-en="Luck 1–5%">Удача 1–5%</option>
-                <option value="acc" data-ru="Эфф. аксессуаров" data-en="Acc. Efficiency">Эфф. аксессуаров</option>
-                <option value="bonds" data-ru="Узы" data-en="Bestial Bond">Узы</option>
-              </select>
-              <input type="number" class="mnem-input" data-mnem="2" data-row="3" min="1" max="5">
-            </div>
-          </div>
-          <span class="slot-name">—</span>
-          <span class="slot-stats"></span>
-        </div>
+  <div class="mnem-rows">
+    <div class="mnem-row">
+      <select class="mnem-select" data-mnem="1" data-row="1">
+        <option value="" data-ru="— пусто —" data-en="— empty —">— пусто —</option>
+        <option value="acc" data-ru="Аксессуары (5–25%)" data-en="Accessories (5–25%)">Аксессуары (5–25%)</option>
+        <option value="luck" data-ru="Удача (1–5%)" data-en="Luck (1–5%)">Удача (1–5%)</option>
+        <option value="orns" data-ru="Орны (1–5%)" data-en="Orns (1–5%)">Орны (1–5%)</option>
+        <option value="gold" data-ru="Золото (1–5%)" data-en="Gold (1–5%)">Золото (1–5%)</option>
+        <option value="exp" data-ru="Опыт (1–5%)" data-en="Exp (1–5%)">Опыт (1–5%)</option>
+        <option value="bonds" data-ru="Узы" data-en="Bestial Bond">Узы</option>
+      </select>
+      <input type="number" class="mnem-input" data-mnem="1" data-row="1">
+    </div>
+    <div class="mnem-row">
+      <select class="mnem-select" data-mnem="1" data-row="2">
+        <option value="" data-ru="— пусто —" data-en="— empty —">— пусто —</option>
+        <option value="acc" data-ru="Аксессуары (5–25%)" data-en="Accessories (5–25%)">Аксессуары (5–25%)</option>
+        <option value="luck" data-ru="Удача (1–5%)" data-en="Luck (1–5%)">Удача (1–5%)</option>
+        <option value="orns" data-ru="Орны (1–5%)" data-en="Orns (1–5%)">Орны (1–5%)</option>
+        <option value="gold" data-ru="Золото (1–5%)" data-en="Gold (1–5%)">Золото (1–5%)</option>
+        <option value="exp" data-ru="Опыт (1–5%)" data-en="Exp (1–5%)">Опыт (1–5%)</option>
+        <option value="bonds" data-ru="Узы" data-en="Bestial Bond">Узы</option>
+      </select>
+      <input type="number" class="mnem-input" data-mnem="1" data-row="2">
+    </div>
+    <div class="mnem-row">
+      <select class="mnem-select" data-mnem="1" data-row="3">
+        <option value="" data-ru="— пусто —" data-en="— empty —">— пусто —</option>
+        <option value="acc" data-ru="Аксессуары (5–25%)" data-en="Accessories (5–25%)">Аксессуары (5–25%)</option>
+        <option value="luck" data-ru="Удача (1–5%)" data-en="Luck (1–5%)">Удача (1–5%)</option>
+        <option value="orns" data-ru="Орны (1–5%)" data-en="Orns (1–5%)">Орны (1–5%)</option>
+        <option value="gold" data-ru="Золото (1–5%)" data-en="Gold (1–5%)">Золото (1–5%)</option>
+        <option value="exp" data-ru="Опыт (1–5%)" data-en="Exp (1–5%)">Опыт (1–5%)</option>
+        <option value="bonds" data-ru="Узы" data-en="Bestial Bond">Узы</option>
+      </select>
+      <input type="number" class="mnem-input" data-mnem="1" data-row="3">
+    </div>
+  </div>
+</div>
 
         <!-- Оружие 1 -->
         <div class="slot-wrapper slot-wrapper-weapon-1">
@@ -239,7 +247,6 @@
               <option value="masterforged">Травленое</option>
               <option value="demonforged">Закаленное</option>
               <option value="godforged">Божественное</option>
-              <option value="atonement">Настрадание</option>
             </select>
           </div>
           <span class="slot-name" data-ru="Пусто" data-en="Empty">Пусто</span>
@@ -247,13 +254,23 @@
         </div>
 
         <!-- Торс -->
-        <div class="slot-wrapper slot-wrapper-body">
-          <div class="slot slot-body" data-slot="body">
-            <img class="slot-icon-img" alt="" hidden>
-          </div>
-          <span class="slot-name" data-ru="Пусто" data-en="Empty">Пусто</span>
-          <span class="slot-stats"></span>
-        </div>
+<div class="slot-wrapper slot-wrapper-body">
+  <div class="slot slot-body" data-slot="body">
+    <img class="slot-icon-img" alt="" hidden>
+    <select class="slot-quality" data-slot="body" hidden>
+      <option value="common">Обычное</option>
+      <option value="superior">Хорошее</option>
+      <option value="famed">Добротное</option>
+      <option value="legendary">Эпичное</option>
+      <option value="ornate">Орнатное</option>
+      <option value="masterforged">Травленое</option>
+      <option value="demonforged">Закаленное</option>
+      <option value="godforged">Божественное</option>
+    </select>
+  </div>
+  <span class="slot-name" data-ru="Пусто" data-en="Empty">Пусто</span>
+  <span class="slot-stats"></span>
+</div>
 
         <!-- Оружие 2 -->
         <div class="slot-wrapper slot-wrapper-weapon-2">
@@ -272,7 +289,6 @@
               <option value="masterforged">Травленое</option>
               <option value="demonforged">Закаленное</option>
               <option value="godforged">Божественное</option>
-              <option value="atonement">Настрадание</option>
             </select>
           </div>
           <span class="slot-name" data-ru="Пусто" data-en="Empty">Пусто</span>
@@ -280,18 +296,38 @@
         </div>
 
         <!-- Аксессуар 1 -->
-        <div class="slot-wrapper slot-wrapper-accessory-1">
-          <div class="slot slot-accessory" data-slot="accessory-1">
-            <img class="slot-icon-img" alt="" hidden>
-          </div>
-          <span class="slot-name" data-ru="Пусто" data-en="Empty">Пусто</span>
-          <span class="slot-stats"></span>
-        </div>
+<div class="slot-wrapper slot-wrapper-accessory-1">
+  <div class="slot slot-accessory" data-slot="accessory-1">
+    <img class="slot-icon-img" alt="" hidden>
+    <select class="slot-quality" data-slot="accessory-1" hidden>
+      <option value="common">Обычное</option>
+      <option value="superior">Хорошее</option>
+      <option value="famed">Добротное</option>
+      <option value="legendary">Эпичное</option>
+      <option value="ornate">Орнатное</option>
+      <option value="masterforged">Травленое</option>
+      <option value="demonforged">Закаленное</option>
+      <option value="godforged">Божественное</option>
+    </select>
+  </div>
+  <span class="slot-name" data-ru="Пусто" data-en="Empty">Пусто</span>
+  <span class="slot-stats"></span>
+</div>
 
         <!-- Ноги -->
         <div class="slot-wrapper slot-wrapper-legs">
           <div class="slot slot-legs" data-slot="legs">
             <img class="slot-icon-img" alt="" hidden>
+            <select class="slot-quality" data-slot="legs" hidden>
+              <option value="common">Обычное</option>
+              <option value="superior">Хорошее</option>
+              <option value="famed">Добротное</option>
+              <option value="legendary">Эпичное</option>
+              <option value="ornate">Орнатное</option>
+              <option value="masterforged">Травленое</option>
+              <option value="demonforged">Закаленное</option>
+              <option value="godforged">Божественное</option>
+            </select>
           </div>
           <span class="slot-name" data-ru="Пусто" data-en="Empty">Пусто</span>
           <span class="slot-stats"></span>
@@ -301,6 +337,16 @@
         <div class="slot-wrapper slot-wrapper-accessory-2">
           <div class="slot slot-accessory" data-slot="accessory-2">
             <img class="slot-icon-img" alt="" hidden>
+            <select class="slot-quality" data-slot="accessory-2" hidden>
+              <option value="common">Обычное</option>
+              <option value="superior">Хорошее</option>
+              <option value="famed">Добротное</option>
+              <option value="legendary">Эпичное</option>
+              <option value="ornate">Орнатное</option>
+              <option value="masterforged">Травленое</option>
+              <option value="demonforged">Закаленное</option>
+              <option value="godforged">Божественное</option>
+            </select>
           </div>
           <span class="slot-name" data-ru="Пусто" data-en="Empty">Пусто</span>
           <span class="slot-stats"></span>
@@ -310,28 +356,43 @@
     </section>
 
     <!-- ============ НАСТРАДАНИЕ (ANGUISH) ============ -->
-    <section class="panel">
-      <h2 class="panel-title" data-ru="Настрадание" data-en="Anguish">Настрадание</h2>
+<section class="panel">
+  <h2 class="panel-title" data-ru="Настрадание" data-en="Anguish">Настрадание</h2>
 
-      <div class="anguish-grid">
-        <label class="anguish-item">
-          <span class="anguish-label" data-ru="Орны" data-en="Orns">Орны</span>
-          <input type="number" class="anguish-input" data-currency="orns" min="0" max="999" value="0" placeholder="0">
-        </label>
-        <label class="anguish-item">
-          <span class="anguish-label" data-ru="Золото" data-en="Gold">Золото</span>
-          <input type="number" class="anguish-input" data-currency="gold" min="0" max="999" value="0" placeholder="0">
-        </label>
-        <label class="anguish-item">
-          <span class="anguish-label" data-ru="Опыт" data-en="Exp">Опыт</span>
-          <input type="number" class="anguish-input" data-currency="exp" min="0" max="999" value="0" placeholder="0">
-        </label>
-        <label class="anguish-item">
-          <span class="anguish-label" data-ru="Удача" data-en="Luck">Удача</span>
-          <input type="number" class="anguish-input" data-currency="luck" min="0" max="999" value="0" placeholder="0">
-        </label>
+  <div class="anguish-grid">
+    <label class="anguish-item">
+      <div class="anguish-info">
+        <img class="anguish-icon" src="https://playorna.com/static/img/items/orns.png" alt="" onerror="this.style.display='none'">
+        <span class="anguish-label" data-ru="Орны %" data-en="Orns %">Орны %</span>
       </div>
-    </section>
+      <input type="number" class="anguish-input" data-currency="orns" min="0" max="999" value="0" placeholder="0">
+    </label>
+
+    <label class="anguish-item">
+      <div class="anguish-info">
+        <img class="anguish-icon" src="https://playorna.com/static/img/items/gold.png" alt="" onerror="this.style.display='none'">
+        <span class="anguish-label" data-ru="Золото %" data-en="Gold %">Золото %</span>
+      </div>
+      <input type="number" class="anguish-input" data-currency="gold" min="0" max="999" value="0" placeholder="0">
+    </label>
+
+    <label class="anguish-item">
+      <div class="anguish-info">
+        <img class="anguish-icon" src="https://playorna.com/static/img/items/exp.png" alt="" onerror="this.style.display='none'">
+        <span class="anguish-label" data-ru="Опыт %" data-en="Exp %">Опыт %</span>
+      </div>
+      <input type="number" class="anguish-input" data-currency="exp" min="0" max="999" value="0" placeholder="0">
+    </label>
+
+    <label class="anguish-item">
+      <div class="anguish-info">
+        <img class="anguish-icon" src="https://playorna.com/static/img/items/loot.png" alt="" onerror="this.style.display='none'">
+        <span class="anguish-label" data-ru="Удача %" data-en="Luck %">Удача %</span>
+      </div>
+      <input type="number" class="anguish-input" data-currency="luck" min="0" max="999" value="0" placeholder="0">
+    </label>
+  </div>
+</section>
 
     <!-- ============ ПРОЧИЕ БОНУСЫ ============ -->
     <section class="panel">
@@ -374,7 +435,7 @@
 <!-- Ивенты -->
 <div class="bonus-section">
   <div class="bonus-caption" data-ru="Ивенты" data-en="Events">Ивенты</div>
-  <div class="events-grid" id="events-grid"></div>
+  <div class="consumables-grid" id="events-grid"></div>
 </div>
 
 <!-- Расходники -->
