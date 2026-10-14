@@ -1,0 +1,33 @@
+{
+  "name": "Orna Calculator",
+  "short_name": "Orna Calc",
+  "description": "Калькулятор для игры Orna: обзор, фарм, вард. Считает бонусы от экипировки, питомцев, мнемов и гемм.",
+  "lang": "ru",
+  "start_url": "./pages/view.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0a0a0a",
+  "theme_color": "#0a0a0a",
+  "categories": [
+    "games",
+    "utilities"
+  ],
+  "icons": [
+    {
+      "src": "./img/icon-64.png",
+      "type": "image/png",
+      "sizes": "64x64"
+    },
+    {
+      "src": "./img/icon-128.png",
+      "type": "image/png",
+      "sizes": "128x128"
+    },
+    {
+      "src": "./img/icon-256.png",
+      "type": "image/png",
+      "sizes": "256x256"
+    }
+  ]
+}
