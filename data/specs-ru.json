@@ -1,0 +1,39 @@
+[
+  {
+    "id": "seeker-5",
+    "name": "★5 Искатель",
+    "tier": 5,
+    "viewMultiplier": 1.2,
+    "bestialBondLevel": 0
+  },
+  {
+    "id": "oracle-5",
+    "name": "★5 Оракул",
+    "tier": 5,
+    "viewMultiplier": 1,
+    "bestialBondLevel": 0,
+    "unlocksSecondAmity": true
+  },
+  {
+    "id": "great-oracle",
+    "name": "★5 Великий Оракул",
+    "tier": null,
+    "viewMultiplier": 1,
+    "bestialBondLevel": 0,
+    "unlocksSecondAmity": true
+  },
+  {
+    "id": "beastmaster-7",
+    "name": "★7 Дрессировщик",
+    "tier": 7,
+    "viewMultiplier": 1,
+    "bestialBondLevel": 1
+  },
+  {
+    "id": "tamer-9",
+    "name": "★9 Укротитель",
+    "tier": 9,
+    "viewMultiplier": 1,
+    "bestialBondLevel": 1
+  }
+]

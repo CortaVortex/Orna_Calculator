@@ -1,0 +1,13 @@
+/* ============ ВАРД — СПЕЦИФИЧНЫЕ СТИЛИ ============ */
+/* Пока пусто. Заполним, когда определимся с содержимым. */
+
+.ward-content {
+  padding: 20px 0;
+  text-align: center;
+}
+
+.placeholder-text {
+  color: var(--text-dim);
+  font-size: 13px;
+  font-style: italic;
+}

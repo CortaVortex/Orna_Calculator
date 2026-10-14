@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Orna Calculator — Farm</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Unicase:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../css/shared.css">
+  <link rel="stylesheet" href="../css/farm.css">
+</head>
+<body>
+
+  <header class="app-header">
+    <h1>Orna Calculator</h1>
+    <nav class="tabs-nav">
+      <a href="view.html" class="tab-link" data-ru="Обзор" data-en="View">Обзор</a>
+      <a href="farm.html" class="tab-link active" data-ru="Фарм" data-en="Farm">Фарм</a>
+      <a href="ward.html" class="tab-link" data-ru="Вард" data-en="Ward">Вард</a>
+      <button id="lang-toggle" class="lang-btn" title="Switch language / Сменить язык">EN</button>
+    </nav>
+  </header>
+
+  <main class="app-main">
+    <section class="panel">
+      <h2 class="panel-title" data-ru="Фарм" data-en="Farm">Фарм</h2>
+      <p style="color: var(--text-dim); font-size: 13px; font-style: italic; text-align: center; padding: 20px 0;"
+         data-ru="(заготовка — содержимое появится позже)"
+         data-en="(placeholder — content coming soon)">
+        (заготовка — содержимое появится позже)
+      </p>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <p data-ru="Сделано для игроков Orna • Не связан с Northern Forge"
+       data-en="Made for Orna players • Not affiliated with Northern Forge">
+      Сделано для игроков Orna • Не связан с Northern Forge
+    </p>
+  </footer>
+
+  <script src="../js/shared.js"></script>
+  <script src="../js/farm.js"></script>
+</body>
+</html>

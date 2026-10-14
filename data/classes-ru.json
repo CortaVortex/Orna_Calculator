@@ -1,0 +1,2231 @@
+[
+  {
+    "id": "44",
+    "name": "Авгур",
+    "url": "/codex/classes/44/",
+    "sprite": "https://playorna.com/static/img/classes/augur/default_m.png",
+    "tier": 4,
+    "description": "Альтернативная версия класса Мистик. Купите этот класс, чтобы поддержать игру и получить особый внешний вид персонажа и пассивные навыки.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 4"
+      },
+      {
+        "label": "Price",
+        "value": "100,000 орны"
+      }
+    ],
+    "effects": [
+      "Avidity Chance: +10%",
+      "Лечение: +25%",
+      "Манафляжки: +2"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "38",
+    "name": "Арканик",
+    "url": "/codex/classes/38/",
+    "sprite": "https://playorna.com/static/img/classes2/arcanic/default_m.png",
+    "tier": 8,
+    "description": "Отчаянный наёмник королевства Аннун, обученный утерянным приёмам арканы. Неуязвим для стихии арканы и может использовать снаряжение вора.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 8"
+      },
+      {
+        "label": "Price",
+        "value": "3,500,000 орны"
+      }
+    ],
+    "effects": [
+      "Avidity Chance: +15%",
+      "Обзор: +20%",
+      "На врага: Заморозка (5%), Паралич (5%), Горение (5%), Гниение (5%)",
+      "Лечение: +50%",
+      "Макс шанс уклона: 60%",
+      "Всплн здрв по криту: 25%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "29",
+    "name": "Архидруид",
+    "url": "/codex/classes/29/",
+    "sprite": "https://playorna.com/static/img/classes2/archdruid/default_m.png",
+    "tier": 7,
+    "description": "Могучий маг, способный вобрать в себя силы чудищ. Имеет защиту от света и тьмы, может использовать снаряжение как вора, так и мага.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 7"
+      },
+      {
+        "label": "Price",
+        "value": "2,000,000 орны"
+      }
+    ],
+    "effects": [
+      "Манафляжки: +3",
+      "Лечение: +25%",
+      "Перекачивание здоровья: +10%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "4",
+    "name": "Архимаг",
+    "url": "/codex/classes/4/",
+    "sprite": "https://playorna.com/static/img/classes2/archmage/default_m.png",
+    "tier": 2,
+    "description": "Авалонский начинающий маг, освоивший простую магию. Может использовать снаряжение мага.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 2"
+      },
+      {
+        "label": "Price",
+        "value": "10,000 орны"
+      }
+    ],
+    "effects": [
+      "Нерастрата маны: +25%",
+      "Манафляжки: +1"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "53",
+    "name": "Бахамут",
+    "url": "/codex/classes/53/",
+    "sprite": "https://playorna.com/static/img/classes2/bahamut/default_m.png",
+    "tier": 9,
+    "description": "Став единым целым с могущественными драконами, бахамут познал секреты силы и магии, став истинным мастером Вальгаллы. Его боевые приёмы сочетают в себе атаку и магию. Неуязвим для стихии драконов и может использовать снаряжение как воина, так и мага.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 9"
+      },
+      {
+        "label": "Price",
+        "value": "7,000,000 орны"
+      }
+    ],
+    "effects": [
+      "Гибридный урон: +20%",
+      "Критшанс: +7%",
+      "Характеристики питомца: +75%",
+      "Частота действий питомца: +7%",
+      "На врага: Недуг (5%)",
+      "ИИ питомца: +5%",
+      "Звериные узы: Уровень 2",
+      "Всплн здрв по криту: 25%"
+    ],
+    "bestialBondLevel": 2,
+    "isOracle": false
+  },
+  {
+    "id": "70",
+    "name": "Бахамут Аурига",
+    "url": "/codex/classes/70/",
+    "sprite": "https://playorna.com/static/img/classes2/bahamut_auriga/default_m.png",
+    "tier": 9,
+    "description": "Бахамут, достигший звёзд.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 9"
+      },
+      {
+        "label": "Price",
+        "value": "7,000,000 орны"
+      }
+    ],
+    "effects": [
+      "Критшанс: +5%",
+      "Характеристики питомца: +90%",
+      "Частота действий питомца: +8%",
+      "На врага: Недуг (3%)",
+      "ИИ питомца: +5%",
+      "Звериные узы: Уровень 2",
+      "Всплн здрв по криту: 25%",
+      "Перекачивание здоровья: +10%"
+    ],
+    "bestialBondLevel": 2,
+    "isOracle": false
+  },
+  {
+    "id": "71",
+    "name": "Бахамут Гидрус",
+    "url": "/codex/classes/71/",
+    "sprite": "https://playorna.com/static/img/classes2/bahamut_hydrus/default_m.png",
+    "tier": 9,
+    "description": "Бахамут, достигший звёзд.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 9"
+      },
+      {
+        "label": "Price",
+        "value": "7,000,000 орны"
+      }
+    ],
+    "effects": [
+      "Критшанс: +5%",
+      "Характеристики питомца: +65%",
+      "Частота действий питомца: +5%",
+      "На врага: Недуг (5%)",
+      "ИИ питомца: +5%",
+      "Гибридный урон: +25%",
+      "Звериные узы: Уровень 1",
+      "Всплн здрв по криту: 25%",
+      "Перекачивание здоровья: +10%"
+    ],
+    "bestialBondLevel": 1,
+    "isOracle": false
+  },
+  {
+    "id": "57",
+    "name": "Беовульф / Бестла",
+    "url": "/codex/classes/57/",
+    "sprite": "https://playorna.com/static/img/classes2/beowulf/default_m.png",
+    "tier": 10,
+    "description": "Последователи драконов и мастера Вальгаллы, использующие в качестве оружия музыкальные инструменты, могут поменять течение боя при помощи виршей и боевых танцев. Их боевые умения используют и атаку, и магию. Неуязвимы для стихии драконов. Могут использовать любое снаряжение по своему вкусу.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 10"
+      },
+      {
+        "label": "Price",
+        "value": "15,000,000 орны"
+      }
+    ],
+    "effects": [
+      "Мощь Валгаллы: +110%",
+      "Мало ОЗ → Хар-ки: +50%",
+      "Характеристики питомца: +110%",
+      "Частота действий питомца: +12%",
+      "Прикрытие питомцем: +12%",
+      "ИИ питомца: +5%",
+      "Звериные узы: Уровень 3",
+      "Уровень возвышения питомца: 0",
+      "Нерастрата маны: +25%",
+      "Гибридный урон: +25%"
+    ],
+    "bestialBondLevel": 3,
+    "isOracle": false
+  },
+  {
+    "id": "81",
+    "name": "Беовульф Аурига / Бестла Аурига",
+    "url": "/codex/classes/81/",
+    "sprite": "https://playorna.com/static/img/classes2/beowulf_auriga/default_m.png",
+    "tier": 10,
+    "description": "A Beowulf that has reached the stars above. It has the strongest bonds with followers and may allow them to act twice per turn.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 10"
+      },
+      {
+        "label": "Price",
+        "value": "15,000,000 орны"
+      }
+    ],
+    "effects": [
+      "Мощь Валгаллы: +120%",
+      "Мало ОЗ → Хар-ки: +50%",
+      "Характеристики питомца: +130%",
+      "Частота действий питомца: +15%",
+      "Прикрытие питомцем: +12%",
+      "ИИ питомца: +20%",
+      "Допход питомца: +30%",
+      "Звериные узы: Уровень 3",
+      "Звериные узы: +12%",
+      "Уровень возвышения питомца: 0",
+      "Нерастрата маны: +25%"
+    ],
+    "bestialBondLevel": 3,
+    "isOracle": false
+  },
+  {
+    "id": "80",
+    "name": "Беовульф Гидрус / Бестла Гидрус",
+    "url": "/codex/classes/80/",
+    "sprite": "https://playorna.com/static/img/classes2/beowulf_hydrus/default_m.png",
+    "tier": 10,
+    "description": "A Beowulf that has reached the stars above. It trades the bond built with followers for increased stats and hybrid power.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 10"
+      },
+      {
+        "label": "Price",
+        "value": "15,000,000 орны"
+      }
+    ],
+    "effects": [
+      "Критшанс: +7%",
+      "Характеристики питомца: +75%",
+      "Частота действий питомца: +7%",
+      "На врага: Недуг (5%)",
+      "Гибридный урон: +40%",
+      "Звериные узы: Уровень 2",
+      "+Второй шанс",
+      "Всплн здрв по криту: 25%"
+    ],
+    "bestialBondLevel": 2,
+    "isOracle": false
+  },
+  {
+    "id": "58",
+    "name": "Божество",
+    "url": "/codex/classes/58/",
+    "sprite": "https://playorna.com/static/img/classes2/deity/default_m.png",
+    "tier": 10,
+    "description": "Древние эльфы верили, что они могут сломить естественное равновесие стихий, но так и не преуспели в своем деле. Божества, коих в наш век остались единицы, используют колебание стихий, которое может дать защиту от оных, а может сделать уязвимым для них. Эти умелые воители могут использовать любое оружие и снаряжение по своему вкусу.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 10"
+      },
+      {
+        "label": "Price",
+        "value": "20,000,000 орны"
+      }
+    ],
+    "effects": [
+      "Заряд Накала: 25% / Скорость Накала: +65%",
+      "На себя: В.Всё↑↑↑ (12%)",
+      "Мало ОЗ → Хар-ки: +60%",
+      "Мало маны → Хар-ки: +60%",
+      "Длтлнст баффов: +40%",
+      "Спадение дебаффов: +40%",
+      "Второй шанс: 50%",
+      "Защита от состояний: +35%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "85",
+    "name": "Божество Урса",
+    "url": "/codex/classes/85/",
+    "sprite": "https://playorna.com/static/img/classes2/deity_ursa/default_m.png",
+    "tier": 10,
+    "description": "A Deity that has reached the stars above. It gains the upper hand after utilizing Apex abilities in battle.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 10"
+      },
+      {
+        "label": "Price",
+        "value": "20,000,000 орны"
+      }
+    ],
+    "effects": [
+      "Скорость Накала: +90%",
+      "Apex Power: -50%",
+      "Шанс допхода: +100%",
+      "На себя: В.Атк↑ (10%), В.Атк↑↑ (4%), В.Атк↑↑↑ (2%)",
+      "Шанс эффекта: +4%",
+      "Мало ОЗ → Хар-ки: +80%",
+      "Мало маны → Хар-ки: +50%",
+      "Длтлнст баффов: +40%",
+      "Спадение дебаффов: +40%",
+      "Защита от состояний: +35%",
+      "Второй шанс: 50%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "84",
+    "name": "Божество Эре",
+    "url": "/codex/classes/84/",
+    "sprite": "https://playorna.com/static/img/classes2/deity_ara/default_m.png",
+    "tier": 10,
+    "description": "A Deity that has reached the stars above. Its magical prowess becomes stronger as Apex abilities are utilized in battle.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 10"
+      },
+      {
+        "label": "Price",
+        "value": "20,000,000 орны"
+      }
+    ],
+    "effects": [
+      "Заряд Накала: 50% / Скорость Накала: +50%",
+      "Эффект Накала: +10%",
+      "На себя: В.Маг↑ (10%), В.Маг↑↑ (4%), В.Маг↑↑↑ (2%)",
+      "Накал применён → Хар-ки: +20%",
+      "Длтлнст баффов: +40%",
+      "Спадение дебаффов: +40%",
+      "Защита от состояний: +35%",
+      "Второй шанс: 50%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "30",
+    "name": "Великий драгонит / Великая валькирия",
+    "url": "/codex/classes/30/",
+    "sprite": "https://playorna.com/static/img/classes2/grand_dragoon/default_m.png",
+    "tier": 7,
+    "description": "Наездник самых могущественных драконов, уверенно следующий по пути Вальгаллы. Имеет природную устойчивость к стихии драконов. Может использовать снаряжение как воина, так и мага.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 7"
+      },
+      {
+        "label": "Price",
+        "value": "2,000,000 орны"
+      }
+    ],
+    "effects": [
+      "Всплн здрв по криту: 25%",
+      "Частота действий питомца: +10%",
+      "Характеристики питомца: +55%",
+      "Звериные узы: Уровень 2",
+      "ИИ питомца: +5%"
+    ],
+    "bestialBondLevel": 2,
+    "isOracle": false
+  },
+  {
+    "id": "61",
+    "name": "Великий зовущий",
+    "url": "/codex/classes/61/",
+    "sprite": "https://playorna.com/static/img/classes2/grand_attuner/default_m.png",
+    "tier": 8,
+    "description": "Довольно опытный последователь культа Призывателей Элизиума. Этот класс не обладает большой мощью, однако способен не только призвать различных могущественных существ в бой, чтобы они сражались на его стороне, но и сделать так, что в начале боя они появятся самостоятельно. Может использовать снаряжение мага, не может использовать обычных постоянных питомцев.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 8"
+      },
+      {
+        "label": "Price",
+        "value": "6,000,000 орны"
+      }
+    ],
+    "effects": [
+      "Summon Spell Start: +100%",
+      "Хар-ки призванных: +75%",
+      "+Светоч",
+      "Прикрытие призванными: +23%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "46",
+    "name": "Великий ифрит",
+    "url": "/codex/classes/46/",
+    "sprite": "https://playorna.com/static/img/classes2/grand_ifrit/default_m.png",
+    "tier": 9,
+    "description": "Элитный воин дыма и пепла, который воистину овладел силами пламени. Неуязвим для магии огня. Может использовать любое снаряжение, какое пожелает.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 9"
+      },
+      {
+        "label": "Price",
+        "value": "10,000,000 орны"
+      }
+    ],
+    "effects": [
+      "Скорость Накала: +75%",
+      "Длтлнст баффов: +40%",
+      "Спадение дебаффов: +40%",
+      "Перекачивание здоровья: +10%",
+      "Второй шанс: 50%",
+      "Звериные узы: Уровень 1"
+    ],
+    "bestialBondLevel": 1,
+    "isOracle": false
+  },
+  {
+    "id": "48",
+    "name": "Великий левиафан",
+    "url": "/codex/classes/48/",
+    "sprite": "https://playorna.com/static/img/classes2/great_leviathan/default_m.png",
+    "tier": 9,
+    "description": "Элитный воин приливов и льда, который воистину овладел силами морей. Неуязвим для магии воды и может использовать любое снаряжение, какое пожелает.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 9"
+      },
+      {
+        "label": "Price",
+        "value": "10,000,000 орны"
+      }
+    ],
+    "effects": [
+      "Скорость Накала: +75%",
+      "Длтлнст баффов: +40%",
+      "Спадение дебаффов: +40%",
+      "Нерастрата маны: +25%",
+      "Макс шанс уклона: 60%",
+      "Звериные узы: Уровень 1"
+    ],
+    "bestialBondLevel": 1,
+    "isOracle": false
+  },
+  {
+    "id": "63",
+    "name": "Великий призыватель",
+    "url": "/codex/classes/63/",
+    "sprite": "https://playorna.com/static/img/classes2/grand_summoner/default_m.png",
+    "tier": 10,
+    "description": "Высший представитель культа Призывателей Элизиума. Этот класс не обладает большой мощью, однако способен не только призвать различных могущественных существ в бой, чтобы они сражались на его стороне, но и сделать так, что в начале боя они появятся самостоятельно. Может использовать снаряжение мага, не может использовать обычных постоянных питомцев.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 10"
+      },
+      {
+        "label": "Price",
+        "value": "16,000,000 орны"
+      }
+    ],
+    "effects": [
+      "Summon Spell Start: +100%, +100%",
+      "Хар-ки призванных: +200%",
+      "Урон тьмой: +50%",
+      "Урон светом: +50%",
+      "+Возвш на призванных",
+      "+Светоч",
+      "Прикрытие призванными: +25%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "83",
+    "name": "Великий призыватель Аурига",
+    "url": "/codex/classes/83/",
+    "sprite": "https://playorna.com/static/img/classes2/grand_summoner_auriga/default_m.png",
+    "tier": 10,
+    "description": "A Grand Summoner that has reached the stars above. It is most effective at utilizing a full field of summoned allies. It can additionally wield the equipment of the warrior.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 10"
+      },
+      {
+        "label": "Price",
+        "value": "16,000,000 орны"
+      }
+    ],
+    "effects": [
+      "Summon Spell Start: +100%, +100%",
+      "Хар-ки призванных: +220%",
+      "Summon Pact Power: -30%",
+      "+Возвш на призванных",
+      "+Светоч",
+      "Прикрытие призванными: +25%",
+      "ИИ питомца: +20%",
+      "Спадение дебаффов: +50%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "82",
+    "name": "Великий призыватель Гидрус",
+    "url": "/codex/classes/82/",
+    "sprite": "https://playorna.com/static/img/classes2/grand_summoner_hydrus/default_m.png",
+    "tier": 10,
+    "description": "A Grand Summoner that has reached the stars above. It is most effective at sacrificing summons for its own power. It can additionally wield the equipment of the thief.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 10"
+      },
+      {
+        "label": "Price",
+        "value": "16,000,000 орны"
+      }
+    ],
+    "effects": [
+      "Summon Spell Start: +100%, +100%",
+      "Charon Ritual Chance: +40%",
+      "+Второй шанс",
+      "Хар-ки призванных: +80%",
+      "Summon Pact Power: +60%",
+      "Души в запасе → Хар-ки: +10%",
+      "Sacrifice Effects: +10%",
+      "+Светоч"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "0",
+    "name": "Воин",
+    "url": "/codex/classes/0/",
+    "sprite": "https://playorna.com/static/img/classes2/warrior/default_m.png",
+    "tier": 1,
+    "description": "Класс ближнего боя, предпочитает грубую силу и физическую атаку. Может использовать более тяжёлое оружие и броню.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 1"
+      },
+      {
+        "label": "Price",
+        "value": "2,500 орны"
+      }
+    ],
+    "effects": [
+      "Шанс рикошета: +10% / Рикошет: +15%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "10",
+    "name": "Воин-маг",
+    "url": "/codex/classes/10/",
+    "sprite": "https://playorna.com/static/img/classes2/spellsword/default_m.png",
+    "tier": 4,
+    "description": "Переходный класс, который сочетает в себе защиту и магию. Может использовать снаряжение как воина, так и мага.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 4"
+      },
+      {
+        "label": "Price",
+        "value": "100,000 орны"
+      }
+    ],
+    "effects": [
+      "Манафляжки: +2",
+      "Нерастрата маны: +25%",
+      "Шанс рикошета: +10% / Рикошет: +15%",
+      "Начало варда: +3 turns",
+      "Восст варда: +2%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "98",
+    "name": "Волкосмиритель",
+    "url": "/codex/classes/98/",
+    "sprite": "https://playorna.com/static/img/classes2/wolf_tamer/default_m.png",
+    "tier": 4,
+    "description": "Начинающий укротитель нетрусских племён. Может использовать снаряжение как воина, так и вора.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 4"
+      },
+      {
+        "label": "Price",
+        "value": "100,000 орны"
+      }
+    ],
+    "effects": [
+      "Частота действий питомца: +10%",
+      "Характеристики питомца: +55%",
+      "Звериные узы: Уровень 1"
+    ],
+    "bestialBondLevel": 1,
+    "isOracle": false
+  },
+  {
+    "id": "2",
+    "name": "Вор",
+    "url": "/codex/classes/2/",
+    "sprite": "https://playorna.com/static/img/classes2/thief/default_m.png",
+    "tier": 1,
+    "description": "Непростой боевой класс, полагающийся на скорость и урон, а не защиту. Может экипировать себя лёгкой бронёй, кинжалами и луками.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 1"
+      },
+      {
+        "label": "Price",
+        "value": "2,500 орны"
+      }
+    ],
+    "effects": [
+      "Avidity Chance: +10%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "31",
+    "name": "Высший сановник",
+    "url": "/codex/classes/31/",
+    "sprite": "https://playorna.com/static/img/classes2/majistrate/default_m.png",
+    "tier": 7,
+    "description": "Элитный боец королевства Аннун, искусный в атаках стихий. Имеет природное сопротивление стихии арканы. Может использовать снаряжение как воина, так и вора.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 7"
+      },
+      {
+        "label": "Price",
+        "value": "2,000,000 орны"
+      }
+    ],
+    "effects": [
+      "Avidity Chance: +15%",
+      "Обзор: +20%",
+      "Защита от состояний: +35%",
+      "Шанс рикошета: +15% / Рикошет: +25%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "47",
+    "name": "Высший таранис",
+    "url": "/codex/classes/47/",
+    "sprite": "https://playorna.com/static/img/classes2/high_taranis/default_m.png",
+    "tier": 9,
+    "description": "Элитный воин молний и грома, который воистину овладел силами небес. Неуязвим для магии молнии и может использовать любое снаряжение, какое пожелает.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 9"
+      },
+      {
+        "label": "Price",
+        "value": "10,000,000 орны"
+      }
+    ],
+    "effects": [
+      "Скорость Накала: +75%",
+      "Длтлнст баффов: +40%",
+      "Спадение дебаффов: +40%",
+      "Всплн здрв по криту: 25%",
+      "Второй шанс: 50%",
+      "Звериные узы: Уровень 1"
+    ],
+    "bestialBondLevel": 1,
+    "isOracle": false
+  },
+  {
+    "id": "35",
+    "name": "Гайя",
+    "url": "/codex/classes/35/",
+    "sprite": "https://playorna.com/static/img/classes2/gaia/default_m.png",
+    "tier": 8,
+    "description": "Рыцарь природы и равновесия, который воистину овладел силами земли. Неуязвим для магии земли и может использовать любое снаряжение, какое пожелает.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 8"
+      },
+      {
+        "label": "Price",
+        "value": "5,000,000 орны"
+      }
+    ],
+    "effects": [
+      "Скорость Накала: +50%",
+      "Длтлнст баффов: +40%",
+      "Спадение дебаффов: +40%",
+      "Защита от состояний: +35%",
+      "Макс шанс уклона: 60%",
+      "Звериные узы: Уровень 1"
+    ],
+    "bestialBondLevel": 1,
+    "isOracle": false
+  },
+  {
+    "id": "49",
+    "name": "Гайя Нобилия",
+    "url": "/codex/classes/49/",
+    "sprite": "https://playorna.com/static/img/classes2/noble_gaia/default_m.png",
+    "tier": 9,
+    "description": "Элитный воин природы и равновесия, который воистину овладел силами земли. Неуязвим для магии земли и может использовать любое снаряжение, какое пожелает.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 9"
+      },
+      {
+        "label": "Price",
+        "value": "10,000,000 орны"
+      }
+    ],
+    "effects": [
+      "Скорость Накала: +75%",
+      "Длтлнст баффов: +40%",
+      "Спадение дебаффов: +40%",
+      "Защита от состояний: +35%",
+      "Макс шанс уклона: 60%",
+      "Звериные узы: Уровень 1"
+    ],
+    "bestialBondLevel": 1,
+    "isOracle": false
+  },
+  {
+    "id": "54",
+    "name": "Гильгамеш / Галлия",
+    "url": "/codex/classes/54/",
+    "sprite": "https://playorna.com/static/img/classes2/gilgamesh/default_m.png",
+    "tier": 10,
+    "description": "Редко встречающийся воин, использующий защиту в качестве оружия. Этот класс становится сильнее по мере поддержания варда и может преобразовывать защиту в урон или восстановление ресурса. Может использовать снаряжение воина. Неуязвим для арканы, имеет устойчивость к стихии драконов.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 10"
+      },
+      {
+        "label": "Price",
+        "value": "15,000,000 орны"
+      }
+    ],
+    "effects": [
+      "Начало варда: +10 turns",
+      "Восст варда: +5%",
+      "+High Ward → Stats: +50%",
+      "Мощь варда: +50%",
+      "Шанс рикошета: +15% / Рикошет: +40%",
+      "Восст маны от варда: +50%",
+      "Второй шанс: 50%",
+      "Защита от состояний: +60%",
+      "Защита владений/областей: +10%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "74",
+    "name": "Гильгамеш Геркулес / Галлия Геркулес",
+    "url": "/codex/classes/74/",
+    "sprite": "https://playorna.com/static/img/classes2/gilgamesh_hercules/default_m.png",
+    "tier": 10,
+    "description": "A Gilgamesh that has reached the stars above. It is most effective at utilizing Ward-based abilities.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 10"
+      },
+      {
+        "label": "Price",
+        "value": "15,000,000 орны"
+      }
+    ],
+    "effects": [
+      "Начало варда: +12 turns",
+      "Восст варда: +7%",
+      "+High Ward → Stats: +60%",
+      "Мощь варда: +100%",
+      "Оффхенды: +15%",
+      "Второй шанс: 50%",
+      "Защита от состояний: +50%",
+      "Шанс рикошета: +15% / Рикошет: +30%",
+      "Защита владений/областей: +10%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "75",
+    "name": "Гильгамеш Урса / Галлия Урса",
+    "url": "/codex/classes/75/",
+    "sprite": "https://playorna.com/static/img/classes2/gilgamesh_ursa/default_m.png",
+    "tier": 10,
+    "description": "A Gilgamesh that has reached the stars above. It trades Ward for HP and is most effective at utilizing Collateral Damage and two-handed weapons. It can additionally wield the equipment of the thief.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 10"
+      },
+      {
+        "label": "Price",
+        "value": "15,000,000 орны"
+      }
+    ],
+    "effects": [
+      "Шанс рикошета: +20% / Рикошет: +50%",
+      "Мощь двуручей: +20%",
+      "Counter Chance (PvE): +20% / Ответный урон: +75% (PvE)",
+      "Урону рикошетом Восстановление ОЗ: +10%",
+      "Вард: +30%",
+      "Защита от состояний: +50%",
+      "Восст маны от варда: +50%",
+      "Второй шанс: 50%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "45",
+    "name": "Гладиатор",
+    "url": "/codex/classes/45/",
+    "sprite": "https://playorna.com/static/img/classes/gladiator/default_m.png",
+    "tier": 4,
+    "description": "Альтернативная версия класса Адепт. Купите этот класс, чтобы поддержать игру, получить особый внешний вид персонажа и пассивные навыки.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 4"
+      },
+      {
+        "label": "Price",
+        "value": "100,000 орны"
+      }
+    ],
+    "effects": [
+      "Шанс рикошета: +10% / Рикошет: +15%",
+      "Лечение: +25%",
+      "Критшанс: +5%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "36",
+    "name": "Дозорный Атласа / Дозорная Афины",
+    "url": "/codex/classes/36/",
+    "sprite": "https://playorna.com/static/img/classes2/atlas_vanguard/default_m.png",
+    "tier": 8,
+    "description": "Непоколебимый воин света королевства Лионесс, который хорошо разбирается в методах защиты и выживания. Неуязвим для света и может использовать снаряжение воина.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 8"
+      },
+      {
+        "label": "Price",
+        "value": "3,500,000 орны"
+      }
+    ],
+    "effects": [
+      "Шанс рикошета: +15% / Рикошет: +25%",
+      "Начало варда: +7 turns",
+      "Восст варда: +5%",
+      "Второй шанс: 50%",
+      "Защита от состояний: +35%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "101",
+    "name": "Драгонит / Валькирия",
+    "url": "/codex/classes/101/",
+    "sprite": "https://playorna.com/static/img/classes2/dragoon/default_m.png",
+    "tier": 6,
+    "description": "Воитель, освоивший искусство приручение драконов. Может использовать снаряжение как воина, так и вора.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 6"
+      },
+      {
+        "label": "Price",
+        "value": "500,000 орны"
+      }
+    ],
+    "effects": [
+      "Частота действий питомца: +10%",
+      "Характеристики питомца: +55%",
+      "ИИ питомца: +5%",
+      "Звериные узы: Уровень 2"
+    ],
+    "bestialBondLevel": 2,
+    "isOracle": false
+  },
+  {
+    "id": "87",
+    "name": "Друид",
+    "url": "/codex/classes/87/",
+    "sprite": "https://playorna.com/static/img/classes2/druid/default_m.png",
+    "tier": 5,
+    "description": "Маг, способный вобрать в себя силы чудищ. Может использовать снаряжение мага.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 5"
+      },
+      {
+        "label": "Price",
+        "value": "250,000 орны"
+      }
+    ],
+    "effects": [
+      "Манафляжки: +2",
+      "Нерастрата маны: +25%",
+      "Лечение: +25%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "100",
+    "name": "Духосмиритель",
+    "url": "/codex/classes/100/",
+    "sprite": "https://playorna.com/static/img/classes2/spirit_tamer/default_m.png",
+    "tier": 5,
+    "description": "Умелый дрессировщик великих зверей. Может использовать снаряжение как воина, так и мага.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 5"
+      },
+      {
+        "label": "Price",
+        "value": "250,000 орны"
+      }
+    ],
+    "effects": [
+      "Частота действий питомца: +10%",
+      "Характеристики питомца: +55%",
+      "Звериные узы: Уровень 1"
+    ],
+    "bestialBondLevel": 1,
+    "isOracle": false
+  },
+  {
+    "id": "55",
+    "name": "Еретик / Гера",
+    "url": "/codex/classes/55/",
+    "sprite": "https://playorna.com/static/img/classes2/heretic/default_m.png",
+    "tier": 10,
+    "description": "Когда-то эти колдуны были последователями Аполлиона и были изгнаны вместе с ним. Предпочитают магию разрушения и становятся сильнее по мере растрачивания маны. Критические удары их заклинаний наносят повышенный урон. Познав глубинные тайны магии, они приобрели способность периодически противостоять урону любой из стихий. Могут использовать снаряжение мага.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 10"
+      },
+      {
+        "label": "Price",
+        "value": "15,000,000 орны"
+      }
+    ],
+    "effects": [
+      "Манафляжки: +3 / Гемофляжки: +2",
+      "Урон по уязвимости: +12%",
+      "Урон заклинаний: -40%",
+      "Урон по стихийной неуязвимости: +25%",
+      "Мало маны → Хар-ки: +100%",
+      "Защита от состояний: +50%",
+      "Второй шанс: 50%",
+      "Прорыв маны: 50% мана",
+      "Перекачивание здоровья: +10%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "77",
+    "name": "Еретик Корвус / Гера Корвус",
+    "url": "/codex/classes/77/",
+    "sprite": "https://playorna.com/static/img/classes2/heretic_corvus/default_m.png",
+    "tier": 10,
+    "description": "A Heretic that has reached the stars above. It is more effective at charging Manaflasks and is more evasive in battle. It can additionally wield the equipment of the thief.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 10"
+      },
+      {
+        "label": "Price",
+        "value": "15,000,000 орны"
+      }
+    ],
+    "effects": [
+      "Манафляжки: +3 / Гемофляжки: +2",
+      "Урон по уязвимости: +12%",
+      "Урон заклинаний: -40%",
+      "Урон по стихийной неуязвимости: +25%",
+      "Мало маны → Хар-ки: +100%",
+      "Защита от состояний: +35%",
+      "Макс шанс уклона: 60%",
+      "Шанс спадения по криту: 3%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "76",
+    "name": "Еретик Эре / Гера Эре",
+    "url": "/codex/classes/76/",
+    "sprite": "https://playorna.com/static/img/classes2/heretic_ara/default_m.png",
+    "tier": 10,
+    "description": "A Heretic that has reached the stars above. It is most effective at utilizing celestial magic.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 10"
+      },
+      {
+        "label": "Price",
+        "value": "15,000,000 орны"
+      }
+    ],
+    "effects": [
+      "Манафляжки: +4 / Гемофляжки: +1",
+      "Урон по уязвимости: +12%",
+      "Урон заклинаний: -40%",
+      "Урон по стихийной неуязвимости: +25%",
+      "Мало маны → Хар-ки: +100%",
+      "Защита от состояний: +50%",
+      "Второй шанс: 50%",
+      "Прорыв маны: 50% мана",
+      "Экономия маны: -25.0%",
+      "Повышение лимита урона: +400%",
+      "Клейма: +15%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "60",
+    "name": "Зовущий",
+    "url": "/codex/classes/60/",
+    "sprite": "https://playorna.com/static/img/classes2/attuner/default_m.png",
+    "tier": 7,
+    "description": "Новичок, только вступивший на путь Призывателей Элизиума. Этот класс не обладает большой мощью, однако способен призвать различных могущественных существ в бой, чтобы они сражались на его стороне. Может использовать снаряжение мага, не может использовать обычных постоянных питомцев.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 7"
+      }
+    ],
+    "effects": [
+      "Summon Spell Start: +90%",
+      "Хар-ки призванных: +50%",
+      "+Светоч",
+      "Прикрытие призванными: +8%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "32",
+    "name": "Ифрит",
+    "url": "/codex/classes/32/",
+    "sprite": "https://playorna.com/static/img/classes2/ifrit/default_m.png",
+    "tier": 8,
+    "description": "Рыцарь дыма и пепла, который воистину овладел силами пламени. Неуязвим для магии огня. Может использовать любое снаряжение, какое пожелает.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 8"
+      },
+      {
+        "label": "Price",
+        "value": "5,000,000 орны"
+      }
+    ],
+    "effects": [
+      "Скорость Накала: +50%",
+      "Длтлнст баффов: +40%",
+      "Спадение дебаффов: +40%",
+      "Перекачивание здоровья: +10%",
+      "Второй шанс: 50%",
+      "Звериные узы: Уровень 1"
+    ],
+    "bestialBondLevel": 1,
+    "isOracle": false
+  },
+  {
+    "id": "94",
+    "name": "Кавалерист",
+    "url": "/codex/classes/94/",
+    "sprite": "https://playorna.com/static/img/classes2/cavalry/default_m.png",
+    "tier": 5,
+    "description": "Воитель Лионесса, сражающийся на благородных скакунах. Может использовать снаряжение воина.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 5"
+      },
+      {
+        "label": "Price",
+        "value": "250,000 орны"
+      }
+    ],
+    "effects": [
+      "Шанс рикошета: +10% / Рикошет: +15%",
+      "Начало варда: +3 turns",
+      "Восст варда: +2%",
+      "Критшанс: +5%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "20",
+    "name": "Колдун",
+    "url": "/codex/classes/20/",
+    "sprite": "https://playorna.com/static/img/classes/warlock/default_m.png",
+    "tier": 2,
+    "description": "Купите этот класс, чтобы поддержать игру и получить особый внешний вид персонажа и пассивные навыки.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 2"
+      },
+      {
+        "label": "Price",
+        "value": "10,000 орны"
+      }
+    ],
+    "effects": [
+      "Нерастрата маны: +25%",
+      "Манафляжки: +1"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "5",
+    "name": "Колоброд",
+    "url": "/codex/classes/5/",
+    "sprite": "https://playorna.com/static/img/classes2/strider/default_m.png",
+    "tier": 2,
+    "description": "Боец, освоивший различные виды оружия. Может использовать снаряжение вора.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 2"
+      },
+      {
+        "label": "Price",
+        "value": "10,000 орны"
+      }
+    ],
+    "effects": [
+      "Avidity Chance: +10%",
+      "Лечение: +25%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "24",
+    "name": "Копейщик",
+    "url": "/codex/classes/24/",
+    "sprite": "https://playorna.com/static/img/classes2/lancer/default_m.png",
+    "tier": 4,
+    "description": "Переходный класс, который предпочитает силу и ловкость магии. Может использовать снаряжение как вора, так и воина.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 4"
+      },
+      {
+        "label": "Price",
+        "value": "100,000 орны"
+      }
+    ],
+    "effects": [
+      "Шанс рикошета: +10% / Рикошет: +15%",
+      "Лечение: +25%",
+      "Критшанс: +5%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "33",
+    "name": "Левиафан",
+    "url": "/codex/classes/33/",
+    "sprite": "https://playorna.com/static/img/classes2/leviathan/default_m.png",
+    "tier": 8,
+    "description": "Рыцарь приливов и льда, который воистину овладел силами морей. Неуязвим для магии воды и может использовать любое снаряжение, какое пожелает.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 8"
+      },
+      {
+        "label": "Price",
+        "value": "5,000,000 орны"
+      }
+    ],
+    "effects": [
+      "Скорость Накала: +50%",
+      "Длтлнст баффов: +40%",
+      "Спадение дебаффов: +40%",
+      "Нерастрата маны: +25%",
+      "Макс шанс уклона: 60%",
+      "Звериные узы: Уровень 1"
+    ],
+    "bestialBondLevel": 1,
+    "isOracle": false
+  },
+  {
+    "id": "18",
+    "name": "Легионер",
+    "url": "/codex/classes/18/",
+    "sprite": "https://playorna.com/static/img/classes/legionnaire/default_m.png",
+    "tier": 2,
+    "description": "Солдат фракции Легиона Земли, который овладел искусством недр земли.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 2"
+      },
+      {
+        "label": "Price",
+        "value": "10,000 орны"
+      }
+    ],
+    "effects": [
+      "Опыт на ходу: 20/m",
+      "Лечение: +25%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "1",
+    "name": "Маг",
+    "url": "/codex/classes/1/",
+    "sprite": "https://playorna.com/static/img/classes2/mage/default_m.png",
+    "tier": 1,
+    "description": "Имеет навыки в области магии и предпочитает отказаться от силы. Может использовать посохи и мантии.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 1"
+      },
+      {
+        "label": "Price",
+        "value": "2,500 орны"
+      }
+    ],
+    "effects": [
+      "Нерастрата маны: +25%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "17",
+    "name": "Маг стужи",
+    "url": "/codex/classes/17/",
+    "sprite": "https://playorna.com/static/img/classes/frost_mage/default_m.png",
+    "tier": 2,
+    "description": "Маг фракции Стражей Льда, овладевший искусством холода.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 2"
+      },
+      {
+        "label": "Price",
+        "value": "10,000 орны"
+      }
+    ],
+    "effects": [
+      "Опыт на ходу: 20/m",
+      "Мана за шаги: 2/m"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "90",
+    "name": "Мастер теней",
+    "url": "/codex/classes/90/",
+    "sprite": "https://playorna.com/static/img/classes2/shadowmancer/default_m.png",
+    "tier": 6,
+    "description": "Мистический боец королевства Аннун, совместивший магию и ловкость. Может более эффективно уклоняться от атак по мере получения урона и использовать снаряжение вора.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 6"
+      },
+      {
+        "label": "Price",
+        "value": "500,000 орны"
+      }
+    ],
+    "effects": [
+      "Avidity Chance: +10%",
+      "Макс шанс уклона: 60%",
+      "Лечение: +25%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "43",
+    "name": "Мечник рун",
+    "url": "/codex/classes/43/",
+    "sprite": "https://playorna.com/static/img/classes/runeblade/default_m.png",
+    "tier": 4,
+    "description": "Альтернативная версия класса Воин-маг. Купите этот класс, чтобы поддержать игру и получить особый внешний вид персонажа и пассивные навыки.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 4"
+      },
+      {
+        "label": "Price",
+        "value": "100,000 орны"
+      }
+    ],
+    "effects": [
+      "Манафляжки: +2",
+      "Нерастрата маны: +25%",
+      "Шанс рикошета: +10% / Рикошет: +15%",
+      "Начало варда: +3 turns",
+      "Восст варда: +2%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "11",
+    "name": "Мистик",
+    "url": "/codex/classes/11/",
+    "sprite": "https://playorna.com/static/img/classes2/mystic/default_m.png",
+    "tier": 4,
+    "description": "Переходный класс, который сочетает в себе ловкость и магию. Может использовать снаряжение как вора, так и мага.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 4"
+      },
+      {
+        "label": "Price",
+        "value": "100,000 орны"
+      }
+    ],
+    "effects": [
+      "Avidity Chance: +10%",
+      "Лечение: +25%",
+      "Манафляжки: +2"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "37",
+    "name": "Некромант / Некромантка",
+    "url": "/codex/classes/37/",
+    "sprite": "https://playorna.com/static/img/classes2/nekromancer/default_m.png",
+    "tier": 8,
+    "description": "Маг, изгнанный из королевства Авалон, использующий тёмные силы падших, чтобы одолеть своих врагов. Неуязвим для тьмы и может использовать снаряжение мага.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 8"
+      },
+      {
+        "label": "Price",
+        "value": "3,500,000 орны"
+      }
+    ],
+    "effects": [
+      "Манафляжки: +2 / Гемофляжки: +2",
+      "Второй шанс: 50%",
+      "Прорыв маны: 50% мана",
+      "Перекачивание здоровья: +10%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "51",
+    "name": "Никс",
+    "url": "/codex/classes/51/",
+    "sprite": "https://playorna.com/static/img/classes2/nyx/default_m.png",
+    "tier": 9,
+    "description": "Неуловимый убийца из Аннуна. Обучен способам выживания в бою, неуязвим для тьмы, может использовать снаряжение вора.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 9"
+      },
+      {
+        "label": "Price",
+        "value": "7,000,000 орны"
+      }
+    ],
+    "effects": [
+      "Avidity Chance: +15%",
+      "Защита от состояний: +35%",
+      "Лечение: +50%",
+      "Макс шанс уклона: 60%",
+      "Всплн здрв по криту: 25%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "67",
+    "name": "Никс Геркулес",
+    "url": "/codex/classes/67/",
+    "sprite": "https://playorna.com/static/img/classes2/nyx_hercules/default_m.png",
+    "tier": 9,
+    "description": "Никс, достигший звёзд.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 9"
+      },
+      {
+        "label": "Price",
+        "value": "7,000,000 орны"
+      }
+    ],
+    "effects": [
+      "Урон по варду: +100%",
+      "На врага: В.Защ↓ (12%), В.Защ↓↓ (4%)",
+      "Защита от состояний: +50%",
+      "Второй шанс: 50%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "66",
+    "name": "Никс Корвус",
+    "url": "/codex/classes/66/",
+    "sprite": "https://playorna.com/static/img/classes2/nyx_corvus/default_m.png",
+    "tier": 9,
+    "description": "Никс, достигший звёзд.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 9"
+      },
+      {
+        "label": "Price",
+        "value": "7,000,000 орны"
+      }
+    ],
+    "effects": [
+      "Avidity Chance: +15%",
+      "Макс шанс уклона: 60%",
+      "Перекачивание здоровья: +15%",
+      "Нерастрата маны: +25%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "52",
+    "name": "Омнимаг",
+    "url": "/codex/classes/52/",
+    "sprite": "https://playorna.com/static/img/classes2/omnimancer/default_m.png",
+    "tier": 9,
+    "description": "Неортодоксальный маг королевства Авалона, достигший истинного владения четырьмя основными стихиями. Может использовать многостихийные заклинания и периодически противостоять урону любой из основных стихий. Может использовать снаряжение мага.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 9"
+      },
+      {
+        "label": "Price",
+        "value": "7,000,000 орны"
+      }
+    ],
+    "effects": [
+      "Манафляжки: +2 / Гемофляжки: +2",
+      "Урон по уязвимости: +12%",
+      "Урон заклинаний: -30%",
+      "Урон по стихийной неуязвимости: +15%",
+      "Перекачивание здоровья: +10%",
+      "Второй шанс: 50%",
+      "Прорыв маны: 50% мана",
+      "Защита от состояний: +35%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "69",
+    "name": "Омнимагус Антлия / Омнимаг Антлия",
+    "url": "/codex/classes/69/",
+    "sprite": "https://playorna.com/static/img/classes2/omnimancer_antlia/default_m.png",
+    "tier": 9,
+    "description": "Омнимаг, достигший звёзд.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 9"
+      },
+      {
+        "label": "Price",
+        "value": "7,000,000 орны"
+      }
+    ],
+    "effects": [
+      "Манафляжки: +2 / Гемофляжки: +2",
+      "Урон по уязвимости: +12%",
+      "Урон заклинаний: -30%",
+      "Урон по стихийной неуязвимости: +15%",
+      "Второй шанс: 50%",
+      "Прорыв маны: 50% мана",
+      "Защита от состояний: +35%",
+      "+Сплетение стихий"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "68",
+    "name": "Омнимагус Эре / Омнимаг Эре",
+    "url": "/codex/classes/68/",
+    "sprite": "https://playorna.com/static/img/classes2/omnimancer_ara/default_m.png",
+    "tier": 9,
+    "description": "Омнимаг, достигший звёзд.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 9"
+      },
+      {
+        "label": "Price",
+        "value": "7,000,000 орны"
+      }
+    ],
+    "effects": [
+      "Манафляжки: +3",
+      "Урон по уязвимости: +12%",
+      "Урон заклинаний: -30%",
+      "Урон по стихийной неуязвимости: +15%",
+      "Второй шанс: 50%",
+      "Прорыв маны: 50% мана",
+      "Защита от состояний: +35%",
+      "Перекачивание здоровья: +15%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "93",
+    "name": "Оруженосец",
+    "url": "/codex/classes/93/",
+    "sprite": "https://playorna.com/static/img/classes2/squire/default_m.png",
+    "tier": 3,
+    "description": "Воитель, освоивший защитные приёмы фехтования мечом. Может использовать снаряжение воина.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 3"
+      },
+      {
+        "label": "Price",
+        "value": "50,000 орны"
+      }
+    ],
+    "effects": [
+      "Шанс рикошета: +10% / Рикошет: +15%",
+      "Начало варда: +3 turns",
+      "Восст варда: +2%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "96",
+    "name": "Паладин",
+    "url": "/codex/classes/96/",
+    "sprite": "https://playorna.com/static/img/classes2/paladin/default_m.png",
+    "tier": 7,
+    "description": "Элитный боец королевства Лионесс, обученный стихийным приёмам. Имеет защиту от света и тьмы, может использовать снаряжение как воина, так и мага.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 7"
+      },
+      {
+        "label": "Price",
+        "value": "2,000,000 орны"
+      }
+    ],
+    "effects": [
+      "Шанс рикошета: +15% / Рикошет: +25%",
+      "Урон по уязвимости: +12%",
+      "Урон заклинаний: -30%",
+      "Урон по стихийной неуязвимости: +15%",
+      "Манафляжки: +3",
+      "Защита от состояний: +35%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "92",
+    "name": "Пехотинец",
+    "url": "/codex/classes/92/",
+    "sprite": "https://playorna.com/static/img/classes2/footsoldier/default_m.png",
+    "tier": 2,
+    "description": "Воитель Лионесса, способный использовать стихии для своих атак. Может использовать снаряжение воина.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 2"
+      },
+      {
+        "label": "Price",
+        "value": "10,000 орны"
+      }
+    ],
+    "effects": [
+      "Шанс рикошета: +10% / Рикошет: +15%",
+      "Начало варда: +2 turns"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "86",
+    "name": "Придворный маг",
+    "url": "/codex/classes/86/",
+    "sprite": "https://playorna.com/static/img/classes2/court_mage/default_m.png",
+    "tier": 3,
+    "description": "Практикующий маг, поднявшийся до признания двором Авалона. Может использовать снаряжение мага.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 3"
+      },
+      {
+        "label": "Price",
+        "value": "50,000 орны"
+      }
+    ],
+    "effects": [
+      "Нерастрата маны: +25%",
+      "Манафляжки: +2"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "15",
+    "name": "Придворный стражник",
+    "url": "/codex/classes/15/",
+    "sprite": "https://playorna.com/static/img/classes/royal_guard/default_m.png",
+    "tier": 2,
+    "description": "Купите этот класс, чтобы поддержать игру и получить особый внешний вид персонажа и пассивные навыки.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 2"
+      },
+      {
+        "label": "Price",
+        "value": "10,000 орны"
+      }
+    ],
+    "effects": [
+      "Шанс рикошета: +10% / Рикошет: +15%",
+      "Начало варда: +2 turns"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "62",
+    "name": "Призыватель",
+    "url": "/codex/classes/62/",
+    "sprite": "https://playorna.com/static/img/classes2/summoner/default_m.png",
+    "tier": 9,
+    "description": "Один из старших последователей культа Призывателей Элизиума. Этот класс не обладает большой мощью, однако способен не только призвать различных могущественных существ в бой, чтобы они сражались на его стороне, но и сделать так, что в начале боя они появятся самостоятельно. Может использовать снаряжение мага, не может использовать обычных постоянных питомцев.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 9"
+      },
+      {
+        "label": "Price",
+        "value": "11,000,000 орны"
+      }
+    ],
+    "effects": [
+      "Summon Spell Start: +100%, +50%",
+      "Хар-ки призванных: +125%",
+      "+Светоч",
+      "Прикрытие призванными: +25%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "73",
+    "name": "Призыватель Аурига",
+    "url": "/codex/classes/73/",
+    "sprite": "https://playorna.com/static/img/classes2/summoner_auriga/default_m.png",
+    "tier": 9,
+    "description": "Призыватель, достигший звёзд и пожертвовавший силой умений-пактов во благо своих призванных существ.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 9"
+      },
+      {
+        "label": "Price",
+        "value": "11,000,000 орны"
+      }
+    ],
+    "effects": [
+      "Summon Spell Start: +100%, +50%",
+      "Хар-ки призванных: +125%",
+      "Summon Pact Power: -50%",
+      "+Светоч",
+      "Прикрытие призванными: +25%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "72",
+    "name": "Призыватель Гидрус",
+    "url": "/codex/classes/72/",
+    "sprite": "https://playorna.com/static/img/classes2/summoner_hydrus/default_m.png",
+    "tier": 9,
+    "description": "Призыватель, достигший звёзд и разменявший мощь призванных существ на мощь пактов.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 9"
+      },
+      {
+        "label": "Price",
+        "value": "11,000,000 орны"
+      }
+    ],
+    "effects": [
+      "Summon Spell Start: +100%, +50%",
+      "Charon Ritual Chance: +25%",
+      "+Второй шанс",
+      "Хар-ки призванных: +80%",
+      "Summon Pact Power: +20%",
+      "Души в запасе → Хар-ки: +10%",
+      "Sacrifice Effects: +10%",
+      "+Светоч"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "91",
+    "name": "Сановник",
+    "url": "/codex/classes/91/",
+    "sprite": "https://playorna.com/static/img/classes2/majestic/default_m.png",
+    "tier": 5,
+    "description": "Придворный королевства Аннун, обученный приёмам яростного нападения. Может использовать снаряжение вора.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 5"
+      },
+      {
+        "label": "Price",
+        "value": "250,000 орны"
+      }
+    ],
+    "effects": [
+      "Avidity Chance: +10%",
+      "Обзор: +20%",
+      "Шанс рикошета: +15% / Рикошет: +20%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "16",
+    "name": "Сжигатель / Сжигательница",
+    "url": "/codex/classes/16/",
+    "sprite": "https://playorna.com/static/img/classes/scorcher/default_m.png",
+    "tier": 2,
+    "description": "Наёмник фракции Рыцарей Инферно. Представитель этого боевого класса может изучать редкую магию огня.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 2"
+      },
+      {
+        "label": "Price",
+        "value": "10,000 орны"
+      }
+    ],
+    "effects": [
+      "Опыт на ходу: 20/m",
+      "Бонус золота: +10%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "56",
+    "name": "Скользящий",
+    "url": "/codex/classes/56/",
+    "sprite": "https://playorna.com/static/img/classes2/realmshifter/default_m.png",
+    "tier": 10,
+    "description": "Воители древнего королевства Аннун, Скользящие, являются мастерами тайных знаний: они всегда способны предугадать и использовать переломный момент битвы, — их критические удары наносят повышенный урон. Могут видеть в темноте, обладают неуязвимостью для света и тьмы, используют снаряжение воров.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 10"
+      },
+      {
+        "label": "Price",
+        "value": "15,000,000 орны"
+      }
+    ],
+    "effects": [
+      "Мало ОЗ → Хар-ки: +100%",
+      "Avidity Chance: +15%",
+      "Всплн здрв по криту: 25%",
+      "Макс шанс уклона: 60%",
+      "Снижение урона от состояний: +100%",
+      "Урон по варду: +125%",
+      "На врага: В.Защ↓ (12%), В.Защ↓↓ (4%)",
+      "Обзор: +20%",
+      "На врага: Ослепление (5%)"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "79",
+    "name": "Скользящий Дорадо",
+    "url": "/codex/classes/79/",
+    "sprite": "https://playorna.com/static/img/classes2/realmshifter_dorado/default_m.png",
+    "tier": 10,
+    "description": "A Realmshifter that has reached the stars above. It trades offense for defense and evasive capabilities. It can additionally wield the equipment of the warrior.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 10"
+      },
+      {
+        "label": "Price",
+        "value": "15,000,000 орны"
+      }
+    ],
+    "effects": [
+      "Мало ОЗ → Хар-ки: +125%",
+      "Начало варда: +6 turns",
+      "Восст варда: +3%",
+      "+Дорадо",
+      "Avidity Chance: +20%",
+      "Обзор: +20%",
+      "На врага: Ослепление (5%)"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "78",
+    "name": "Скользящий Корвус",
+    "url": "/codex/classes/78/",
+    "sprite": "https://playorna.com/static/img/classes2/realmshifter_corvus/default_m.png",
+    "tier": 10,
+    "description": "A Realmshifter that has reached the stars above. It is most effective at capitalizing on critical hits.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 10"
+      },
+      {
+        "label": "Price",
+        "value": "15,000,000 орны"
+      }
+    ],
+    "effects": [
+      "Мало ОЗ → Хар-ки: +100%",
+      "Критурон: -10%",
+      "Цепные кинжалы: +10%",
+      "Шанс спадения по криту: 3%",
+      "Снижение урона от состояний: +100%",
+      "Макс шанс уклона: 60%",
+      "Avidity Chance: +15%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "88",
+    "name": "Словоплёт",
+    "url": "/codex/classes/88/",
+    "sprite": "https://playorna.com/static/img/classes2/spellweaver/default_m.png",
+    "tier": 6,
+    "description": "Весьма искусный маг, способный сотворять заклинание одно за другим. Имеет хороший шанс сотворить заклинание без использования маны, может использовать снаряжение мага.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 6"
+      },
+      {
+        "label": "Price",
+        "value": "500,000 орны"
+      }
+    ],
+    "effects": [
+      "Манафляжки: +2",
+      "Нерастрата маны: +25%",
+      "+Сплетение стихий"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "50",
+    "name": "Стражник титанов",
+    "url": "/codex/classes/50/",
+    "sprite": "https://playorna.com/static/img/classes2/titanguard/default_m.png",
+    "tier": 9,
+    "description": "Опытный и непоколебимый воин света королевства Лионесс, который отлично разбирается в методах защиты и выживания. Неуязвим для света и может использовать снаряжение воина.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 9"
+      },
+      {
+        "label": "Price",
+        "value": "7,000,000 орны"
+      }
+    ],
+    "effects": [
+      "Шанс рикошета: +15% / Рикошет: +30%",
+      "Начало варда: +8 turns",
+      "Восст варда: +6%",
+      "Второй шанс: 50%",
+      "Защита от состояний: +50%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "65",
+    "name": "Стражник титанов Геркулес",
+    "url": "/codex/classes/65/",
+    "sprite": "https://playorna.com/static/img/classes2/titanguard_hercules/default_m.png",
+    "tier": 9,
+    "description": "Стражник титанов, достигший звёзд.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 9"
+      },
+      {
+        "label": "Price",
+        "value": "7,000,000 орны"
+      }
+    ],
+    "effects": [
+      "Начало варда: +9 turns",
+      "Восст варда: +7%",
+      "Шанс рикошета: +15% / Рикошет: +30%",
+      "Второй шанс: 50%",
+      "Защита от состояний: +35%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "64",
+    "name": "Стражник титанов Урса",
+    "url": "/codex/classes/64/",
+    "sprite": "https://playorna.com/static/img/classes2/titanguard_ursa/default_m.png",
+    "tier": 9,
+    "description": "Стражник титанов, достигший звёзд.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 9"
+      },
+      {
+        "label": "Price",
+        "value": "7,000,000 орны"
+      }
+    ],
+    "effects": [
+      "Начало варда: +8 turns",
+      "Восст варда: +6%",
+      "Шанс рикошета: +15% / Рикошет: +30%",
+      "Второй шанс: 50%",
+      "Защита от состояний: +35%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "14",
+    "name": "Странник / Странница",
+    "url": "/codex/classes/14/",
+    "sprite": "https://playorna.com/static/img/classes/wanderer/default_m.png",
+    "tier": 2,
+    "description": "Купите этот класс, чтобы поддержать игру и получить особый внешний вид персонажа и пассивные навыки.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 2"
+      },
+      {
+        "label": "Price",
+        "value": "10,000 орны"
+      }
+    ],
+    "effects": [
+      "Опыт на ходу: 20/m",
+      "Лечение: +25%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "95",
+    "name": "Тамплиер",
+    "url": "/codex/classes/95/",
+    "sprite": "https://playorna.com/static/img/classes2/templar/default_m.png",
+    "tier": 6,
+    "description": "Только ступивший на путь рыцарства воитель Лионесса, закованный в мифрил с головы до ног. Изучает более сложные боевые умения, может использовать снаряжение воина.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 6"
+      },
+      {
+        "label": "Price",
+        "value": "500,000 орны"
+      }
+    ],
+    "effects": [
+      "Шанс рикошета: +15% / Рикошет: +20%",
+      "Второй шанс: 50%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "34",
+    "name": "Таранис",
+    "url": "/codex/classes/34/",
+    "sprite": "https://playorna.com/static/img/classes2/taranis/default_m.png",
+    "tier": 8,
+    "description": "Рыцарь молний и грома, который воистину овладел силами небес. Неуязвим для магии молнии и может использовать любое снаряжение, какое пожелает.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 8"
+      },
+      {
+        "label": "Price",
+        "value": "5,000,000 орны"
+      }
+    ],
+    "effects": [
+      "Скорость Накала: +50%",
+      "Длтлнст баффов: +40%",
+      "Спадение дебаффов: +40%",
+      "Всплн здрв по криту: 25%",
+      "Второй шанс: 50%",
+      "Звериные узы: Уровень 1"
+    ],
+    "bestialBondLevel": 1,
+    "isOracle": false
+  },
+  {
+    "id": "97",
+    "name": "Усмиритель",
+    "url": "/codex/classes/97/",
+    "sprite": "https://playorna.com/static/img/classes2/handler/default_m.png",
+    "tier": 3,
+    "description": "Начинающий усмиритель из нетрусских племён. Может использовать снаряжение как воина, так и вора.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 3"
+      },
+      {
+        "label": "Price",
+        "value": "50,000 орны"
+      }
+    ],
+    "effects": [
+      "Частота действий питомца: +10%",
+      "Характеристики питомца: +55%",
+      "Звериные узы: Уровень 1"
+    ],
+    "bestialBondLevel": 1,
+    "isOracle": false
+  },
+  {
+    "id": "89",
+    "name": "Ученик теней",
+    "url": "/codex/classes/89/",
+    "sprite": "https://playorna.com/static/img/classes2/shadowmaker/default_m.png",
+    "tier": 3,
+    "description": "Воитель Аннуна, хорошо знакомый с теневыми искусствами. Может использовать снаряжение вора.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 3"
+      },
+      {
+        "label": "Price",
+        "value": "50,000 орны"
+      }
+    ],
+    "effects": [
+      "Avidity Chance: +10%",
+      "Лечение: +25%",
+      "Критшанс: +5%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "39",
+    "name": "Фрейр / Фрейя",
+    "url": "/codex/classes/39/",
+    "sprite": "https://playorna.com/static/img/classes2/freyr/default_m.png",
+    "tier": 8,
+    "description": "Один из высших орденов воинов нетруссов и валькирий, относящийся к мастерам Вальгаллы. Неуязвим для стихии драконов, имеет особые связи с животными и может использовать снаряжение как воина, так и мага.",
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 8"
+      },
+      {
+        "label": "Price",
+        "value": "3,500,000 орны"
+      }
+    ],
+    "effects": [
+      "Критшанс: +5%",
+      "Характеристики питомца: +65%",
+      "Частота действий питомца: +5%",
+      "На врага: Недуг (5%)",
+      "ИИ питомца: +5%",
+      "Звериные узы: Уровень 2",
+      "Всплн здрв по криту: 25%",
+      "Нерастрата маны: +25%"
+    ],
+    "bestialBondLevel": 2,
+    "isOracle": false
+  }
+]
