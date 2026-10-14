@@ -1044,8 +1044,8 @@ body {
   bottom: 2px;
   left: 2px;
   right: 2px;
-  padding: 1px 3px;
-  font-size: 8px;
+  padding: 4px 4px;
+  font-size: 10px;
   font-family: 'Inter', sans-serif;
   color: var(--gold);
   background-color: rgba(0, 0, 0, 0.7);
@@ -1053,7 +1053,7 @@ body {
   background-position: center;
   background-blend-mode: multiply;
   border: 1px solid var(--border);
-  border-radius: 3px;
+  border-radius: 4px;
   cursor: pointer;
   appearance: none;
   -webkit-appearance: none;
@@ -1061,6 +1061,8 @@ body {
   text-overflow: ellipsis;
   text-shadow: 0 0 3px #000, 0 0 3px #000;
   z-index: 2;
+  min-height: 24px;
+  line-height: 1.2;
 }
 
 .slot-quality[hidden] {
