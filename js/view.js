@@ -676,8 +676,19 @@ function recalcConsumables() {
 // ПРЕДМЕТЫ
 // ============================================================
 function isBanned(item) {
-  const BANNED_NAMES = ['Пакт НепоKonqорённых'];
-  return BANNED_NAMES.includes(item.name);
+  const name = item.name || '';
+  
+  // Бан по точному имени (RU и EN)
+  const BANNED_NAMES = [
+    'Пакт НепоKonqорённых',
+    'Unfelled Konqord',
+  ];
+  if (BANNED_NAMES.includes(name)) return true;
+  
+  // Или по подстроке "Konq" (на случай других вариантов)
+  if (/konq/i.test(name)) return true;
+  
+  return false;
 }
 
 function getItemSlot(item) {
