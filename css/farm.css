@@ -1,2 +1,179 @@
-/* ============ ФАРМ — СПЕЦИФИЧНЫЕ СТИЛИ ============ */
-/* Пока пусто. Заполним после парсера. */
+/* ============ ФАРМ — РЕЗУЛЬТАТЫ ============ */
+.farm-results {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.farm-result-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--bg-slot);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.farm-result-icon-wrap {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0a0a0a;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.farm-result-icon {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.farm-result-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.farm-result-label {
+  font-size: 11px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.farm-result-value {
+  font-family: 'Cormorant Unicase', serif;
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--gold);
+  line-height: 1.1;
+}
+
+/* ============ ШИРОКИЕ ЭКРАНЫ ============ */
+@media (min-width: 600px) {
+  .farm-result-value { font-size: 26px; }
+}
+
+/* ============ НАСТРАДАНИЕ ============ */
+.anguish-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.anguish-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 10px;
+  background: var(--bg-slot);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.anguish-label {
+  font-size: 12px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+
+.anguish-input {
+  width: 70px;
+  padding: 6px 8px;
+  font-size: 14px;
+  font-family: 'Cormorant Unicase', serif;
+  font-weight: 700;
+  text-align: center;
+  color: var(--gold);
+  background: #0a0a0a;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  -moz-appearance: textfield;
+  flex-shrink: 0;
+}
+
+.anguish-input::-webkit-outer-spin-button,
+.anguish-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.anguish-input:focus {
+  border-color: var(--gold-dim);
+  outline: none;
+}
+
+/* ============ ИВЕНТЫ ============ */
+.events-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 6px;
+}
+
+.event-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 4px;
+  background: var(--bg-slot);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+  user-select: none;
+  text-align: center;
+  transition: all 0.15s ease;
+}
+
+.event-item:hover {
+  border-color: var(--gold-dim);
+  background: #242424;
+}
+
+.event-item input {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  background: #0a0a0a;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  cursor: pointer;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.event-item input:checked {
+  background: var(--gold-dim);
+  border-color: var(--gold);
+}
+
+.event-item input:checked::after {
+  content: '✓';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: #0a0a0a;
+  font-weight: 700;
+}
+
+.event-item span {
+  font-size: 10px;
+  color: var(--text);
+  line-height: 1.1;
+}

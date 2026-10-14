@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+  <link rel="manifest" href="../manifest.webmanifest">
+<meta name="theme-color" content="#0a0a0a">
+<link rel="apple-touch-icon" href="../img/logo/icon-256.png">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Orna Calculator — Ward</title>
@@ -14,17 +17,19 @@
 </head>
 <body>
 
-  <header class="app-header">
-    <h1>Orna Calculator</h1>
-
-    <!-- Навигация по вкладкам -->
-    <nav class="tabs-nav">
-      <a href="view.html" class="tab-link" data-ru="Обзор" data-en="View">Обзор</a>
-      <a href="farm.html" class="tab-link" data-ru="Фарм" data-en="Farm">Фарм</a>
-      <a href="ward.html" class="tab-link active" data-ru="Вард" data-en="Ward">Вард</a>
-      <button id="lang-toggle" class="lang-btn" title="Switch language / Сменить язык">EN</button>
-    </nav>
-  </header>
+<header class="app-header">
+  <div class="app-title-row">
+    <a href="../index.html" class="app-title-link">
+      <h1>Orna Calculator</h1>
+    </a>
+    <button id="lang-toggle" class="lang-btn" title="Switch language / Сменить язык">EN</button>
+  </div>
+  <nav class="tabs-nav">
+    <a href="view.html" class="tab-link" data-ru="Обзор" data-en="View">Обзор</a>
+    <a href="farm.html" class="tab-link" data-ru="Фарм" data-en="Farm">Фарм</a>
+    <a href="ward.html" class="tab-link" data-ru="Вард" data-en="Ward">Вард</a>
+  </nav>
+</header>
 
   <main class="app-main">
 
@@ -42,9 +47,9 @@
   </main>
 
   <footer class="app-footer">
-    <p data-ru="Сделано для игроков Orna • Не связан с Northern Forge"
+    <p data-ru="Сделано для игроков Orna • Не связано с Northern Forge"
        data-en="Made for Orna players • Not affiliated with Northern Forge">
-      Сделано для игроков Orna • Не связан с Northern Forge
+      Сделано для игроков Orna • Не связано с Northern Forge
     </p>
   </footer>
 

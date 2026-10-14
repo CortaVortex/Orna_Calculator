@@ -3,22 +3,124 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta http-equiv="refresh" content="0; url=pages/view.html">
   <title>Orna Calculator</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Unicase:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="theme-color" content="#0a0a0a">
   <link rel="apple-touch-icon" href="./img/logo/icon-256.png">
+
+  <link rel="stylesheet" href="css/shared.css">
+  <link rel="stylesheet" href="css/home.css">
 </head>
 <body>
-  <p><a href="pages/view.html">Перейти в калькулятор</a></p>
-  <script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./sw.js')
-        .then(() => console.log('✅ Service Worker зарегистрирован'))
-        .catch((err) => console.error('❌ Service Worker:', err));
-    });
-  }
-</script>
+
+<header class="app-header">
+  <div class="app-title-row">
+    <a href="index.html" class="app-title-link">
+      <h1>Orna Calculator</h1>
+    </a>
+    <button id="lang-toggle" class="lang-btn" title="Switch language / Сменить язык">EN</button>
+  </div>
+  <nav class="tabs-nav">
+    <a href="pages/view.html" class="tab-link" data-ru="Обзор" data-en="View">Обзор</a>
+    <a href="pages/farm.html" class="tab-link" data-ru="Фарм" data-en="Farm">Фарм</a>
+    <a href="pages/ward.html" class="tab-link" data-ru="Вард" data-en="Ward">Вард</a>
+  </nav>
+</header>
+
+  <main class="app-main">
+
+    <!-- ============ ЧТО ЭТО ============ -->
+    <section class="panel">
+      <h2 class="panel-title" data-ru="Что это" data-en="What is this">Что это</h2>
+      <p class="home-text" data-ru="Калькулятор для игры Orna: The GPS RPG. Считает итоговые характеристики вашего билда — например, обзор или фарм-бонусы, с учётом экипировки, гемм, питомцев и прочих усилений."
+         data-en="Calculator for the game Orna: The GPS RPG. Calculates final stats of your build — for example, view distance or farm bonuses — including equipment, gems, followers and other boosts.">
+        Калькулятор для игры Orna: The GPS RPG. Считает итоговые характеристики вашего билда — например, обзор или фарм-бонусы, с учётом экипировки, гемм, питомцев и прочих усилений.
+      </p>
+    </section>
+
+    <!-- ============ КАК ПОЛЬЗОВАТЬСЯ ============ -->
+    <section class="panel">
+  <h2 class="panel-title" data-ru="Как пользоваться" data-en="How to use">Как пользоваться</h2>
+
+  <div class="home-steps">
+    <p class="home-step">
+      <span class="home-step-num">1.</span>
+      <span data-ru="Открой нужный раздел — «Обзор», «Фарм» или другой."
+            data-en="Open the desired section — View, Farm or another.">
+        Открой нужный раздел — «Обзор», «Фарм» или другой.
+      </span>
+    </p>
+    <p class="home-step">
+      <span class="home-step-num">2.</span>
+      <span data-ru="Выбери класс, специализацию и питомца — они влияют на итоговые бонусы."
+            data-en="Choose class, specialization and follower — they affect final bonuses.">
+        Выбери класс, специализацию и питомца — они влияют на итоговые бонусы.
+      </span>
+    </p>
+    <p class="home-step">
+      <span class="home-step-num">3.</span>
+      <span data-ru="Заполни экипировку: нажми на слот и выбери предмет из списка."
+            data-en="Fill equipment: tap a slot and pick an item from the list.">
+        Заполни экипировку: нажми на слот и выбери предмет из списка.
+      </span>
+    </p>
+    <p class="home-step">
+      <span class="home-step-num">4.</span>
+      <span data-ru="Настрой мнемы, геммы и прочие усиления."
+            data-en="Configure mnems, gems and other boosts.">
+        Настрой мнемы, геммы и прочие усиления.
+      </span>
+    </p>
+    <p class="home-step">
+      <span class="home-step-num">5.</span>
+      <span data-ru="Итоговый результат появится сверху страницы."
+            data-en="The final result appears at the top of the page.">
+        Итоговый результат появится сверху страницы.
+      </span>
+    </p>
+  </div>
+</section>
+
+    <!-- ============ УСТАНОВКА ============ -->
+    <section class="panel">
+      <h2 class="panel-title" data-ru="Установка как приложение" data-en="Install as app">Установка как приложение</h2>
+
+      <p class="home-text" data-ru="Сайт можно установить как приложение на телефон или ПК — иконка появится на главном экране, приложение откроется в отдельном окне без адресной строки."
+         data-en="The site can be installed as an app on phone or PC — icon appears on the home screen, app opens in a separate window without address bar.">
+        Сайт можно установить как приложение на телефон или ПК — иконка появится на главном экране, приложение откроется в отдельном окне без адресной строки.
+      </p>
+
+      <p class="home-text">
+        <strong data-ru="Android:" data-en="Android:">Android:</strong>
+        <span data-ru="Меню Chrome (три точки) → «Установить приложение»."
+              data-en="Chrome menu (three dots) → &quot;Install app&quot;.">
+          Меню Chrome (три точки) → «Установить приложение».
+        </span>
+      </p>
+
+      <p class="home-text">
+        <strong data-ru="ПК:" data-en="PC:">ПК:</strong>
+        <span data-ru="В адресной строке Chrome / Edge — иконка установки справа. Нажми → появится отдельное окно."
+              data-en="In Chrome / Edge address bar — install icon on the right. Click → separate window appears.">
+          В адресной строке Chrome / Edge — иконка установки справа. Нажми → появится отдельное окно.
+        </span>
+      </p>
+    </section>
+
+  </main>
+
+  <footer class="app-footer">
+    <p data-ru="Сделано для игроков Orna • Не связано с Northern Forge"
+       data-en="Made for Orna players • Not affiliated with Northern Forge">
+      Сделано для игроков Orna • Не связано с Northern Forge
+    </p>
+  </footer>
+
+  <script src="js/shared.js"></script>
 </body>
 </html>
