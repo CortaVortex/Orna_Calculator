@@ -1,0 +1,39 @@
+[
+  {
+    "id": "seeker-5",
+    "name": "★5 Seeker",
+    "tier": 5,
+    "viewMultiplier": 1.2,
+    "bestialBondLevel": 0
+  },
+  {
+    "id": "oracle-5",
+    "name": "★5 Oracle",
+    "tier": 5,
+    "viewMultiplier": 1,
+    "bestialBondLevel": 0,
+    "unlocksSecondAmity": true
+  },
+  {
+    "id": "great-oracle",
+    "name": "★5 Great Oracle",
+    "tier": null,
+    "viewMultiplier": 1,
+    "bestialBondLevel": 0,
+    "unlocksSecondAmity": true
+  },
+  {
+    "id": "beastmaster-7",
+    "name": "★7 Beastmaster",
+    "tier": 7,
+    "viewMultiplier": 1,
+    "bestialBondLevel": 1
+  },
+  {
+    "id": "tamer-9",
+    "name": "★9 Tamer",
+    "tier": 9,
+    "viewMultiplier": 1,
+    "bestialBondLevel": 1
+  }
+]

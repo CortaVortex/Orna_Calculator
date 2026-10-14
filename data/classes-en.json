@@ -1,0 +1,2231 @@
+[
+  {
+    "id": "38",
+    "name": "Arcanic",
+    "url": "/codex/classes/38/",
+    "sprite": "https://playorna.com/static/img/classes2/arcanic/default_m.png",
+    "tier": 8,
+    "description": "A deadly risk taking rogue of Annwn trained in lost arcane techniques. It is immune to arcane magic and can wield equipment of the thief.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 8"
+      },
+      {
+        "label": "Price",
+        "value": "3,500,000 orns"
+      }
+    ],
+    "effects": [
+      "Avidity Chance: +15%",
+      "View Distance: +20%",
+      "Causes: Frozen (5%), Paralyzed (5%), Burning (5%), Rot (5%)",
+      "Healing: +50%",
+      "Max Dodge Chance: 60%",
+      "Recharge HP on Crit: 25%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "29",
+    "name": "Archdruid",
+    "url": "/codex/classes/29/",
+    "sprite": "https://playorna.com/static/img/classes2/archdruid/default_m.png",
+    "tier": 7,
+    "description": "A powerful magician skilled in the art of channeling the powers of beasts in battle. It is naturally strong against the powers of light and dark and can wield equipment of the thief and mage.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 7"
+      },
+      {
+        "label": "Price",
+        "value": "2,000,000 orns"
+      }
+    ],
+    "effects": [
+      "Manaflasks: +3",
+      "Healing: +25%",
+      "Life Siphon: +10%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "4",
+    "name": "Archmage",
+    "url": "/codex/classes/4/",
+    "sprite": "https://playorna.com/static/img/classes2/archmage/default_m.png",
+    "tier": 2,
+    "description": "An Avalon mage who has learned the basics of conjuring magic. It can wield the equipment of the mage.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 2"
+      },
+      {
+        "label": "Price",
+        "value": "10,000 orns"
+      }
+    ],
+    "effects": [
+      "Mana Siphon: +25%",
+      "Manaflasks: +1"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "36",
+    "name": "Atlas Vanguard / Athena Vanguard",
+    "url": "/codex/classes/36/",
+    "sprite": "https://playorna.com/static/img/classes2/atlas_vanguard/default_m.png",
+    "tier": 8,
+    "description": "A stalwart holy warrior of Lyonesse that is well versed in methods of ward and survivability. It is immune to holy magic and can wield equipment of the warrior.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 8"
+      },
+      {
+        "label": "Price",
+        "value": "3,500,000 orns"
+      }
+    ],
+    "effects": [
+      "Collateral Chance: +15% / Collateral Damage: +25%",
+      "Ward Start: +7 turns",
+      "Ward Recovery: +5%",
+      "Second Chance: 50%",
+      "Status Protection: +35%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "60",
+    "name": "Attuner",
+    "url": "/codex/classes/60/",
+    "sprite": "https://playorna.com/static/img/classes2/attuner/default_m.png",
+    "tier": 7,
+    "description": "A novice summoner of Elysium. Summoners themselves are not very powerful beings, but can summon powerful entities to join the battle. Summoners can wield the equipment of the mage but cannot tame followers.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 7"
+      }
+    ],
+    "effects": [
+      "Summon Spell Start: +90%",
+      "Summon Stats: +50%",
+      "+Guidelight",
+      "Summon Protection: +8%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "44",
+    "name": "Augur",
+    "url": "/codex/classes/44/",
+    "sprite": "https://playorna.com/static/img/classes/augur/default_m.png",
+    "tier": 4,
+    "description": "An alternative version of the Mystic class. Purchase this class to support the game and gain an alternative sprite.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 4"
+      },
+      {
+        "label": "Price",
+        "value": "100,000 orns"
+      }
+    ],
+    "effects": [
+      "Avidity Chance: +10%",
+      "Healing: +25%",
+      "Manaflasks: +2"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "53",
+    "name": "Bahamut",
+    "url": "/codex/classes/53/",
+    "sprite": "https://playorna.com/static/img/classes2/bahamut/default_m.png",
+    "tier": 9,
+    "description": "A Valhallan that has fused themselves with mighty dragons, learning the secrets of combining might with magic. Their offense is determined by both attack and magic stats, is immune to Dragon magic, and can wield equipment of both the warrior and mage.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 9"
+      },
+      {
+        "label": "Price",
+        "value": "7,000,000 orns"
+      }
+    ],
+    "effects": [
+      "Hybrid Damage: +20%",
+      "Crit Chance: +7%",
+      "Follower Stats: +75%",
+      "Follower Act: +7%",
+      "Causes: Blight (5%)",
+      "Follower/Summon AI: +5%",
+      "Bestial Bond: Level 2",
+      "Recharge HP on Crit: 25%"
+    ],
+    "bestialBondLevel": 2,
+    "isOracle": false
+  },
+  {
+    "id": "70",
+    "name": "Bahamut Auriga",
+    "url": "/codex/classes/70/",
+    "sprite": "https://playorna.com/static/img/classes2/bahamut_auriga/default_m.png",
+    "tier": 9,
+    "description": "A Bahamut that has reached the stars above.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 9"
+      },
+      {
+        "label": "Price",
+        "value": "7,000,000 orns"
+      }
+    ],
+    "effects": [
+      "Crit Chance: +5%",
+      "Follower Stats: +90%",
+      "Follower Act: +8%",
+      "Causes: Blight (3%)",
+      "Follower/Summon AI: +5%",
+      "Bestial Bond: Level 2",
+      "Recharge HP on Crit: 25%",
+      "Life Siphon: +10%"
+    ],
+    "bestialBondLevel": 2,
+    "isOracle": false
+  },
+  {
+    "id": "71",
+    "name": "Bahamut Hydrus",
+    "url": "/codex/classes/71/",
+    "sprite": "https://playorna.com/static/img/classes2/bahamut_hydrus/default_m.png",
+    "tier": 9,
+    "description": "A Bahamut that has reached the stars above.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 9"
+      },
+      {
+        "label": "Price",
+        "value": "7,000,000 orns"
+      }
+    ],
+    "effects": [
+      "Crit Chance: +5%",
+      "Follower Stats: +65%",
+      "Follower Act: +5%",
+      "Causes: Blight (5%)",
+      "Follower/Summon AI: +5%",
+      "Hybrid Damage: +25%",
+      "Bestial Bond: Level 1",
+      "Recharge HP on Crit: 25%",
+      "Life Siphon: +10%"
+    ],
+    "bestialBondLevel": 1,
+    "isOracle": false
+  },
+  {
+    "id": "57",
+    "name": "Beowulf / Bestla",
+    "url": "/codex/classes/57/",
+    "sprite": "https://playorna.com/static/img/classes2/beowulf/default_m.png",
+    "tier": 10,
+    "description": "A storied rank of those aligned with Dragons, this Valhallan class brings the tales, poems, and stances of war into battle and favors unconventional weaponry. Their offense is determined by both attack and magic stats, is immune to Dragon magic, and can wield any piece of equipment found.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 10"
+      },
+      {
+        "label": "Price",
+        "value": "15,000,000 orns"
+      }
+    ],
+    "effects": [
+      "Valhalla Power: +110%",
+      "Low HP → Stats: +50%",
+      "Follower Stats: +110%",
+      "Follower Act: +12%",
+      "Follower Protect: +12%",
+      "Follower/Summon AI: +5%",
+      "Bestial Bond: Level 3",
+      "Follower Ascension Level: 0",
+      "Mana Siphon: +25%",
+      "Hybrid Damage: +25%"
+    ],
+    "bestialBondLevel": 3,
+    "isOracle": false
+  },
+  {
+    "id": "81",
+    "name": "Beowulf Auriga / Bestla Auriga",
+    "url": "/codex/classes/81/",
+    "sprite": "https://playorna.com/static/img/classes2/beowulf_auriga/default_m.png",
+    "tier": 10,
+    "description": "A Beowulf that has reached the stars above. It has the strongest bonds with followers and may allow them to act twice per turn.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 10"
+      },
+      {
+        "label": "Price",
+        "value": "15,000,000 orns"
+      }
+    ],
+    "effects": [
+      "Valhalla Power: +120%",
+      "Low HP → Stats: +50%",
+      "Follower Stats: +130%",
+      "Follower Act: +15%",
+      "Follower Protect: +12%",
+      "Follower/Summon AI: +20%",
+      "Follower Turn Chance: +30%",
+      "Bestial Bond: Level 3",
+      "Bestial Bond: +12%",
+      "Follower Ascension Level: 0",
+      "Mana Siphon: +25%"
+    ],
+    "bestialBondLevel": 3,
+    "isOracle": false
+  },
+  {
+    "id": "80",
+    "name": "Beowulf Hydrus / Bestla Hydrus",
+    "url": "/codex/classes/80/",
+    "sprite": "https://playorna.com/static/img/classes2/beowulf_hydrus/default_m.png",
+    "tier": 10,
+    "description": "A Beowulf that has reached the stars above. It trades the bond built with followers for increased stats and hybrid power.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 10"
+      },
+      {
+        "label": "Price",
+        "value": "15,000,000 orns"
+      }
+    ],
+    "effects": [
+      "Crit Chance: +7%",
+      "Follower Stats: +75%",
+      "Follower Act: +7%",
+      "Causes: Blight (5%)",
+      "Hybrid Damage: +40%",
+      "Bestial Bond: Level 2",
+      "+Second Chance",
+      "Recharge HP on Crit: 25%"
+    ],
+    "bestialBondLevel": 2,
+    "isOracle": false
+  },
+  {
+    "id": "94",
+    "name": "Cavalry",
+    "url": "/codex/classes/94/",
+    "sprite": "https://playorna.com/static/img/classes2/cavalry/default_m.png",
+    "tier": 5,
+    "description": "A warrior of Lyonesse that rides the fiercest of horses. It can wield equipment of the warrior.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 5"
+      },
+      {
+        "label": "Price",
+        "value": "250,000 orns"
+      }
+    ],
+    "effects": [
+      "Collateral Chance: +10% / Collateral Damage: +15%",
+      "Ward Start: +3 turns",
+      "Ward Recovery: +2%",
+      "Crit Chance: +5%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "86",
+    "name": "Court Mage",
+    "url": "/codex/classes/86/",
+    "sprite": "https://playorna.com/static/img/classes2/court_mage/default_m.png",
+    "tier": 3,
+    "description": "A practitioner of magic that has been promoted to the role of Avalon Court Mage. It can wield the equipment of the mage.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 3"
+      },
+      {
+        "label": "Price",
+        "value": "50,000 orns"
+      }
+    ],
+    "effects": [
+      "Mana Siphon: +25%",
+      "Manaflasks: +2"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "58",
+    "name": "Deity",
+    "url": "/codex/classes/58/",
+    "sprite": "https://playorna.com/static/img/classes2/deity/default_m.png",
+    "tier": 10,
+    "description": "The ancient elves believed they could break the traditions of elemental alignment, but never quite succeeded. Deities, relics of this time, utilize unstable elemental affinities to gain both protection, and weakness, to the elements. These skilled warriors can wield equipment of the warrior, mage, or thief.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 10"
+      },
+      {
+        "label": "Price",
+        "value": "20,000,000 orns"
+      }
+    ],
+    "effects": [
+      "Apex Start: 25% / Apex Rate: +65%",
+      "Gives: T. All ↑↑↑ (12%)",
+      "Low HP → Stats: +60%",
+      "Low Mana → Stats: +60%",
+      "Buff Duration: +40%",
+      "Debuff Fade: +40%",
+      "Second Chance: 50%",
+      "Status Protection: +35%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "84",
+    "name": "Deity Ara",
+    "url": "/codex/classes/84/",
+    "sprite": "https://playorna.com/static/img/classes2/deity_ara/default_m.png",
+    "tier": 10,
+    "description": "A Deity that has reached the stars above. Its magical prowess becomes stronger as Apex abilities are utilized in battle.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 10"
+      },
+      {
+        "label": "Price",
+        "value": "20,000,000 orns"
+      }
+    ],
+    "effects": [
+      "Apex Start: 50% / Apex Rate: +50%",
+      "Apex Effect: +10%",
+      "Gives: T. Mag ↑ (10%), T. Mag ↑↑ (4%), T. Mag ↑↑↑ (2%)",
+      "Apex Used → Stats: +20%",
+      "Buff Duration: +40%",
+      "Debuff Fade: +40%",
+      "Status Protection: +35%",
+      "Second Chance: 50%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "85",
+    "name": "Deity Ursa",
+    "url": "/codex/classes/85/",
+    "sprite": "https://playorna.com/static/img/classes2/deity_ursa/default_m.png",
+    "tier": 10,
+    "description": "A Deity that has reached the stars above. It gains the upper hand after utilizing Apex abilities in battle.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 10"
+      },
+      {
+        "label": "Price",
+        "value": "20,000,000 orns"
+      }
+    ],
+    "effects": [
+      "Apex Rate: +90%",
+      "Apex Power: -50%",
+      "Turn Chance: +100%",
+      "Gives: T. Att ↑ (10%), T. Att ↑↑ (4%), T. Att ↑↑↑ (2%)",
+      "Effect Chance: +4%",
+      "Low HP → Stats: +80%",
+      "Low Mana → Stats: +50%",
+      "Buff Duration: +40%",
+      "Debuff Fade: +40%",
+      "Status Protection: +35%",
+      "Second Chance: 50%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "101",
+    "name": "Dragoon / Valkyrie",
+    "url": "/codex/classes/101/",
+    "sprite": "https://playorna.com/static/img/classes2/dragoon/default_m.png",
+    "tier": 6,
+    "description": "A warrior that has mastered the art of taming dragons. It can wield the equipment of the warrior or thief.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 6"
+      },
+      {
+        "label": "Price",
+        "value": "500,000 orns"
+      }
+    ],
+    "effects": [
+      "Follower Act: +10%",
+      "Follower Stats: +55%",
+      "Follower/Summon AI: +5%",
+      "Bestial Bond: Level 2"
+    ],
+    "bestialBondLevel": 2,
+    "isOracle": false
+  },
+  {
+    "id": "87",
+    "name": "Druid",
+    "url": "/codex/classes/87/",
+    "sprite": "https://playorna.com/static/img/classes2/druid/default_m.png",
+    "tier": 5,
+    "description": "A magician skilled in the art of channeling the powers of beasts in battle. It can wield equipment of the mage.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 5"
+      },
+      {
+        "label": "Price",
+        "value": "250,000 orns"
+      }
+    ],
+    "effects": [
+      "Manaflasks: +2",
+      "Mana Siphon: +25%",
+      "Healing: +25%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "92",
+    "name": "Footsoldier",
+    "url": "/codex/classes/92/",
+    "sprite": "https://playorna.com/static/img/classes2/footsoldier/default_m.png",
+    "tier": 2,
+    "description": "A Lyonesse soldier that can imbue their attacks with elemental properties. It can wield the equipment of the warrior.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 2"
+      },
+      {
+        "label": "Price",
+        "value": "10,000 orns"
+      }
+    ],
+    "effects": [
+      "Collateral Chance: +10% / Collateral Damage: +15%",
+      "Ward Start: +2 turns"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "39",
+    "name": "Freyr / Freyja",
+    "url": "/codex/classes/39/",
+    "sprite": "https://playorna.com/static/img/classes2/freyr/default_m.png",
+    "tier": 8,
+    "description": "A Valhallan that is one of the highest order of Nothren warriors and valkyries. It is immune to dragon magic, has special bonds with beasts, and can wield equipment of the warrior or mage.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 8"
+      },
+      {
+        "label": "Price",
+        "value": "3,500,000 orns"
+      }
+    ],
+    "effects": [
+      "Crit Chance: +5%",
+      "Follower Stats: +65%",
+      "Follower Act: +5%",
+      "Causes: Blight (5%)",
+      "Follower/Summon AI: +5%",
+      "Bestial Bond: Level 2",
+      "Recharge HP on Crit: 25%",
+      "Mana Siphon: +25%"
+    ],
+    "bestialBondLevel": 2,
+    "isOracle": false
+  },
+  {
+    "id": "17",
+    "name": "Frost Mage",
+    "url": "/codex/classes/17/",
+    "sprite": "https://playorna.com/static/img/classes/frost_mage/default_m.png",
+    "tier": 2,
+    "description": "A mage of the Frozenguard that has mastered the arts of the cold.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 2"
+      },
+      {
+        "label": "Price",
+        "value": "10,000 orns"
+      }
+    ],
+    "effects": [
+      "EXP Walk: 20/m",
+      "Mana Walk: 2/m"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "35",
+    "name": "Gaia",
+    "url": "/codex/classes/35/",
+    "sprite": "https://playorna.com/static/img/classes2/gaia/default_m.png",
+    "tier": 8,
+    "description": "A knight of nature and balance who has truly mastered the powers of the earth below. It is immune to earthen magic and can wield equipment of the warrior, mage, or thief.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 8"
+      },
+      {
+        "label": "Price",
+        "value": "5,000,000 orns"
+      }
+    ],
+    "effects": [
+      "Apex Rate: +50%",
+      "Buff Duration: +40%",
+      "Debuff Fade: +40%",
+      "Status Protection: +35%",
+      "Max Dodge Chance: 60%",
+      "Bestial Bond: Level 1"
+    ],
+    "bestialBondLevel": 1,
+    "isOracle": false
+  },
+  {
+    "id": "54",
+    "name": "Gilgamesh / Gallia",
+    "url": "/codex/classes/54/",
+    "sprite": "https://playorna.com/static/img/classes2/gilgamesh/default_m.png",
+    "tier": 10,
+    "description": "A seldomly encountered warrior who specializes in using their defenses as a weapon. This class grows stronger with Ward upkeep and can convert their defenses into damage or regenerative effects. They can wield the equipment of the warrior and are immune to arcane magic while resistant to powers of the dragons.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 10"
+      },
+      {
+        "label": "Price",
+        "value": "15,000,000 orns"
+      }
+    ],
+    "effects": [
+      "Ward Start: +10 turns",
+      "Ward Recovery: +5%",
+      "+High Ward → Stats: +50%",
+      "Ward Power: +50%",
+      "Collateral Chance: +15% / Collateral Damage: +40%",
+      "Mana-Ward Recovery: +50%",
+      "Second Chance: 50%",
+      "Status Protection: +60%",
+      "Settlement/Area Defense: +10%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "74",
+    "name": "Gilgamesh Hercules / Gallia Hercules",
+    "url": "/codex/classes/74/",
+    "sprite": "https://playorna.com/static/img/classes2/gilgamesh_hercules/default_m.png",
+    "tier": 10,
+    "description": "A Gilgamesh that has reached the stars above. It is most effective at utilizing Ward-based abilities.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 10"
+      },
+      {
+        "label": "Price",
+        "value": "15,000,000 orns"
+      }
+    ],
+    "effects": [
+      "Ward Start: +12 turns",
+      "Ward Recovery: +7%",
+      "+High Ward → Stats: +60%",
+      "Ward Power: +100%",
+      "Off-hands: +15%",
+      "Second Chance: 50%",
+      "Status Protection: +50%",
+      "Collateral Chance: +15% / Collateral Damage: +30%",
+      "Settlement/Area Defense: +10%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "75",
+    "name": "Gilgamesh Ursa / Gallia Ursa",
+    "url": "/codex/classes/75/",
+    "sprite": "https://playorna.com/static/img/classes2/gilgamesh_ursa/default_m.png",
+    "tier": 10,
+    "description": "A Gilgamesh that has reached the stars above. It trades Ward for HP and is most effective at utilizing Collateral Damage and two-handed weapons. It can additionally wield the equipment of the thief.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 10"
+      },
+      {
+        "label": "Price",
+        "value": "15,000,000 orns"
+      }
+    ],
+    "effects": [
+      "Collateral Chance: +20% / Collateral Damage: +50%",
+      "Two-handed Power: +20%",
+      "Counter Chance (PvE): +20% / Counter Damage: +75% (PvE)",
+      "Collateral Damage HP Recovery: +10%",
+      "Ward: +30%",
+      "Status Protection: +50%",
+      "Mana-Ward Recovery: +50%",
+      "Second Chance: 50%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "45",
+    "name": "Gladiator",
+    "url": "/codex/classes/45/",
+    "sprite": "https://playorna.com/static/img/classes/gladiator/default_m.png",
+    "tier": 4,
+    "description": "An alternative version of the Adept class. Purchase this class to support the game and gain an alternative sprite.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 4"
+      },
+      {
+        "label": "Price",
+        "value": "100,000 orns"
+      }
+    ],
+    "effects": [
+      "Collateral Chance: +10% / Collateral Damage: +15%",
+      "Healing: +25%",
+      "Crit Chance: +5%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "61",
+    "name": "Grand Attuner",
+    "url": "/codex/classes/61/",
+    "sprite": "https://playorna.com/static/img/classes2/grand_attuner/default_m.png",
+    "tier": 8,
+    "description": "An adept summoner of Elysium. Summoners themselves are not very powerful beings, but can automatically summon powerful entities to join the battle. Summoners can wield the equipment of the mage but cannot tame followers.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 8"
+      },
+      {
+        "label": "Price",
+        "value": "6,000,000 orns"
+      }
+    ],
+    "effects": [
+      "Summon Spell Start: +100%",
+      "Summon Stats: +75%",
+      "+Guidelight",
+      "Summon Protection: +23%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "30",
+    "name": "Grand Dragoon / Grand Valkyrie",
+    "url": "/codex/classes/30/",
+    "sprite": "https://playorna.com/static/img/classes2/grand_dragoon/default_m.png",
+    "tier": 7,
+    "description": "A Valhallan that rides with the most powerful of dragons. It is naturally strong against dragon magic and can wield equipment of both the warrior and mage.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 7"
+      },
+      {
+        "label": "Price",
+        "value": "2,000,000 orns"
+      }
+    ],
+    "effects": [
+      "Recharge HP on Crit: 25%",
+      "Follower Act: +10%",
+      "Follower Stats: +55%",
+      "Bestial Bond: Level 2",
+      "Follower/Summon AI: +5%"
+    ],
+    "bestialBondLevel": 2,
+    "isOracle": false
+  },
+  {
+    "id": "46",
+    "name": "Grand Ifrit",
+    "url": "/codex/classes/46/",
+    "sprite": "https://playorna.com/static/img/classes2/grand_ifrit/default_m.png",
+    "tier": 9,
+    "description": "An elite force of smoke and ash who has truly mastered the powers of the flame. It is immune to fire magic and can wield equipment of the warrior, mage, or thief.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 9"
+      },
+      {
+        "label": "Price",
+        "value": "10,000,000 orns"
+      }
+    ],
+    "effects": [
+      "Apex Rate: +75%",
+      "Buff Duration: +40%",
+      "Debuff Fade: +40%",
+      "Life Siphon: +10%",
+      "Second Chance: 50%",
+      "Bestial Bond: Level 1"
+    ],
+    "bestialBondLevel": 1,
+    "isOracle": false
+  },
+  {
+    "id": "63",
+    "name": "Grand Summoner",
+    "url": "/codex/classes/63/",
+    "sprite": "https://playorna.com/static/img/classes2/grand_summoner/default_m.png",
+    "tier": 10,
+    "description": "The highest ranking summoner of Elysium. Summoners themselves are not very powerful beings, but can automatically summon powerful entities to join the battle. Summoners can wield the equipment of the mage but cannot tame followers.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 10"
+      },
+      {
+        "label": "Price",
+        "value": "16,000,000 orns"
+      }
+    ],
+    "effects": [
+      "Summon Spell Start: +100%, +100%",
+      "Summon Stats: +200%",
+      "Dark Damage: +50%",
+      "Holy Damage: +50%",
+      "+Summon Ascension",
+      "+Guidelight",
+      "Summon Protection: +25%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "83",
+    "name": "Grand Summoner Auriga",
+    "url": "/codex/classes/83/",
+    "sprite": "https://playorna.com/static/img/classes2/grand_summoner_auriga/default_m.png",
+    "tier": 10,
+    "description": "A Grand Summoner that has reached the stars above. It is most effective at utilizing a full field of summoned allies. It can additionally wield the equipment of the warrior.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 10"
+      },
+      {
+        "label": "Price",
+        "value": "16,000,000 orns"
+      }
+    ],
+    "effects": [
+      "Summon Spell Start: +100%, +100%",
+      "Summon Stats: +220%",
+      "Summon Pact Power: -30%",
+      "+Summon Ascension",
+      "+Guidelight",
+      "Summon Protection: +25%",
+      "Follower/Summon AI: +20%",
+      "Debuff Fade: +50%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "82",
+    "name": "Grand Summoner Hydrus",
+    "url": "/codex/classes/82/",
+    "sprite": "https://playorna.com/static/img/classes2/grand_summoner_hydrus/default_m.png",
+    "tier": 10,
+    "description": "A Grand Summoner that has reached the stars above. It is most effective at sacrificing summons for its own power. It can additionally wield the equipment of the thief.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 10"
+      },
+      {
+        "label": "Price",
+        "value": "16,000,000 orns"
+      }
+    ],
+    "effects": [
+      "Summon Spell Start: +100%, +100%",
+      "Charon Ritual Chance: +40%",
+      "+Second Chance",
+      "Summon Stats: +80%",
+      "Summon Pact Power: +60%",
+      "Souls Collected → Stats: +10%",
+      "Sacrifice Effects: +10%",
+      "+Guidelight"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "48",
+    "name": "Great Leviathan",
+    "url": "/codex/classes/48/",
+    "sprite": "https://playorna.com/static/img/classes2/great_leviathan/default_m.png",
+    "tier": 9,
+    "description": "An elite force of tide and ice who has truly mastered the powers of the seas. It is immune to water magic and can wield equipment of the warrior, mage, or thief.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 9"
+      },
+      {
+        "label": "Price",
+        "value": "10,000,000 orns"
+      }
+    ],
+    "effects": [
+      "Apex Rate: +75%",
+      "Buff Duration: +40%",
+      "Debuff Fade: +40%",
+      "Mana Siphon: +25%",
+      "Max Dodge Chance: 60%",
+      "Bestial Bond: Level 1"
+    ],
+    "bestialBondLevel": 1,
+    "isOracle": false
+  },
+  {
+    "id": "97",
+    "name": "Handler",
+    "url": "/codex/classes/97/",
+    "sprite": "https://playorna.com/static/img/classes2/handler/default_m.png",
+    "tier": 3,
+    "description": "A fledgling handler of great Nothren beasts. It can wield the equipment of the warrior or thief.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 3"
+      },
+      {
+        "label": "Price",
+        "value": "50,000 orns"
+      }
+    ],
+    "effects": [
+      "Follower Act: +10%",
+      "Follower Stats: +55%",
+      "Bestial Bond: Level 1"
+    ],
+    "bestialBondLevel": 1,
+    "isOracle": false
+  },
+  {
+    "id": "55",
+    "name": "Heretic / Hera",
+    "url": "/codex/classes/55/",
+    "sprite": "https://playorna.com/static/img/classes2/heretic/default_m.png",
+    "tier": 10,
+    "description": "Once followers of Apollyon, these exiled warlocks favor the more destructive magic and become stronger as their mana fades. Critical hits of their spells deal extra damage. Additionally, they have attuned themselves to the basic elements and can wield equipment of the mage.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 10"
+      },
+      {
+        "label": "Price",
+        "value": "15,000,000 orns"
+      }
+    ],
+    "effects": [
+      "Manaflasks: +3 / Bloodflasks: +2",
+      "Elemental Weaknesses: +12%",
+      "Spell Casting Damage: -40%",
+      "Elemental Immunity Damage: +25%",
+      "Low Mana → Stats: +100%",
+      "Status Protection: +50%",
+      "Second Chance: 50%",
+      "Mana Rush: 50% mana",
+      "Life Siphon: +10%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "76",
+    "name": "Heretic Ara / Hera Ara",
+    "url": "/codex/classes/76/",
+    "sprite": "https://playorna.com/static/img/classes2/heretic_ara/default_m.png",
+    "tier": 10,
+    "description": "A Heretic that has reached the stars above. It is most effective at utilizing celestial magic.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 10"
+      },
+      {
+        "label": "Price",
+        "value": "15,000,000 orns"
+      }
+    ],
+    "effects": [
+      "Manaflasks: +4 / Bloodflasks: +1",
+      "Elemental Weaknesses: +12%",
+      "Spell Casting Damage: -40%",
+      "Elemental Immunity Damage: +25%",
+      "Low Mana → Stats: +100%",
+      "Status Protection: +50%",
+      "Second Chance: 50%",
+      "Mana Rush: 50% mana",
+      "Mana Reduction: -25.0%",
+      "Damage Limit Break: +400%",
+      "Sigils: +15%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "77",
+    "name": "Heretic Corvus / Hera Corvus",
+    "url": "/codex/classes/77/",
+    "sprite": "https://playorna.com/static/img/classes2/heretic_corvus/default_m.png",
+    "tier": 10,
+    "description": "A Heretic that has reached the stars above. It is more effective at charging Manaflasks and is more evasive in battle. It can additionally wield the equipment of the thief.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 10"
+      },
+      {
+        "label": "Price",
+        "value": "15,000,000 orns"
+      }
+    ],
+    "effects": [
+      "Manaflasks: +3 / Bloodflasks: +2",
+      "Elemental Weaknesses: +12%",
+      "Spell Casting Damage: -40%",
+      "Elemental Immunity Damage: +25%",
+      "Low Mana → Stats: +100%",
+      "Status Protection: +35%",
+      "Max Dodge Chance: 60%",
+      "Crit Status Fade Chance: 3%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "47",
+    "name": "High Taranis",
+    "url": "/codex/classes/47/",
+    "sprite": "https://playorna.com/static/img/classes2/high_taranis/default_m.png",
+    "tier": 9,
+    "description": "An elite force of lightning and thunder who has truly mastered the powers of the skies. It is immune to lightning magic and can wield equipment of the warrior, mage, or thief.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 9"
+      },
+      {
+        "label": "Price",
+        "value": "10,000,000 orns"
+      }
+    ],
+    "effects": [
+      "Apex Rate: +75%",
+      "Buff Duration: +40%",
+      "Debuff Fade: +40%",
+      "Recharge HP on Crit: 25%",
+      "Second Chance: 50%",
+      "Bestial Bond: Level 1"
+    ],
+    "bestialBondLevel": 1,
+    "isOracle": false
+  },
+  {
+    "id": "32",
+    "name": "Ifrit",
+    "url": "/codex/classes/32/",
+    "sprite": "https://playorna.com/static/img/classes2/ifrit/default_m.png",
+    "tier": 8,
+    "description": "A knight of smoke and ash who has truly mastered the powers of the flame. It is immune to fire magic and can wield equipment of the warrior, mage, or thief.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 8"
+      },
+      {
+        "label": "Price",
+        "value": "5,000,000 orns"
+      }
+    ],
+    "effects": [
+      "Apex Rate: +50%",
+      "Buff Duration: +40%",
+      "Debuff Fade: +40%",
+      "Life Siphon: +10%",
+      "Second Chance: 50%",
+      "Bestial Bond: Level 1"
+    ],
+    "bestialBondLevel": 1,
+    "isOracle": false
+  },
+  {
+    "id": "24",
+    "name": "Lancer",
+    "url": "/codex/classes/24/",
+    "sprite": "https://playorna.com/static/img/classes2/lancer/default_m.png",
+    "tier": 4,
+    "description": "A hybrid class that favors all but magic. It can wield equipment of both the thief and warrior.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 4"
+      },
+      {
+        "label": "Price",
+        "value": "100,000 orns"
+      }
+    ],
+    "effects": [
+      "Collateral Chance: +10% / Collateral Damage: +15%",
+      "Healing: +25%",
+      "Crit Chance: +5%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "18",
+    "name": "Legionnaire",
+    "url": "/codex/classes/18/",
+    "sprite": "https://playorna.com/static/img/classes/legionnaire/default_m.png",
+    "tier": 2,
+    "description": "A soldier of the Earthen Legion that has mastered the arts of the ground below them.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 2"
+      },
+      {
+        "label": "Price",
+        "value": "10,000 orns"
+      }
+    ],
+    "effects": [
+      "EXP Walk: 20/m",
+      "Healing: +25%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "33",
+    "name": "Leviathan",
+    "url": "/codex/classes/33/",
+    "sprite": "https://playorna.com/static/img/classes2/leviathan/default_m.png",
+    "tier": 8,
+    "description": "A knight of tide and ice who has truly mastered the powers of the seas. It is immune to water magic and can wield equipment of the warrior, mage, or thief.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 8"
+      },
+      {
+        "label": "Price",
+        "value": "5,000,000 orns"
+      }
+    ],
+    "effects": [
+      "Apex Rate: +50%",
+      "Buff Duration: +40%",
+      "Debuff Fade: +40%",
+      "Mana Siphon: +25%",
+      "Max Dodge Chance: 60%",
+      "Bestial Bond: Level 1"
+    ],
+    "bestialBondLevel": 1,
+    "isOracle": false
+  },
+  {
+    "id": "1",
+    "name": "Mage",
+    "url": "/codex/classes/1/",
+    "sprite": "https://playorna.com/static/img/classes2/mage/default_m.png",
+    "tier": 1,
+    "description": "A skilled individual who favors magic over strength. It can wield staves and robes.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 1"
+      },
+      {
+        "label": "Price",
+        "value": "2,500 orns"
+      }
+    ],
+    "effects": [
+      "Mana Siphon: +25%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "91",
+    "name": "Majestic",
+    "url": "/codex/classes/91/",
+    "sprite": "https://playorna.com/static/img/classes2/majestic/default_m.png",
+    "tier": 5,
+    "description": "A royal servant to the kingdom of Annwn, skilled in debilitating offense. It can wield equipment of the thief.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 5"
+      },
+      {
+        "label": "Price",
+        "value": "250,000 orns"
+      }
+    ],
+    "effects": [
+      "Avidity Chance: +10%",
+      "View Distance: +20%",
+      "Collateral Chance: +15% / Collateral Damage: +20%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "31",
+    "name": "Majistrate",
+    "url": "/codex/classes/31/",
+    "sprite": "https://playorna.com/static/img/classes2/majistrate/default_m.png",
+    "tier": 7,
+    "description": "An elite force of the kingdom of Annwn, skilled in elemental offense. It is naturally strong against arcane magic and can wield equipment of both the warrior and thief.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 7"
+      },
+      {
+        "label": "Price",
+        "value": "2,000,000 orns"
+      }
+    ],
+    "effects": [
+      "Avidity Chance: +15%",
+      "View Distance: +20%",
+      "Status Protection: +35%",
+      "Collateral Chance: +15% / Collateral Damage: +25%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "11",
+    "name": "Mystic",
+    "url": "/codex/classes/11/",
+    "sprite": "https://playorna.com/static/img/classes2/mystic/default_m.png",
+    "tier": 4,
+    "description": "A hybrid class that mixes dexterity and magic. It can wield equipment of both the thief and mage.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 4"
+      },
+      {
+        "label": "Price",
+        "value": "100,000 orns"
+      }
+    ],
+    "effects": [
+      "Avidity Chance: +10%",
+      "Healing: +25%",
+      "Manaflasks: +2"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "37",
+    "name": "Nekromancer / Nekromagus",
+    "url": "/codex/classes/37/",
+    "sprite": "https://playorna.com/static/img/classes2/nekromancer/default_m.png",
+    "tier": 8,
+    "description": "An exiled magus of Avalon that utilizes the dark powers of the fallen to overcome its foes. It is immune to dark magic and can wield the equipment of the mage.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 8"
+      },
+      {
+        "label": "Price",
+        "value": "3,500,000 orns"
+      }
+    ],
+    "effects": [
+      "Manaflasks: +2 / Bloodflasks: +2",
+      "Second Chance: 50%",
+      "Mana Rush: 50% mana",
+      "Life Siphon: +10%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "49",
+    "name": "Noble Gaia",
+    "url": "/codex/classes/49/",
+    "sprite": "https://playorna.com/static/img/classes2/noble_gaia/default_m.png",
+    "tier": 9,
+    "description": "An elite force of nature and balance who has truly mastered the powers of the earth below. It is immune to earthen magic and can wield equipment of the warrior, mage, or thief.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 9"
+      },
+      {
+        "label": "Price",
+        "value": "10,000,000 orns"
+      }
+    ],
+    "effects": [
+      "Apex Rate: +75%",
+      "Buff Duration: +40%",
+      "Debuff Fade: +40%",
+      "Status Protection: +35%",
+      "Max Dodge Chance: 60%",
+      "Bestial Bond: Level 1"
+    ],
+    "bestialBondLevel": 1,
+    "isOracle": false
+  },
+  {
+    "id": "51",
+    "name": "Nyx",
+    "url": "/codex/classes/51/",
+    "sprite": "https://playorna.com/static/img/classes2/nyx/default_m.png",
+    "tier": 9,
+    "description": "An elusive assassin of Annwn. It is well versed in finding ways to survive in battle, is immune to Dark magic, and can wield the equipment of the thief.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 9"
+      },
+      {
+        "label": "Price",
+        "value": "7,000,000 orns"
+      }
+    ],
+    "effects": [
+      "Avidity Chance: +15%",
+      "Status Protection: +35%",
+      "Healing: +50%",
+      "Max Dodge Chance: 60%",
+      "Recharge HP on Crit: 25%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "66",
+    "name": "Nyx Corvus",
+    "url": "/codex/classes/66/",
+    "sprite": "https://playorna.com/static/img/classes2/nyx_corvus/default_m.png",
+    "tier": 9,
+    "description": "A Nyx that has reached the stars above.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 9"
+      },
+      {
+        "label": "Price",
+        "value": "7,000,000 orns"
+      }
+    ],
+    "effects": [
+      "Avidity Chance: +15%",
+      "Max Dodge Chance: 60%",
+      "Life Siphon: +15%",
+      "Mana Siphon: +25%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "67",
+    "name": "Nyx Hercules",
+    "url": "/codex/classes/67/",
+    "sprite": "https://playorna.com/static/img/classes2/nyx_hercules/default_m.png",
+    "tier": 9,
+    "description": "A Nyx that has reached the stars above.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 9"
+      },
+      {
+        "label": "Price",
+        "value": "7,000,000 orns"
+      }
+    ],
+    "effects": [
+      "Damage to Ward: +100%",
+      "Causes: T. Def ↓ (12%), T. Def ↓↓ (4%)",
+      "Status Protection: +50%",
+      "Second Chance: 50%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "52",
+    "name": "Omnimancer / Omnimagus",
+    "url": "/codex/classes/52/",
+    "sprite": "https://playorna.com/static/img/classes2/omnimancer/default_m.png",
+    "tier": 9,
+    "description": "An unorthodox magus of Avalon that has achieved true affinity with all four basic elements. It can cast multi-elemental spells and can occasionally resist the damage of any basic element. It wields the equipment of the mage.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 9"
+      },
+      {
+        "label": "Price",
+        "value": "7,000,000 orns"
+      }
+    ],
+    "effects": [
+      "Manaflasks: +2 / Bloodflasks: +2",
+      "Elemental Weaknesses: +12%",
+      "Spell Casting Damage: -30%",
+      "Elemental Immunity Damage: +15%",
+      "Life Siphon: +10%",
+      "Second Chance: 50%",
+      "Mana Rush: 50% mana",
+      "Status Protection: +35%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "69",
+    "name": "Omnimancer Antlia / Omnimagus Antlia",
+    "url": "/codex/classes/69/",
+    "sprite": "https://playorna.com/static/img/classes2/omnimancer_antlia/default_m.png",
+    "tier": 9,
+    "description": "An Omnimancer that has reached the stars above.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 9"
+      },
+      {
+        "label": "Price",
+        "value": "7,000,000 orns"
+      }
+    ],
+    "effects": [
+      "Manaflasks: +2 / Bloodflasks: +2",
+      "Elemental Weaknesses: +12%",
+      "Spell Casting Damage: -30%",
+      "Elemental Immunity Damage: +15%",
+      "Second Chance: 50%",
+      "Mana Rush: 50% mana",
+      "Status Protection: +35%",
+      "+Weaved Elements"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "68",
+    "name": "Omnimancer Ara / Omnimagus Ara",
+    "url": "/codex/classes/68/",
+    "sprite": "https://playorna.com/static/img/classes2/omnimancer_ara/default_m.png",
+    "tier": 9,
+    "description": "An Omnimancer that has reached the stars above.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 9"
+      },
+      {
+        "label": "Price",
+        "value": "7,000,000 orns"
+      }
+    ],
+    "effects": [
+      "Manaflasks: +3",
+      "Elemental Weaknesses: +12%",
+      "Spell Casting Damage: -30%",
+      "Elemental Immunity Damage: +15%",
+      "Second Chance: 50%",
+      "Mana Rush: 50% mana",
+      "Status Protection: +35%",
+      "Life Siphon: +15%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "96",
+    "name": "Paladin",
+    "url": "/codex/classes/96/",
+    "sprite": "https://playorna.com/static/img/classes2/paladin/default_m.png",
+    "tier": 7,
+    "description": "An elite force of the kingdom of Lyonesse, skilled in elemental offense. It is naturally strong against the forces of dark and light and can wield equipment of both the warrior and mage.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 7"
+      },
+      {
+        "label": "Price",
+        "value": "2,000,000 orns"
+      }
+    ],
+    "effects": [
+      "Collateral Chance: +15% / Collateral Damage: +25%",
+      "Elemental Weaknesses: +12%",
+      "Spell Casting Damage: -30%",
+      "Elemental Immunity Damage: +15%",
+      "Manaflasks: +3",
+      "Status Protection: +35%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "56",
+    "name": "Realmshifter",
+    "url": "/codex/classes/56/",
+    "sprite": "https://playorna.com/static/img/classes2/realmshifter/default_m.png",
+    "tier": 10,
+    "description": "Masters of all that is clandestine, ancient Annwn's realmshifters have the ability to always find the cutting edge in battle. Their critical hits deal extra damage. Additionally, they can see in the dark, are immune to the powers of light & dark, and can wield equipment of the thief.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 10"
+      },
+      {
+        "label": "Price",
+        "value": "15,000,000 orns"
+      }
+    ],
+    "effects": [
+      "Low HP → Stats: +100%",
+      "Avidity Chance: +15%",
+      "Recharge HP on Crit: 25%",
+      "Max Dodge Chance: 60%",
+      "Self Damage Reduction: +100%",
+      "Damage to Ward: +125%",
+      "Causes: T. Def ↓ (12%), T. Def ↓↓ (4%)",
+      "View Distance: +20%",
+      "Causes: Blind (5%)"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "78",
+    "name": "Realmshifter Corvus",
+    "url": "/codex/classes/78/",
+    "sprite": "https://playorna.com/static/img/classes2/realmshifter_corvus/default_m.png",
+    "tier": 10,
+    "description": "A Realmshifter that has reached the stars above. It is most effective at capitalizing on critical hits.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 10"
+      },
+      {
+        "label": "Price",
+        "value": "15,000,000 orns"
+      }
+    ],
+    "effects": [
+      "Low HP → Stats: +100%",
+      "Crit Damage: -10%",
+      "Critical Chain: +10%",
+      "Crit Status Fade Chance: 3%",
+      "Self Damage Reduction: +100%",
+      "Max Dodge Chance: 60%",
+      "Avidity Chance: +15%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "79",
+    "name": "Realmshifter Dorado",
+    "url": "/codex/classes/79/",
+    "sprite": "https://playorna.com/static/img/classes2/realmshifter_dorado/default_m.png",
+    "tier": 10,
+    "description": "A Realmshifter that has reached the stars above. It trades offense for defense and evasive capabilities. It can additionally wield the equipment of the warrior.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 10"
+      },
+      {
+        "label": "Price",
+        "value": "15,000,000 orns"
+      }
+    ],
+    "effects": [
+      "Low HP → Stats: +125%",
+      "Ward Start: +6 turns",
+      "Ward Recovery: +3%",
+      "+Dorado",
+      "Avidity Chance: +20%",
+      "View Distance: +20%",
+      "Causes: Blind (5%)"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "15",
+    "name": "Royal Guard",
+    "url": "/codex/classes/15/",
+    "sprite": "https://playorna.com/static/img/classes/royal_guard/default_m.png",
+    "tier": 2,
+    "description": "Purchase this class to support the game and gain an alternative sprite and passives.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 2"
+      },
+      {
+        "label": "Price",
+        "value": "10,000 orns"
+      }
+    ],
+    "effects": [
+      "Collateral Chance: +10% / Collateral Damage: +15%",
+      "Ward Start: +2 turns"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "43",
+    "name": "Runeblade",
+    "url": "/codex/classes/43/",
+    "sprite": "https://playorna.com/static/img/classes/runeblade/default_m.png",
+    "tier": 4,
+    "description": "An alternative version of the Spellsword class. Purchase this class to support the game and gain an alternative sprite.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 4"
+      },
+      {
+        "label": "Price",
+        "value": "100,000 orns"
+      }
+    ],
+    "effects": [
+      "Manaflasks: +2",
+      "Mana Siphon: +25%",
+      "Collateral Chance: +10% / Collateral Damage: +15%",
+      "Ward Start: +3 turns",
+      "Ward Recovery: +2%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "16",
+    "name": "Scorcher / Scorchess",
+    "url": "/codex/classes/16/",
+    "sprite": "https://playorna.com/static/img/classes/scorcher/default_m.png",
+    "tier": 2,
+    "description": "A rogue of the Inferno Knights. This fighting class can learn rare fire magic.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 2"
+      },
+      {
+        "label": "Price",
+        "value": "10,000 orns"
+      }
+    ],
+    "effects": [
+      "EXP Walk: 20/m",
+      "Gold Bonus: +10%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "89",
+    "name": "Shadowmaker",
+    "url": "/codex/classes/89/",
+    "sprite": "https://playorna.com/static/img/classes2/shadowmaker/default_m.png",
+    "tier": 3,
+    "description": "A fighter of Annwn versed in the dark arts. It can wield the equipment of the thief.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 3"
+      },
+      {
+        "label": "Price",
+        "value": "50,000 orns"
+      }
+    ],
+    "effects": [
+      "Avidity Chance: +10%",
+      "Healing: +25%",
+      "Crit Chance: +5%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "90",
+    "name": "Shadowmancer",
+    "url": "/codex/classes/90/",
+    "sprite": "https://playorna.com/static/img/classes2/shadowmancer/default_m.png",
+    "tier": 6,
+    "description": "A mystical fighter of Annwn that mixes magic and dexterity. It can dodge attacks more effectively as damage is taken and can wield equipment of the thief.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 6"
+      },
+      {
+        "label": "Price",
+        "value": "500,000 orns"
+      }
+    ],
+    "effects": [
+      "Avidity Chance: +10%",
+      "Max Dodge Chance: 60%",
+      "Healing: +25%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "10",
+    "name": "Spellsword",
+    "url": "/codex/classes/10/",
+    "sprite": "https://playorna.com/static/img/classes2/spellsword/default_m.png",
+    "tier": 4,
+    "description": "A hybrid class that mixes defense and magic. It can wield equipment of both the warrior and mage.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 4"
+      },
+      {
+        "label": "Price",
+        "value": "100,000 orns"
+      }
+    ],
+    "effects": [
+      "Manaflasks: +2",
+      "Mana Siphon: +25%",
+      "Collateral Chance: +10% / Collateral Damage: +15%",
+      "Ward Start: +3 turns",
+      "Ward Recovery: +2%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "88",
+    "name": "Spellweaver",
+    "url": "/codex/classes/88/",
+    "sprite": "https://playorna.com/static/img/classes2/spellweaver/default_m.png",
+    "tier": 6,
+    "description": "A very skilled magic user that can cast spells repetitively. It has a good chance casting spells for free and can wield equipment of the mage.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 6"
+      },
+      {
+        "label": "Price",
+        "value": "500,000 orns"
+      }
+    ],
+    "effects": [
+      "Manaflasks: +2",
+      "Mana Siphon: +25%",
+      "+Weaved Elements"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "100",
+    "name": "Spirit Tamer",
+    "url": "/codex/classes/100/",
+    "sprite": "https://playorna.com/static/img/classes2/spirit_tamer/default_m.png",
+    "tier": 5,
+    "description": "A skilled handler of great Nothren beasts. It can wield the equipment of the warrior or mage.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 5"
+      },
+      {
+        "label": "Price",
+        "value": "250,000 orns"
+      }
+    ],
+    "effects": [
+      "Follower Act: +10%",
+      "Follower Stats: +55%",
+      "Bestial Bond: Level 1"
+    ],
+    "bestialBondLevel": 1,
+    "isOracle": false
+  },
+  {
+    "id": "93",
+    "name": "Squire",
+    "url": "/codex/classes/93/",
+    "sprite": "https://playorna.com/static/img/classes2/squire/default_m.png",
+    "tier": 3,
+    "description": "A warrior trained in the defensive art of swordplay. It can wield the equipment of the warrior.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 3"
+      },
+      {
+        "label": "Price",
+        "value": "50,000 orns"
+      }
+    ],
+    "effects": [
+      "Collateral Chance: +10% / Collateral Damage: +15%",
+      "Ward Start: +3 turns",
+      "Ward Recovery: +2%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "5",
+    "name": "Strider",
+    "url": "/codex/classes/5/",
+    "sprite": "https://playorna.com/static/img/classes2/strider/default_m.png",
+    "tier": 2,
+    "description": "A fighter well versed in various weaponry. It can wield the equipment of the thief.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 2"
+      },
+      {
+        "label": "Price",
+        "value": "10,000 orns"
+      }
+    ],
+    "effects": [
+      "Avidity Chance: +10%",
+      "Healing: +25%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "62",
+    "name": "Summoner",
+    "url": "/codex/classes/62/",
+    "sprite": "https://playorna.com/static/img/classes2/summoner/default_m.png",
+    "tier": 9,
+    "description": "A celebrated summoner of Elysium. Summoners themselves are not very powerful beings, but can automatically summon powerful entities to join the battle. Summoners can wield the equipment of the mage but cannot tame followers.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 9"
+      },
+      {
+        "label": "Price",
+        "value": "11,000,000 orns"
+      }
+    ],
+    "effects": [
+      "Summon Spell Start: +100%, +50%",
+      "Summon Stats: +125%",
+      "+Guidelight",
+      "Summon Protection: +25%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "73",
+    "name": "Summoner Auriga",
+    "url": "/codex/classes/73/",
+    "sprite": "https://playorna.com/static/img/classes2/summoner_auriga/default_m.png",
+    "tier": 9,
+    "description": "A Summoner that has reached the stars above. It sacrifices pact power for that of its summons.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 9"
+      },
+      {
+        "label": "Price",
+        "value": "11,000,000 orns"
+      }
+    ],
+    "effects": [
+      "Summon Spell Start: +100%, +50%",
+      "Summon Stats: +125%",
+      "Summon Pact Power: -50%",
+      "+Guidelight",
+      "Summon Protection: +25%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "72",
+    "name": "Summoner Hydrus",
+    "url": "/codex/classes/72/",
+    "sprite": "https://playorna.com/static/img/classes2/summoner_hydrus/default_m.png",
+    "tier": 9,
+    "description": "A Summoner that has reached the stars above. It sacrifices summon power for additional power when using pacts.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 9"
+      },
+      {
+        "label": "Price",
+        "value": "11,000,000 orns"
+      }
+    ],
+    "effects": [
+      "Summon Spell Start: +100%, +50%",
+      "Charon Ritual Chance: +25%",
+      "+Second Chance",
+      "Summon Stats: +80%",
+      "Summon Pact Power: +20%",
+      "Souls Collected → Stats: +10%",
+      "Sacrifice Effects: +10%",
+      "+Guidelight"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "34",
+    "name": "Taranis",
+    "url": "/codex/classes/34/",
+    "sprite": "https://playorna.com/static/img/classes2/taranis/default_m.png",
+    "tier": 8,
+    "description": "A knight of lightning and thunder who has truly mastered the powers of the skies. It is immune to lightning magic and can wield equipment of the warrior, mage, or thief.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 8"
+      },
+      {
+        "label": "Price",
+        "value": "5,000,000 orns"
+      }
+    ],
+    "effects": [
+      "Apex Rate: +50%",
+      "Buff Duration: +40%",
+      "Debuff Fade: +40%",
+      "Recharge HP on Crit: 25%",
+      "Second Chance: 50%",
+      "Bestial Bond: Level 1"
+    ],
+    "bestialBondLevel": 1,
+    "isOracle": false
+  },
+  {
+    "id": "95",
+    "name": "Templar",
+    "url": "/codex/classes/95/",
+    "sprite": "https://playorna.com/static/img/classes2/templar/default_m.png",
+    "tier": 6,
+    "description": "A graduated knight of Lyonesse armed to the teeth in mythril. It learns more complex weapon arts and can wield the equipment of the warrior.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 6"
+      },
+      {
+        "label": "Price",
+        "value": "500,000 orns"
+      }
+    ],
+    "effects": [
+      "Collateral Chance: +15% / Collateral Damage: +20%",
+      "Second Chance: 50%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "2",
+    "name": "Thief",
+    "url": "/codex/classes/2/",
+    "sprite": "https://playorna.com/static/img/classes2/thief/default_m.png",
+    "tier": 1,
+    "description": "A tricky fighting class that favors speed and damage over defense. It can wield light armor, daggers, bows.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 1"
+      },
+      {
+        "label": "Price",
+        "value": "2,500 orns"
+      }
+    ],
+    "effects": [
+      "Avidity Chance: +10%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "50",
+    "name": "Titanguard",
+    "url": "/codex/classes/50/",
+    "sprite": "https://playorna.com/static/img/classes2/titanguard/default_m.png",
+    "tier": 9,
+    "description": "A seasoned and stalwart holy warrior of Lyonesse that is strongly versed in methods of ward and survivability. It is immune to holy magic and can wield equipment of the warrior.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 9"
+      },
+      {
+        "label": "Price",
+        "value": "7,000,000 orns"
+      }
+    ],
+    "effects": [
+      "Collateral Chance: +15% / Collateral Damage: +30%",
+      "Ward Start: +8 turns",
+      "Ward Recovery: +6%",
+      "Second Chance: 50%",
+      "Status Protection: +50%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "65",
+    "name": "Titanguard Hercules",
+    "url": "/codex/classes/65/",
+    "sprite": "https://playorna.com/static/img/classes2/titanguard_hercules/default_m.png",
+    "tier": 9,
+    "description": "A Titanguard that has reached the stars above.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 9"
+      },
+      {
+        "label": "Price",
+        "value": "7,000,000 orns"
+      }
+    ],
+    "effects": [
+      "Ward Start: +9 turns",
+      "Ward Recovery: +7%",
+      "Collateral Chance: +15% / Collateral Damage: +30%",
+      "Second Chance: 50%",
+      "Status Protection: +35%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "64",
+    "name": "Titanguard Ursa",
+    "url": "/codex/classes/64/",
+    "sprite": "https://playorna.com/static/img/classes2/titanguard_ursa/default_m.png",
+    "tier": 9,
+    "description": "A Titanguard that has reached the stars above.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 9"
+      },
+      {
+        "label": "Price",
+        "value": "7,000,000 orns"
+      }
+    ],
+    "effects": [
+      "Ward Start: +8 turns",
+      "Ward Recovery: +6%",
+      "Collateral Chance: +15% / Collateral Damage: +30%",
+      "Second Chance: 50%",
+      "Status Protection: +35%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "14",
+    "name": "Wanderer / Wanderess",
+    "url": "/codex/classes/14/",
+    "sprite": "https://playorna.com/static/img/classes/wanderer/default_m.png",
+    "tier": 2,
+    "description": "Purchase this class to support the game and gain an alternative sprite and passives.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 2"
+      },
+      {
+        "label": "Price",
+        "value": "10,000 orns"
+      }
+    ],
+    "effects": [
+      "EXP Walk: 20/m",
+      "Healing: +25%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "20",
+    "name": "Warlock",
+    "url": "/codex/classes/20/",
+    "sprite": "https://playorna.com/static/img/classes/warlock/default_m.png",
+    "tier": 2,
+    "description": "Purchase this class to support the game and gain an alternative sprite and passives.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 2"
+      },
+      {
+        "label": "Price",
+        "value": "10,000 orns"
+      }
+    ],
+    "effects": [
+      "Mana Siphon: +25%",
+      "Manaflasks: +1"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "0",
+    "name": "Warrior",
+    "url": "/codex/classes/0/",
+    "sprite": "https://playorna.com/static/img/classes2/warrior/default_m.png",
+    "tier": 1,
+    "description": "A melee class who favors physical attacks and brute strength over magic. It can wield heavier weapons and armor.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 1"
+      },
+      {
+        "label": "Price",
+        "value": "2,500 orns"
+      }
+    ],
+    "effects": [
+      "Collateral Chance: +10% / Collateral Damage: +15%"
+    ],
+    "bestialBondLevel": null,
+    "isOracle": false
+  },
+  {
+    "id": "98",
+    "name": "Wolf Tamer",
+    "url": "/codex/classes/98/",
+    "sprite": "https://playorna.com/static/img/classes2/wolf_tamer/default_m.png",
+    "tier": 4,
+    "description": "A novice handler of great Nothren beasts. It can wield the equipment of the warrior or thief.",
+    "facts": [
+      {
+        "label": "Tier",
+        "value": "★ 4"
+      },
+      {
+        "label": "Price",
+        "value": "100,000 orns"
+      }
+    ],
+    "effects": [
+      "Follower Act: +10%",
+      "Follower Stats: +55%",
+      "Bestial Bond: Level 1"
+    ],
+    "bestialBondLevel": 1,
+    "isOracle": false
+  }
+]
