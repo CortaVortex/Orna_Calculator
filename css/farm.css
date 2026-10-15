@@ -1,7 +1,7 @@
 /* ============ ФАРМ — РЕЗУЛЬТАТЫ ============ */
 .farm-results {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 8px;
 }
 
@@ -13,6 +13,8 @@
   background: var(--bg-slot);
   border: 1px solid var(--border);
   border-radius: 8px;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .farm-result-icon-wrap {
@@ -66,7 +68,7 @@
 /* ============ НАСТРАДАНИЕ ============ */
 .anguish-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   gap: 8px;
 }
 
@@ -79,6 +81,24 @@
   background: var(--bg-slot);
   border: 1px solid var(--border);
   border-radius: 6px;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.anguish-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  flex: 1;
+}
+
+.anguish-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  flex-shrink: 0;
 }
 
 .anguish-label {
@@ -86,11 +106,16 @@
   color: var(--text-dim);
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  flex-shrink: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
 }
 
 .anguish-input {
-  width: 70px;
+  width: 100%;
+  max-width: 70px;
+  min-width: 50px;
   padding: 6px 8px;
   font-size: 14px;
   font-family: 'Cormorant Unicase', serif;
@@ -102,6 +127,7 @@
   border-radius: 4px;
   -moz-appearance: textfield;
   flex-shrink: 0;
+  box-sizing: border-box;
 }
 
 .anguish-input::-webkit-outer-spin-button,
@@ -118,7 +144,7 @@
 /* ============ ИВЕНТЫ ============ */
 .events-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
   gap: 6px;
 }
 
@@ -135,6 +161,8 @@
   user-select: none;
   text-align: center;
   transition: all 0.15s ease;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .event-item:hover {
@@ -176,6 +204,9 @@
   font-size: 10px;
   color: var(--text);
   line-height: 1.1;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  max-width: 100%;
 }
 
 .event-effect {
@@ -183,6 +214,8 @@
   color: var(--gold);
   line-height: 1.1;
   margin-top: 2px;
+  overflow-wrap: break-word;
+  max-width: 100%;
 }
 
 .event-icon {
@@ -248,13 +281,6 @@
 .slot-stats.stats-requires-spec {
   color: #c44;
   font-weight: 600;
-}
-
-/* ============ КАП УДАЧИ ============ */
-.farm-result-line {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 6px;
 }
 
 /* ============ КАП УДАЧИ ============ */
