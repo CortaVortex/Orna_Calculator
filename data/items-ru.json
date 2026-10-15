@@ -99797,9 +99797,124 @@
     "arisen": false,
     "community": false,
     "description": "Тонкий ледяной клинок Итры, Белого рыцаря. Итра создал орден Стражей Льда для отражения нападения драконитов.",
-    "facts": [],
-    "effects": [],
-    "sections": [],
+    "facts": [
+      {
+        "label": "Ранг",
+        "value": "★ 10"
+      },
+      {
+        "label": "Редкость",
+        "value": "эпичное"
+      },
+      {
+        "label": "Класс",
+        "value": "Классы воров"
+      },
+      {
+        "label": "Слот",
+        "value": "Оружие"
+      },
+      {
+        "label": "Тип",
+        "value": "Изогнутые мечи"
+      },
+      {
+        "label": "Атака",
+        "value": "290"
+      },
+      {
+        "label": "Магия",
+        "value": "85"
+      },
+      {
+        "label": "Ловкость",
+        "value": "215"
+      },
+      {
+        "label": "Крит",
+        "value": "1%"
+      },
+      {
+        "label": "Сокеты",
+        "value": "2"
+      },
+      {
+        "label": "Element",
+        "value": "Вода"
+      }
+    ],
+    "effects": [
+      "Скорость Накала: +8%"
+    ],
+    "sections": [
+      {
+        "title": "Causes",
+        "entries": [
+          {
+            "name": "Заморозка",
+            "sprite": "https://playorna.com/static/img/statuses/frozen.png",
+            "url": "",
+            "meta": "15%",
+            "description": ""
+          }
+        ],
+        "texts": []
+      },
+      {
+        "title": "Dropped by",
+        "entries": [
+          {
+            "id": "dfb8066e-9ce2-47c1-b4f2-f8605eeae582",
+            "category": "bosses",
+            "name": "Восставший Итра, Белый рыцарь",
+            "sprite": "https://playorna.com/static/img/bosses/fallen_ithra_arisen.png",
+            "description": "",
+            "tier": 10,
+            "url": "/codex/bosses/arisen-ithra-the-white-knight/",
+            "rarity": "",
+            "exotic": false,
+            "arisen": false,
+            "community": false,
+            "meta": ""
+          }
+        ],
+        "texts": []
+      },
+      {
+        "title": "Upgrade materials",
+        "entries": [
+          {
+            "id": "2a49e2fa-282d-4b04-b661-891fbb0dc950",
+            "category": "items",
+            "name": "Ортанит",
+            "sprite": "https://playorna.com/static/img/materials/ortanite.png",
+            "description": "",
+            "tier": 9,
+            "url": "/codex/items/ortanite/",
+            "rarity": "legendary",
+            "exotic": false,
+            "arisen": false,
+            "community": false,
+            "meta": ""
+          },
+          {
+            "id": "7e07d8b4-ec70-4084-beed-4d8e2fd99600",
+            "category": "items",
+            "name": "Аквалит",
+            "sprite": "https://playorna.com/static/img/materials/water_stone.png",
+            "description": "",
+            "tier": 1,
+            "url": "/codex/items/waterstone/",
+            "rarity": "rare",
+            "exotic": false,
+            "arisen": false,
+            "community": false,
+            "meta": ""
+          }
+        ],
+        "texts": []
+      }
+    ],
     "tags": []
   },
   {
