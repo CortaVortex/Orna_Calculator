@@ -86,3 +86,20 @@
   color: var(--gold);
   font-weight: 600;
 }
+
+/* Строка про VPN */
+.home-step.home-step-note {
+  padding-left: 0;
+  color: var(--text-dim);
+}
+
+/* Пустая строка-разделитель */
+.home-step.home-step-spacer {
+  height: 0;
+  padding: 0;
+  margin: 0;
+  font-size: 0;
+  line-height: 0;
+  color: transparent;
+  overflow: hidden;
+}

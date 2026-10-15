@@ -136,6 +136,17 @@ body {
   border-bottom: 1px solid var(--border);
 }
 
+.panel-title-note {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--text-dim);
+  letter-spacing: 0.3px;
+  margin-left: 8px;
+  text-transform: none;
+  opacity: 0.7;
+}
+
 /* ============ ЭКИПИРОВКА — КРЕСТОВИНА ============ */
 .equipment-layout {
   display: grid;
@@ -635,7 +646,7 @@ body {
 
 .consumables-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   gap: 6px;
 }
 
@@ -645,6 +656,8 @@ body {
   align-items: center;
   gap: 8px;
   padding: 6px 8px;
+  min-width: 0;        /* ← важно для grid-элемента */
+  overflow: hidden;    /* ← обрезает длинный текст */
   background: var(--bg-slot);
   border: 1px solid var(--border);
   border-radius: 6px;
