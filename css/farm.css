@@ -72,6 +72,12 @@
   gap: 8px;
 }
 
+@media (max-width: 360px) {
+  .anguish-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .anguish-item {
   display: flex;
   align-items: center;
