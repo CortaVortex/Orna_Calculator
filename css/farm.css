@@ -1,7 +1,7 @@
 /* ============ ФАРМ — РЕЗУЛЬТАТЫ ============ */
 .farm-results {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  grid-template-columns: 1fr 1fr;
   gap: 8px;
 }
 

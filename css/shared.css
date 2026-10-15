@@ -335,30 +335,41 @@ body {
 .mnem-rows {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
   width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  justify-content: center;
 }
 
 .mnem-row {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 1px;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .mnem-select {
   width: 100%;
   min-width: 0;
-  padding: 2px 4px;
-  font-size: 9px;
+  max-width: 100%;
+  padding: 1px 2px;
+  font-size: 7px;
   font-family: 'Inter', sans-serif;
   color: var(--text);
   background: #0a0a0a;
   border: 1px solid var(--border);
-  border-radius: 3px;
+  border-radius: 2px;
   cursor: pointer;
   appearance: none;
   -webkit-appearance: none;
   text-overflow: ellipsis;
+  box-sizing: border-box;
+  line-height: 1.1;
+  height: 14px;
 }
 
 .mnem-select:focus {
@@ -383,16 +394,21 @@ body {
 
 .mnem-input {
   width: 100%;
-  padding: 2px 3px;
-  font-size: 10px;
+  min-width: 0;
+  max-width: 100%;
+  padding: 1px;
+  font-size: 8px;
   font-family: 'Inter', sans-serif;
   text-align: center;
   color: var(--text);
   background: #0a0a0a;
   border: 1px solid var(--border);
-  border-radius: 3px;
+  border-radius: 2px;
   transition: all 0.15s ease;
   -moz-appearance: textfield;
+  box-sizing: border-box;
+  line-height: 1.1;
+  height: 14px;
 }
 
 .mnem-input::-webkit-outer-spin-button,
