@@ -18,12 +18,13 @@
 <body>
 
 <header class="app-header">
-  <div class="app-title-row">
-    <a href="../index.html" class="app-title-link">
-      <h1>Orna Calculator</h1>
-    </a>
-    <button id="lang-toggle" class="lang-btn" title="Switch language / Сменить язык">EN</button>
-  </div>
+<div class="app-title-row">
+  <a href="../index.html" class="app-title-link">
+    <h1>Orna Calculator</h1>
+  </a>
+  <button id="lang-toggle" class="lang-btn" title="Switch language / Сменить язык">EN</button>
+</div>
+
   <nav class="tabs-nav">
     <a href="view.html" class="tab-link" data-ru="Обзор" data-en="View">Обзор</a>
     <a href="farm.html" class="tab-link" data-ru="Фарм" data-en="Farm">Фарм</a>
@@ -67,18 +68,26 @@
           </div>
         </div>
 
-        <div class="farm-result-card" data-currency="luck">
-          <div class="farm-result-icon-wrap">
-            <img class="farm-result-icon" src="https://playorna.com/static/img/items/loot.png" alt="" onerror="this.style.display='none'">
-          </div>
-          <div class="farm-result-info">
-            <span class="farm-result-label" data-ru="Удача" data-en="Luck">Удача</span>
-            <span class="farm-result-value" id="luck-result">100%</span>
-          </div>
-        </div>
+<div class="farm-result-card" data-currency="luck">
+  <div class="farm-result-icon-wrap">
+    <img class="farm-result-icon" src="https://playorna.com/static/img/items/loot.png" alt="" onerror="this.style.display='none'">
+  </div>
+  <div class="farm-result-info">
+    <span class="farm-result-label" data-ru="Удача" data-en="Luck">Удача</span>
+    <span class="farm-result-line">
+      <span class="farm-cap-label" data-ru="КАП" data-en="MAX">КАП</span>
+      <span class="farm-result-value" id="luck-result">100%</span>
+    </span>
+  </div>
+</div>
 
       </div>
     </section>
+
+    <!-- ============ СБРОС ============ -->
+    <div class="reset-row">
+      <button type="button" id="reset-btn" class="reset-btn" data-ru="Сбросить всё" data-en="Reset all">Сбросить всё</button>
+    </div>
 
     <!-- ============ КЛАСС, СПЕЦИАЛИЗАЦИЯ, ПИТОМЕЦ ============ -->
     <section class="panel">
@@ -453,8 +462,8 @@
     </p>
   </footer>
 
-  <script src="../js/shared.js"></script>
-  <script src="../js/modal.js"></script>
-  <script src="../js/farm.js"></script>
+<script src="../js/shared.js"></script>
+<script src="../js/modal.js"></script>
+<script type="module" src="../js/farm.js"></script>
 </body>
 </html>

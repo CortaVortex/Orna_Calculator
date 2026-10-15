@@ -1,6 +1,17 @@
 // ============================================================
-// ФАРМ — ЛОГИКА
+// ФАРМ — ЛОГИКА (UI)
 // ============================================================
+
+import {
+  QUALITY_MULT, QUALITY_BG, DUAL_WIELD_PENALTY,
+  parseFarmBonuses, extractOurBonuses,
+  boostByQuality, applyPenalty,
+  getBBLevels, hasFarmBonus, getFollowerMultiplier,
+  isTwoHanded, getItemSlot, isFarmItem,
+  getFarmConsumables, getAllConsumables,
+  calculateFarm,
+  checkSpecRequirement,
+} from './farm-calc.js';
 
 console.log('🌾 Farm page loaded');
 
@@ -9,30 +20,6 @@ let allItems = [];
 let allClasses = [];
 let allSpecs = [];
 let allFollowers = [];
-
-// ============ КАЧЕСТВО ============
-const QUALITY_MULT = {
-  common:       1.0,
-  superior:     1.1,
-  famed:        1.15,
-  legendary:    1.2,
-  ornate:       1.25,
-  masterforged: 1.3,
-  demonforged:  1.4,
-  godforged:    1.5,
-  atonement:    1.5,
-};
-
-const QUALITY_BG = {
-  common:       '',
-  superior:     'https://playorna.com/static/img/fx/rare.png',
-  famed:        'https://playorna.com/static/img/fx/famed.png',
-  legendary:    'https://playorna.com/static/img/fx/legendary.png',
-  ornate:       'https://playorna.com/static/img/fx/ornate.png',
-  masterforged: 'https://playorna.com/static/img/fx/masterforged.png',
-  demonforged:  'https://playorna.com/static/img/fx/demonforged.png',
-  godforged:    'https://playorna.com/static/img/fx/godforged.png',
-};
 
 const currentLang = () => localStorage.getItem('orna-lang') || 'ru';
 
@@ -114,107 +101,6 @@ const EVENTS = [
     multipliers: { orns: 1.25, gold: 1, exp: 1, luck: 1 } },
 ];
 
-// ============ ПАРСИНГ ============
-function parseFarmBonuses(text) {
-  const m = { orns: 1, gold: 1, exp: 1, luck: 1 };
-  if (typeof text !== 'string') return m;
-
-  const patterns = [
-    { key: 'orns', re: /(?:Бонус орн|Orn Bonus|Орны|Orns)\s*[:\s]\s*\+?(\d+(?:\.\d+)?)%/gi },
-    { key: 'gold', re: /(?:Бонус золота|Gold Bonus|Золото|Gold)\s*[:\s]\s*\+?(\d+(?:\.\d+)?)%/gi },
-    { key: 'exp',  re: /(?:Бонус опыта|EXP Bonus|Опыт(?!\s+на\s+ходу)|Experience)\s*[:\s]\s*\+?(\d+(?:\.\d+)?)%/gi },
-    { key: 'luck', re: /(?:Бонус удачи|Luck Bonus|Удача|Luck)\s*[:\s]\s*\+?(\d+(?:\.\d+)?)%/gi },
-  ];
-
-  patterns.forEach(({ key, re }) => {
-    let match;
-    while ((match = re.exec(text)) !== null) {
-      const pct = parseFloat(match[1]);
-      m[key] *= 1 + pct / 100;
-    }
-  });
-
-  return m;
-}
-
-function extractOurBonuses(text, lang) {
-  if (typeof text !== 'string') return [];
-
-  const labels = {
-    ru: { orns: 'Орны', gold: 'Золото', exp: 'Опыт', luck: 'Удача' },
-    en: { orns: 'Orns', gold: 'Gold', exp: 'Exp', luck: 'Luck' },
-  };
-  const L = labels[lang] || labels.ru;
-
-  const result = [];
-  const patterns = [
-    { key: 'orns', re: /(?:Бонус орн|Orn Bonus|Орны|Orns)\s*[:\s]\s*\+?(\d+(?:\.\d+)?)%/gi },
-    { key: 'gold', re: /(?:Бонус золота|Gold Bonus|Золото|Gold)\s*[:\s]\s*\+?(\d+(?:\.\d+)?)%/gi },
-    { key: 'exp',  re: /(?:Бонус опыта|EXP Bonus|Опыт(?!\s+на\s+ходу)|Experience)\s*[:\s]\s*\+?(\d+(?:\.\d+)?)%/gi },
-    { key: 'luck', re: /(?:Бонус удачи|Luck Bonus|Удача|Luck)\s*[:\s]\s*\+?(\d+(?:\.\d+)?)%/gi },
-  ];
-
-  patterns.forEach(({ key, re }) => {
-    let match;
-    while ((match = re.exec(text)) !== null) {
-      result.push(`${L[key]} +${match[1]}%`);
-    }
-  });
-
-  return result;
-}
-
-// ============ РАСХОДНИКИ ============
-function getFarmConsumables() {
-  return allItems
-    .filter(item => {
-      const facts = item.facts || [];
-      const slotFact = facts.find(f => f.label === 'Слот' || f.label === 'Place');
-      const slot = (slotFact?.value || '').toLowerCase();
-      const isRealSlot = slot !== '' &&
-                         slot !== 'расходник' &&
-                         slot !== 'consumable' &&
-                         slot !== 'useable' &&
-                         slot !== 'curative' &&
-                         slot !== 'field';
-      if (isRealSlot) return false;
-
-      const effects = item.effects || [];
-      return effects.some(e =>
-        typeof e === 'string' &&
-        /Орн|Orn|Золот|Gold|Удач|Luck|Опыт|Experien|EXP/i.test(e)
-      );
-    })
-    .map(item => {
-      const m = { orns: 1, gold: 1, exp: 1, luck: 1 };
-      (item.effects || []).forEach(eff => {
-        const p = parseFarmBonuses(eff);
-        m.orns *= p.orns;
-        m.gold *= p.gold;
-        m.exp  *= p.exp;
-        m.luck *= p.luck;
-      });
-
-      return {
-        id: item.id,
-        name: item.name,
-        nameEn: item.name,
-        icon: item.sprite,
-        multipliers: m,
-      };
-    });
-}
-
-function getAllConsumables() {
-  return getFarmConsumables()
-    .map(c => {
-      if (/непоколебимой приверженности|undying allegiance/i.test(c.name)) {
-        return { ...c, name: 'PoUA', nameEn: 'PoUA' };
-      }
-      return c;
-    });
-}
-
 // ============ АСТРОДЕРЕВО ============
 const ASTRAL_TREE = [
   { id: 'astral-luck', name: 'Бонус удачи', nameEn: 'Luck Bonus',
@@ -230,6 +116,18 @@ const ASTRAL_TREE = [
     icon: 'https://playorna.com/static/img/items/exp.png',
     multipliers: { orns: 1, gold: 1, exp: 1.05, luck: 1 } },
 ];
+
+// ============ БАН ============
+function isBannedFarm(item) {
+  const name = item?.name || '';
+  const BANNED_NAMES = [
+    'Пакт НепоKonqорённых',
+    'Unfelled Konqord',
+  ];
+  if (BANNED_NAMES.includes(name)) return true;
+  if (/konq/i.test(name)) return true;
+  return false;
+}
 
 // ============ КЛАССЫ ============
 function isRelevantFarmClass(cls) {
@@ -358,25 +256,6 @@ function updateSpecInfo() {
 }
 
 // ============ ПИТОМЕЦ ============
-function getBBLevels(follower) {
-  const sections = follower.sections || [];
-  const bbSection = sections.find(s => /Bestial Bond|Звериные узы/i.test(s.title || ''));
-  return bbSection?.texts || [];
-}
-
-function hasFarmBonus(follower) {
-  return getBBLevels(follower).some(line => {
-    if (typeof line !== 'string') return false;
-    const patterns = [
-      /(?:Бонус орн|Orn Bonus|Орны|Orns)\s*[:\s]\s*\+?(\d+(?:\.\d+)?)%/i,
-      /(?:Бонус золота|Gold Bonus|Золото|Gold)\s*[:\s]\s*\+?(\d+(?:\.\d+)?)%/i,
-      /(?:Бонус опыта|EXP Bonus|Опыт(?!\s+на\s+ходу)|Experience)\s*[:\s]\s*\+?(\d+(?:\.\d+)?)%/i,
-      /(?:Бонус удачи|Luck Bonus|Удача|Luck)\s*[:\s]\s*\+?(\d+(?:\.\d+)?)%/i,
-    ];
-    return patterns.some(re => re.test(line));
-  });
-}
-
 function getAvailableBB() {
   const classSel = document.getElementById('class-select');
   const specSel = document.getElementById('spec-select');
@@ -385,32 +264,47 @@ function getAvailableBB() {
   const fromClass = cls?.bestialBondLevel || 0;
   const fromSpec = spec?.bestialBondLevel || 0;
 
-  // Узы с мнемов (+1 если есть хоть один)
   const mnemVals = getMnemValues();
   const fromMnems = mnemVals.bonds > 0 ? 1 : 0;
 
   return Math.min(3, Math.max(fromClass, fromSpec, fromMnems));
 }
 
-function getFollowerMultiplier(follower, bbLevel) {
-  if (bbLevel <= 0) return { orns: 1, gold: 1, exp: 1, luck: 1 };
+function formatFollowerMeta(follower, availableBB) {
+  if (!follower) return '';
+
+  const lang = currentLang();
+  const names = {
+    ru: { orns: 'Орны', gold: 'Золото', exp: 'Опыт', luck: 'Удача' },
+    en: { orns: 'Orns', gold: 'Gold', exp: 'Exp', luck: 'Luck' },
+  };
+  const n = names[lang] || names.ru;
 
   const levels = getBBLevels(follower);
-  let total = { orns: 1, gold: 1, exp: 1, luck: 1 };
+  const lines = [];
 
-  for (let lvl = 1; lvl <= bbLevel; lvl++) {
+  const maxLevel = Math.max(availableBB || 0, 3);
+  for (let lvl = 1; lvl <= maxLevel; lvl++) {
     const line = levels.find(t =>
       new RegExp(`^Уровень\\s*${lvl}|^Level\\s*${lvl}`, 'i').test(t)
     );
     if (!line) continue;
+
     const m = parseFarmBonuses(line);
-    total.orns *= m.orns;
-    total.gold *= m.gold;
-    total.exp  *= m.exp;
-    total.luck *= m.luck;
+    const parts = [];
+    ['orns', 'gold', 'exp', 'luck'].forEach(key => {
+      const v = m[key];
+      if (v != null && v !== 1) {
+        const pct = Math.round((v - 1) * 100);
+        const sign = pct >= 0 ? '+' : '';
+        parts.push(`${n[key]} ${sign}${pct}%`);
+      }
+    });
+
+    if (parts.length) lines.push(`BB${lvl}: ${parts.join(', ')}`);
   }
 
-  return total;
+  return lines.join(' · ');
 }
 
 function openFollowerPicker() {
@@ -419,6 +313,7 @@ function openFollowerPicker() {
 
   const pets = allFollowers
     .filter(hasFarmBonus)
+    .filter(f => !isBannedFarm(f))
     .sort((a, b) => (a.tier || 0) - (b.tier || 0) || a.name.localeCompare(b.name));
 
   const itemsWithEmpty = [
@@ -429,6 +324,10 @@ function openFollowerPicker() {
   window.Modal.open({
     title: `Питомец (доступно BB${availableBB})`,
     items: itemsWithEmpty,
+    metaFormatter: (it) => {
+      if (it.id === '__empty__') return '';
+      return formatFollowerMeta(it, availableBB);
+    },
     onPick: (follower) => {
       if (follower.id === '__empty__') clearFollower();
       else applyFollower(follower, availableBB);
@@ -598,7 +497,6 @@ function initMnemsFarm() {
       `.mnem-input[data-mnem="${mnem}"][data-row="${row}"]`
     );
 
-    // Инициализация при загрузке
     function updateInputState() {
       const v = sel.value;
       if (v === 'bonds' || v === '') {
@@ -651,7 +549,6 @@ function updateLeftMnemLock() {
 
   leftMnemSlot.classList.toggle('is-locked', !unlocked);
 
-  // Селекты и поля ввода
   leftMnemSlot.querySelectorAll('.mnem-select').forEach(sel => {
     sel.disabled = !unlocked;
   });
@@ -660,7 +557,6 @@ function updateLeftMnemLock() {
   });
 
   if (!unlocked) {
-    // Сбрасываем значения
     leftMnemSlot.querySelectorAll('.mnem-select').forEach(sel => sel.value = '');
     leftMnemSlot.querySelectorAll('.mnem-input').forEach(inp => {
       inp.value = '';
@@ -742,6 +638,7 @@ function renderEventsGrid(gridEl, events) {
 
 // ============ ПЕРЕСЧЁТ ============
 function recalcFarm() {
+  // 1. Настрадание
   const anguish = {
     orns: parseFloat(document.querySelector('.anguish-input[data-currency="orns"]')?.value) || 0,
     gold: parseFloat(document.querySelector('.anguish-input[data-currency="gold"]')?.value) || 0,
@@ -749,150 +646,85 @@ function recalcFarm() {
     luck: parseFloat(document.querySelector('.anguish-input[data-currency="luck"]')?.value) || 0,
   };
 
-  const base = {
-    orns: 100 + anguish.orns,
-    gold: 100 + anguish.gold,
-    exp:  100 + anguish.exp,
-    luck: 100 + anguish.luck,
-  };
-
-  const mult = { orns: 1, gold: 1, exp: 1, luck: 1 };
-
-  function applyMultipliers(m) {
-    if (!m) return;
-    mult.orns *= m.orns ?? 1;
-    mult.gold *= m.gold ?? 1;
-    mult.exp  *= m.exp  ?? 1;
-    mult.luck *= m.luck ?? 1;
-  }
-
-  // Специализация
+  // 2. Специализация
   const specSel = document.getElementById('spec-select');
   const selectedSpec = allSpecs.find(s => s.id === specSel?.value);
-  if (selectedSpec?.multipliers) {
-    applyMultipliers(selectedSpec.multipliers);
-  }
+  const specMultipliers = selectedSpec?.multipliers || null;
+  const specId = selectedSpec?.id || null;
 
-  // Мнемы
+  // 3. Мнемы
   const mnemVals = getMnemValues();
-  const accBoost = 1 + (mnemVals.acc || 0) / 100;
 
-    // Проверяем, два ли одноручных оружия
-  const w1El = document.querySelector('[data-slot="weapon-1"]');
-  const w2El = document.querySelector('[data-slot="weapon-2"]');
-  const w1Item = w1El?.dataset.itemId ? allItems.find(i => i.id === w1El.dataset.itemId) : null;
-  const w2Item = w2El?.dataset.itemId ? allItems.find(i => i.id === w2El.dataset.itemId) : null;
-
-  const w2Mode = w2El?.querySelector('.slot-mode-toggle')?.dataset.mode || 'weapon';
-  const bothOneHand = w1Item && w2Item && w2Mode === 'weapon' &&
-                       !isTwoHanded(w1Item) && !isTwoHanded(w2Item);
-
-  const DUAL_WIELD_PENALTY = 0.65;
-
-  // Все слоты экипировки
+  // 4. Экипировка
+  const equipment = [];
   document.querySelectorAll('.slot[data-item-id]').forEach(slotEl => {
     const slotKey = slotEl.dataset.slot;
     if (slotKey === 'mnem-1' || slotKey === 'mnem-2') return;
 
-    const item = allItems.find(i => i.id === slotEl.dataset.itemId);
+    const item = allItems.find(i => String(i.id) === String(slotEl.dataset.itemId));
     if (!item) return;
 
-    const quality = slotEl.dataset.quality || 'common';
-    const qualityMult = QUALITY_MULT[quality] || 1;
-
-    let baseB = parseFarmBonuses((item.effects || []).join(' '));
-
-    // Качество
-    baseB = {
-      orns: boostByQuality(baseB.orns, qualityMult),
-      gold: boostByQuality(baseB.gold, qualityMult),
-      exp:  boostByQuality(baseB.exp,  qualityMult),
-      luck: boostByQuality(baseB.luck, qualityMult),
-    };
-
-    // Штраф за два одноручных оружия
-    const isWeaponSlot = slotKey === 'weapon-1' || slotKey === 'weapon-2';
-    if (isWeaponSlot && bothOneHand) {
-      baseB = {
-        orns: applyPenalty(baseB.orns, DUAL_WIELD_PENALTY),
-        gold: applyPenalty(baseB.gold, DUAL_WIELD_PENALTY),
-        exp:  applyPenalty(baseB.exp,  DUAL_WIELD_PENALTY),
-        luck: applyPenalty(baseB.luck, DUAL_WIELD_PENALTY),
-      };
-    }
-
-    // Аксессуары — усиливаем осколком
-    if (slotKey === 'accessory-1' || slotKey === 'accessory-2') {
-      const accBoost = 1 + (mnemVals.acc || 0) / 100;
-      const boostAcc = (m) => {
-        const pct = (m - 1) * 100;
-        return 1 + (pct * accBoost) / 100;
-      };
-      applyMultipliers({
-        orns: boostAcc(baseB.orns),
-        gold: boostAcc(baseB.gold),
-        exp:  boostAcc(baseB.exp),
-        luck: boostAcc(baseB.luck),
-      });
-    } else {
-      applyMultipliers(baseB);
-    }
+    equipment.push({
+      slotKey,
+      item,
+      quality: slotEl.dataset.quality || 'common',
+      mode: slotEl.querySelector('.slot-mode-toggle')?.dataset.mode || 'weapon',
+    });
   });
 
-  // Питомец
+  // 5. Питомец
   const petBox = document.getElementById('pet-box');
+  let follower = null;
   if (petBox?.dataset.followerId) {
-    const follower = allFollowers.find(f => f.id === petBox.dataset.followerId);
+    const item = allFollowers.find(f => f.id === petBox.dataset.followerId);
     const bbLevel = parseInt(petBox.dataset.bbLevel) || 0;
-    if (follower && bbLevel > 0) {
-      const followerMult = getFollowerMultiplier(follower, bbLevel);
-      applyMultipliers(followerMult);
-    }
+    if (item) follower = { item, bbLevel };
   }
 
-  // Шаги
-  if (farmState.steps['3000']) applyMultipliers({ exp: 1.25 });
-  if (farmState.steps['6000']) applyMultipliers({ orns: 1.25, luck: 1.25 });
+  // 6. Чекбоксы
+  const temples = collectChecked('#temples-grid', 'templeId', TEMPLES);
+  const statues = collectChecked('#statues-grid', 'statueId', STATUES);
+  const events  = collectChecked('#events-grid',  'eventId',  EVENTS);
+  const consumables = collectChecked('#consumables-grid', 'consumableId', getAllConsumables(allItems));
+  const astral  = collectChecked('#astral-grid',  'astralId', ASTRAL_TREE);
 
-  // Храмы
-  document.querySelectorAll('#temples-grid input[type="checkbox"]:checked').forEach(chk => {
-    const t = TEMPLES.find(x => x.id === chk.dataset.templeId);
-    if (t) applyMultipliers(t.multipliers);
+  // 7. Считаем
+  const results = calculateFarm({
+    anguish,
+    specMultipliers,
+    specId,
+    mnemVals,
+    equipment,
+    follower,
+    steps: farmState.steps,
+    temples,
+    statues,
+    events,
+    consumables,
+    astral,
   });
-
-  // Статуи
-  document.querySelectorAll('#statues-grid input[type="checkbox"]:checked').forEach(chk => {
-    const s = STATUES.find(x => x.id === chk.dataset.statueId);
-    if (s) applyMultipliers(s.multipliers);
-  });
-
-  // Ивенты
-  document.querySelectorAll('#events-grid input[type="checkbox"]:checked').forEach(chk => {
-    const e = EVENTS.find(x => x.id === chk.dataset.eventId);
-    if (e) applyMultipliers(e.multipliers);
-  });
-
-  // Расходники
-  const allConsumables = getAllConsumables();
-  document.querySelectorAll('#consumables-grid input[type="checkbox"]:checked').forEach(chk => {
-    const c = allConsumables.find(x => x.id === chk.dataset.consumableId);
-    if (c) applyMultipliers(c.multipliers);
-  });
-
-  // Астродерево
-  document.querySelectorAll('#astral-grid input[type="checkbox"]:checked').forEach(chk => {
-    const a = ASTRAL_TREE.find(x => x.id === chk.dataset.astralId);
-    if (a) applyMultipliers(a.multipliers);
-  });
-
-  const results = {
-    orns: base.orns * mult.orns,
-    gold: base.gold * mult.gold,
-    exp:  base.exp  * mult.exp,
-    luck: base.luck * mult.luck,
-  };
 
   updateFarmResults(results);
+
+  // Обновляем подписи ВСЕХ слотов с предметами
+  ['weapon-1', 'weapon-2', 'head', 'body', 'legs', 'accessory-1', 'accessory-2']
+    .forEach(sk => {
+      const el = document.querySelector(`[data-slot="${sk}"]`);
+      if (el?.dataset.itemId) refreshSlotStats(sk);
+    });
+
+  // Обводка слотов и селекта спеки
+  updateSpecRequirementUI();
+}
+
+function collectChecked(gridSel, idAttr, sourceArr) {
+  const result = [];
+  document.querySelectorAll(`${gridSel} input[type="checkbox"]:checked`).forEach(chk => {
+    const id = chk.dataset[idAttr];
+    const item = sourceArr.find(x => x.id === id);
+    if (item) result.push(item);
+  });
+  return result;
 }
 
 function updateFarmResults(results) {
@@ -904,6 +736,12 @@ function updateFarmResults(results) {
   set('gold-result', results.gold);
   set('exp-result',  results.exp);
   set('luck-result', results.luck);
+
+  // Бейдж «КАП» у удачи
+  const luckCard = document.querySelector('.farm-result-card[data-currency="luck"]');
+  if (luckCard) {
+    luckCard.classList.toggle('is-capped', !!results.luckCapped);
+  }
 }
 
 // ============ ЭКИПИРОВКА ============
@@ -916,92 +754,6 @@ const FARM_EQUIPMENT_SLOTS = {
   'accessory-1': { allowed: ['accessory'] },
   'accessory-2': { allowed: ['accessory'] },
 };
-
-function getItemSlot(item) {
-  const facts = item.facts || [];
-  const slotFact = facts.find(f =>
-    f.label === 'Слот' || f.label === 'Place' || f.label === 'Slot'
-  );
-  const typeFact = facts.find(f => f.label === 'Тип' || f.label === 'Type');
-
-  const slot = slotFact?.value || '';
-  const type = typeFact?.value || '';
-
-  const hasSockets = facts.some(f =>
-    f.label === 'Сокеты' || f.label === 'Adornment Slots' || f.label === 'Sockets'
-  );
-
-  const sprite = item.sprite || '';
-
-  // Гемма
-  if (/\/(jewels|augments|runes)\//.test(sprite)) return 'adornment';
-  if ((slot === 'Оружие' || slot === 'Weapon') && !hasSockets) return 'adornment';
-
-  // Оффхенд
-  if (['Оффхенд', 'Offhand', 'Off-hand', 'Левая рука', 'Left Hand', 'Вторая рука', 'Second Hand'].includes(slot)) {
-    return 'offhand';
-  }
-
-  // Оффхенды по типу
-  const offhandTypes = [
-    'Щиты', 'Малые щиты', 'Факелы', 'Книги', 'Тотемы', 'Орбы',
-    'Shields', 'Small Shields', 'Torches', 'Books', 'Totems', 'Orbs',
-  ];
-  if (offhandTypes.some(t => type.includes(t))) return 'offhand';
-
-  // Основные слоты
-  if (slot === 'Оружие' || slot === 'Weapon')       return 'weapon';
-  if (slot === 'Голова' || slot === 'Head')         return 'head';
-  if (['Торс', 'Тело', 'Body', 'Torso'].includes(slot)) return 'body';
-  if (slot === 'Ноги' || slot === 'Legs')           return 'legs';
-  if (slot === 'Аксессуар' || slot === 'Accessory') return 'accessory';
-
-  return 'unknown';
-}
-
-function isTwoHanded(item) {
-  if (!item) return false;
-  if (Array.isArray(item.tags)) {
-    if (item.tags.some(t => /Двуручное|Two[\s-]?Handed|Two handed/i.test(t))) {
-      return true;
-    }
-  }
-  return false;
-}
-
-function updateTwoHandedLock(slotKey, item) {
-  if (slotKey !== 'weapon-1' && slotKey !== 'weapon-2') return;
-
-  const otherKey = slotKey === 'weapon-1' ? 'weapon-2' : 'weapon-1';
-  const otherSlot = document.querySelector(`[data-slot="${otherKey}"]`);
-  if (!otherSlot) return;
-
-  if (isTwoHanded(item)) {
-    clearFarmSlot(otherKey);
-    otherSlot.classList.add('is-locked');
-
-    if (otherKey === 'weapon-2') {
-      const toggle = otherSlot.querySelector('.slot-mode-toggle');
-      if (toggle) toggle.style.display = 'none';
-    }
-  } else {
-    otherSlot.classList.remove('is-locked');
-
-    if (otherKey === 'weapon-2') {
-      const toggle = otherSlot.querySelector('.slot-mode-toggle');
-      if (toggle) toggle.style.display = '';
-    }
-  }
-}
-
-// Проверка: предмет даёт фарм-бонусы?
-function isFarmItem(item) {
-  const effects = item.effects || [];
-  return effects.some(e =>
-    typeof e === 'string' &&
-    /Орн|Orn|Золот|Gold|Удач|Luck|Опыт(?!\s+на\s+ходу)|Experien|EXP/i.test(e)
-  );
-}
 
 function getSlotAllowed(slotKey) {
   const slotEl = document.querySelector(`[data-slot="${slotKey}"]`);
@@ -1017,12 +769,36 @@ function getSlotAllowed(slotKey) {
   return conf.allowed;
 }
 
+function formatFarmMeta(item) {
+  const m = parseFarmBonuses((item.effects || []).join(' '));
+  const lang = currentLang();
+
+  const names = {
+    ru: { orns: 'Орны', gold: 'Золото', exp: 'Опыт', luck: 'Удача' },
+    en: { orns: 'Orns', gold: 'Gold', exp: 'Exp', luck: 'Luck' },
+  };
+  const n = names[lang] || names.ru;
+
+  const parts = [];
+  ['orns', 'gold', 'exp', 'luck'].forEach(key => {
+    const v = m[key];
+    if (v != null && v !== 1) {
+      const pct = Math.round((v - 1) * 100);
+      const sign = pct >= 0 ? '+' : '';
+      parts.push(`${n[key]}: ${sign}${pct}%`);
+    }
+  });
+
+  return parts.join(' · ');
+}
+
 function openSlotPicker(slotKey) {
   const allowed = getSlotAllowed(slotKey);
 
   const items = allItems
     .filter(it =>
       isFarmItem(it) &&
+      !isBannedFarm(it) &&
       allowed.includes(getItemSlot(it))
     )
     .sort((a, b) => (a.tier || 0) - (b.tier || 0) || a.name.localeCompare(b.name));
@@ -1030,6 +806,7 @@ function openSlotPicker(slotKey) {
   window.Modal.open({
     title: 'Выбор предмета',
     items,
+    metaFormatter: formatFarmMeta,
     onPick: (item) => applyItemToFarmSlot(slotKey, item),
     onClear: () => clearFarmSlot(slotKey),
   });
@@ -1042,7 +819,6 @@ function applyItemToFarmSlot(slotKey, item) {
   const wrapper = slotEl.closest('.slot-wrapper');
   const img = slotEl.querySelector('.slot-icon-img');
   const nameEl = wrapper?.querySelector('.slot-name') || slotEl.querySelector('.slot-name');
-  const statsEl = wrapper?.querySelector('.slot-stats') || slotEl.querySelector('.slot-stats');
   const qualitySel = slotEl.querySelector('.slot-quality');
 
   if (img && item.sprite) { img.src = item.sprite; img.hidden = false; }
@@ -1052,7 +828,7 @@ function applyItemToFarmSlot(slotKey, item) {
   slotEl.dataset.itemId = item.id;
   slotEl.classList.add('has-item');
 
-    updateSlotQuality(slotKey);
+  updateSlotQuality(slotKey);
   ensureSlotReset(slotEl);
   updateTwoHandedLock(slotKey, item);
   recalcFarm();
@@ -1066,7 +842,6 @@ function updateSlotQuality(slotKey) {
   const quality = qualitySel.value || 'common';
   slotEl.dataset.quality = quality;
 
-  // Фон качества
   const bg = QUALITY_BG[quality] || '';
   if (bg) {
     slotEl.style.backgroundImage = `url('${bg}')`;
@@ -1078,35 +853,125 @@ function updateSlotQuality(slotKey) {
     slotEl.style.backgroundBlendMode = '';
   }
 
-  const item = allItems.find(i => i.id === slotEl.dataset.itemId);
+  refreshSlotStats(slotKey);
+}
+
+function refreshSlotStats(slotKey) {
+  const slotEl = document.querySelector(`[data-slot="${slotKey}"]`);
+  if (!slotEl) return;
+
+  const itemId = slotEl.dataset.itemId;
   const statsEl = slotEl.closest('.slot-wrapper')?.querySelector('.slot-stats') ||
                   slotEl.querySelector('.slot-stats');
+  if (!statsEl) return;
 
-  if (item && statsEl) {
-    const base = parseFarmBonuses((item.effects || []).join(' '));
-    const qualityMult = QUALITY_MULT[quality] || 1;
-
-    const boosted = {
-      orns: boostByQuality(base.orns, qualityMult),
-      gold: boostByQuality(base.gold, qualityMult),
-      exp:  boostByQuality(base.exp,  qualityMult),
-      luck: boostByQuality(base.luck, qualityMult),
-    };
-
-    statsEl.textContent = formatEffect({ multipliers: boosted }, currentLang());
+  if (!itemId) {
+    statsEl.textContent = '';
+    return;
   }
+
+  const item = allItems.find(i => String(i.id) === String(itemId));
+  if (!item) {
+    statsEl.textContent = '';
+    return;
+  }
+
+  const specSel = document.getElementById('spec-select');
+  const activeSpecId = specSel?.value || null;
+  const req = checkSpecRequirement(item, activeSpecId);
+
+  if (req.requires && !req.satisfied) {
+    statsEl.textContent = currentLang() === 'ru'
+      ? 'Требуется специализация: Купец'
+      : 'Requires spec: Merchant';
+    statsEl.classList.add('stats-requires-spec');
+    return;
+  } else {
+    statsEl.classList.remove('stats-requires-spec');
+  }
+
+  const quality = slotEl.dataset.quality || 'common';
+  const qualityMult = QUALITY_MULT[quality] || 1;
+
+  let base = parseFarmBonuses((item.effects || []).join(' '));
+
+  base = {
+    orns: boostByQuality(base.orns, qualityMult),
+    gold: boostByQuality(base.gold, qualityMult),
+    exp:  boostByQuality(base.exp,  qualityMult),
+    luck: boostByQuality(base.luck, qualityMult),
+  };
+
+  const isWeaponSlot = slotKey === 'weapon-1' || slotKey === 'weapon-2';
+  if (isWeaponSlot && isBothOneHand()) {
+    base = {
+      orns: applyPenalty(base.orns, DUAL_WIELD_PENALTY),
+      gold: applyPenalty(base.gold, DUAL_WIELD_PENALTY),
+      exp:  applyPenalty(base.exp,  DUAL_WIELD_PENALTY),
+      luck: applyPenalty(base.luck, DUAL_WIELD_PENALTY),
+    };
+  }
+
+  if (slotKey === 'accessory-1' || slotKey === 'accessory-2') {
+    const mnemVals = getMnemValues();
+    const accBoost = 1 + (mnemVals.acc || 0) / 100;
+    base = {
+      orns: boostByQuality(base.orns, accBoost),
+      gold: boostByQuality(base.gold, accBoost),
+      exp:  boostByQuality(base.exp,  accBoost),
+      luck: boostByQuality(base.luck, accBoost),
+    };
+  }
+
+  statsEl.textContent = formatEffect({ multipliers: base }, currentLang());
 }
 
-function boostByQuality(m, qualityMult) {
-  if (m === 1) return 1;
-  const pct = (m - 1) * 100;
-  return 1 + (pct * qualityMult) / 100;
+function isBothOneHand() {
+  const w1El = document.querySelector('[data-slot="weapon-1"]');
+  const w2El = document.querySelector('[data-slot="weapon-2"]');
+  const w1Item = w1El?.dataset.itemId ? allItems.find(i => String(i.id) === String(w1El.dataset.itemId)) : null;
+  const w2Item = w2El?.dataset.itemId ? allItems.find(i => String(i.id) === String(w2El.dataset.itemId)) : null;
+
+  const w2Mode = w2El?.querySelector('.slot-mode-toggle')?.dataset.mode || 'weapon';
+
+  return !!(w1Item && w2Item && w2Mode === 'weapon' &&
+            !isTwoHanded(w1Item) && !isTwoHanded(w2Item));
 }
 
-function applyPenalty(m, penalty) {
-  if (m === 1) return 1;
-  const pct = (m - 1) * 100;
-  return 1 + (pct * penalty) / 100;
+function updateSpecRequirementUI() {
+  const specSel = document.getElementById('spec-select');
+  const activeSpecId = specSel?.value || null;
+
+  let anyRequires = false;
+  let allSatisfied = true;
+
+  document.querySelectorAll('.slot[data-item-id]').forEach(slotEl => {
+    const slotKey = slotEl.dataset.slot;
+    if (slotKey === 'mnem-1' || slotKey === 'mnem-2') return;
+
+    const itemId = slotEl.dataset.itemId;
+    const item = allItems.find(i => String(i.id) === String(itemId));
+    if (!item) {
+      slotEl.classList.remove('requires-spec', 'spec-satisfied');
+      return;
+    }
+
+    const req = checkSpecRequirement(item, activeSpecId);
+
+    if (req.requires) {
+      anyRequires = true;
+      slotEl.classList.add('requires-spec');
+      slotEl.classList.toggle('spec-satisfied', req.satisfied);
+      if (!req.satisfied) allSatisfied = false;
+    } else {
+      slotEl.classList.remove('requires-spec', 'spec-satisfied');
+    }
+  });
+
+  if (specSel) {
+    specSel.classList.toggle('spec-required', anyRequires);
+    specSel.classList.toggle('spec-satisfied', anyRequires && allSatisfied);
+  }
 }
 
 function ensureSlotReset(slotEl) {
@@ -1184,8 +1049,60 @@ function initFarmEquipment() {
   document.querySelectorAll('.slot-quality').forEach(sel => {
     if (sel.dataset.bound === '1') return;
     sel.dataset.bound = '1';
-    sel.addEventListener('change', () => updateSlotQuality(sel.dataset.slot));
+    sel.addEventListener('change', () => {
+      updateSlotQuality(sel.dataset.slot);
+      recalcFarm();
+    });
   });
+
+  document.querySelectorAll('.slot-mode-toggle').forEach(toggle => {
+    if (toggle.dataset.bound === '1') return;
+    toggle.dataset.bound = '1';
+
+    toggle.querySelectorAll('.mode-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const mode = btn.dataset.mode;
+        toggle.dataset.mode = mode;
+        toggle.querySelectorAll('.mode-btn').forEach(b =>
+          b.classList.toggle('active', b.dataset.mode === mode)
+        );
+
+        const slotEl = toggle.closest('.slot');
+        const slotKey = slotEl?.dataset.slot;
+        if (slotKey && slotEl.dataset.itemId) {
+          clearFarmSlot(slotKey);
+        }
+
+        recalcFarm();
+      });
+    });
+  });
+}
+
+function updateTwoHandedLock(slotKey, item) {
+  if (slotKey !== 'weapon-1' && slotKey !== 'weapon-2') return;
+
+  const otherKey = slotKey === 'weapon-1' ? 'weapon-2' : 'weapon-1';
+  const otherSlot = document.querySelector(`[data-slot="${otherKey}"]`);
+  if (!otherSlot) return;
+
+  if (isTwoHanded(item)) {
+    clearFarmSlot(otherKey);
+    otherSlot.classList.add('is-locked');
+
+    if (otherKey === 'weapon-2') {
+      const toggle = otherSlot.querySelector('.slot-mode-toggle');
+      if (toggle) toggle.style.display = 'none';
+    }
+  } else {
+    otherSlot.classList.remove('is-locked');
+
+    if (otherKey === 'weapon-2') {
+      const toggle = otherSlot.querySelector('.slot-mode-toggle');
+      if (toggle) toggle.style.display = '';
+    }
+  }
 }
 
 // ============ ИНИЦИАЛИЗАЦИЯ ============
@@ -1219,7 +1136,7 @@ async function initFarmPage() {
   renderEventsGrid(document.getElementById('events-grid'), EVENTS);
   renderSimpleGrid(document.getElementById('astral-grid'), ASTRAL_TREE, 'astral');
 
-  const allConsumables = getAllConsumables();
+  const allConsumables = getAllConsumables(allItems);
   console.log('📋 Расходников всего:', allConsumables.length);
   renderSimpleGrid(document.getElementById('consumables-grid'), allConsumables, 'consumable');
 
@@ -1245,7 +1162,7 @@ initFarmPage();
 window.addEventListener('orna-lang-changed', async () => {
   console.log('🌐 Language changed, reloading farm...');
 
-  // Сохраняем состояние
+  // ============ 1. СОБИРАЕМ СОСТОЯНИЕ ============
   const savedState = {
     classId: '',
     specId: '',
@@ -1253,8 +1170,39 @@ window.addEventListener('orna-lang-changed', async () => {
     followerBB: 0,
     slots: {},
     mnems: [],
+    steps: { 3000: false, 6000: false },
+    anguish: { orns: 0, gold: 0, exp: 0, luck: 0 },
+    consumables: [],
   };
 
+  // Шаги
+  const step3000 = document.querySelector('.step-check[data-steps="3000"]');
+  const step6000 = document.querySelector('.step-check[data-steps="6000"]');
+  savedState.steps['3000'] = step3000?.checked || false;
+  savedState.steps['6000'] = step6000?.checked || false;
+
+  // Настрадание
+  ['orns', 'gold', 'exp', 'luck'].forEach(cur => {
+    const inp = document.querySelector(`.anguish-input[data-currency="${cur}"]`);
+    savedState.anguish[cur] = parseFloat(inp?.value) || 0;
+  });
+
+  // Чекбоксы всех групп
+  const CONSUMABLE_GROUPS = [
+  { cssAttr: 'data-temple-id',     dataKey: 'templeId',     group: 'temple' },
+  { cssAttr: 'data-statue-id',     dataKey: 'statueId',     group: 'statue' },
+  { cssAttr: 'data-event-id',      dataKey: 'eventId',      group: 'event' },
+  { cssAttr: 'data-astral-id',     dataKey: 'astralId',     group: 'astral' },
+  { cssAttr: 'data-consumable-id', dataKey: 'consumableId', group: 'consumable' },
+];
+
+CONSUMABLE_GROUPS.forEach(({ cssAttr, dataKey, group }) => {
+  document.querySelectorAll(`.consumables-grid input[${cssAttr}]:checked`).forEach(chk => {
+    savedState.consumables.push({ id: chk.dataset[dataKey], group });
+  });
+});
+
+  // Класс, спека
   const classSel = document.getElementById('class-select');
   const specSel = document.getElementById('spec-select');
   if (classSel) savedState.classId = classSel.value;
@@ -1275,6 +1223,7 @@ window.addEventListener('orna-lang-changed', async () => {
 
     savedState.slots[key] = {
       itemId: slotEl.dataset.itemId,
+      quality: slotEl.dataset.quality || 'common',
       mode: slotEl.querySelector('.slot-mode-toggle')?.dataset.mode || null,
     };
   });
@@ -1292,16 +1241,14 @@ window.addEventListener('orna-lang-changed', async () => {
     });
   });
 
-  // Перезагружаем данные
+  // ============ 2. ПЕРЕЗАГРУЖАЕМ ДАННЫЕ ============
   await loadAllData();
 
-  // Обновляем пустые опции
   document.querySelectorAll('select option[value=""]').forEach(opt => {
     const lang = currentLang();
     opt.textContent = opt.dataset[lang] || opt.dataset.ru || opt.textContent;
   });
 
-  // Перерисовываем селекты
   fillClassSelect();
   fillSpecSelect();
 
@@ -1318,17 +1265,48 @@ window.addEventListener('orna-lang-changed', async () => {
   }
   updateFollowerLock();
 
-  // Расходники
-  const allConsumables = getAllConsumables();
+  // ============ 3. ПЕРЕРИСОВЫВАЕМ ВСЕ СЕКЦИИ ============
+  const allConsumables = getAllConsumables(allItems);
   renderSimpleGrid(document.getElementById('consumables-grid'), allConsumables, 'consumable');
-
-  // Храмы/статуи/ивенты/астродерево
   renderSimpleGrid(document.getElementById('temples-grid'), TEMPLES, 'temple');
   renderSimpleGrid(document.getElementById('statues-grid'), STATUES, 'statue');
   renderEventsGrid(document.getElementById('events-grid'), EVENTS);
   renderSimpleGrid(document.getElementById('astral-grid'), ASTRAL_TREE, 'astral');
 
-  // Восстанавливаем мнемы
+  // ============ 4. ВОССТАНАВЛИВАЕМ ЧЕКБОКСЫ ============
+const RESTORE_GROUPS = {
+  temple:     'data-temple-id',
+  statue:     'data-statue-id',
+  event:      'data-event-id',
+  astral:     'data-astral-id',
+  consumable: 'data-consumable-id',
+};
+
+savedState.consumables.forEach(({ id, group }) => {
+  const cssAttr = RESTORE_GROUPS[group];
+  if (!cssAttr) return;
+  const chk = document.querySelector(
+    `.consumables-grid input[${cssAttr}="${id}"]`
+  );
+  if (chk) chk.checked = true;
+});
+
+  // ============ 5. ВОССТАНАВЛИВАЕМ ШАГИ ============
+  farmState.steps['3000'] = savedState.steps['3000'];
+  farmState.steps['6000'] = savedState.steps['6000'];
+  document.querySelectorAll('.step-check').forEach(chk => {
+    const stepVal = chk.dataset.steps;
+    if (stepVal === '3000') chk.checked = savedState.steps['3000'];
+    if (stepVal === '6000') chk.checked = savedState.steps['6000'];
+  });
+
+  // ============ 6. ВОССТАНАВЛИВАЕМ НАСТРАДАНИЕ ============
+  ['orns', 'gold', 'exp', 'luck'].forEach(cur => {
+    const inp = document.querySelector(`.anguish-input[data-currency="${cur}"]`);
+    if (inp) inp.value = savedState.anguish[cur];
+  });
+
+  // ============ 7. ВОССТАНАВЛИВАЕМ МНЕМЫ ============
   savedState.mnems.forEach(m => {
     const sel = document.querySelector(
       `.mnem-select[data-mnem="${m.mnemId}"][data-row="${m.rowId}"]`
@@ -1340,9 +1318,9 @@ window.addEventListener('orna-lang-changed', async () => {
     if (input && m.num) input.value = m.num;
   });
 
-  // Восстанавливаем слоты
+  // ============ 8. ВОССТАНАВЛИВАЕМ СЛОТЫ ============
   for (const [slotKey, data] of Object.entries(savedState.slots)) {
-    const item = allItems.find(i => i.id === data.itemId);
+    const item = allItems.find(i => String(i.id) === String(data.itemId));
     if (!item) continue;
 
     if (data.mode) {
@@ -1356,7 +1334,103 @@ window.addEventListener('orna-lang-changed', async () => {
     }
 
     applyItemToFarmSlot(slotKey, item);
+
+    const qualitySel = document.querySelector(`[data-slot="${slotKey}"] .slot-quality`);
+    if (qualitySel && data.quality) {
+      qualitySel.value = data.quality;
+      updateSlotQuality(slotKey);
+    }
   }
 
+  // ============ 9. ФИНАЛЬНЫЙ ПЕРЕСЧЁТ ============
   recalcFarm();
 });
+
+// ============ ЭКСПОРТ В WINDOW ============
+window.openSlotPicker = openSlotPicker;
+window.applyItemToFarmSlot = applyItemToFarmSlot;
+window.clearFarmSlot = clearFarmSlot;
+window.applyFollower = applyFollower;
+window.clearFollower = clearFollower;
+window.openFollowerPicker = openFollowerPicker;
+window.updateSlotQuality = updateSlotQuality;
+window.recalcFarm = recalcFarm;
+window.formatEffect = formatEffect;
+window.initFarmPage = initFarmPage;
+window.updateClassInfo = updateClassInfo;
+window.updateSpecInfo = updateSpecInfo;
+window.updateFollowerLock = updateFollowerLock;
+window.updateTwoHandedLock = updateTwoHandedLock;
+window.updateLeftMnemLock = updateLeftMnemLock;
+
+window.__farmDebug = { allItems, allClasses, allSpecs, allFollowers };
+
+// ============================================================
+// ПОЛНЫЙ СБРОС СТРАНИЦЫ
+// ============================================================
+function resetAll() {
+  const lang = currentLang();
+  const msg = lang === 'ru'
+    ? 'Сбросить всё? Это действие нельзя отменить.'
+    : 'Reset all? This action cannot be undone.';
+  if (!window.confirm(msg)) return;
+
+  // 1. Класс
+  const classSel = document.getElementById('class-select');
+  if (classSel) classSel.value = '';
+
+  // 2. Спека
+  const specSel = document.getElementById('spec-select');
+  if (specSel) specSel.value = '';
+
+  // 3. Питомец
+  clearFollower();
+
+  // 4. Слоты
+  ['weapon-1', 'weapon-2', 'head', 'body', 'legs', 'accessory-1', 'accessory-2']
+    .forEach(sk => {
+      const slotEl = document.querySelector(`[data-slot="${sk}"]`);
+      if (slotEl?.dataset.itemId) clearFarmSlot(sk);
+    });
+
+  // 5. Мнемы
+  document.querySelectorAll('.mnem-select').forEach(sel => {
+    sel.value = '';
+    sel.dispatchEvent(new Event('change'));
+  });
+
+  // 6. Шаги
+  farmState.steps['3000'] = false;
+  farmState.steps['6000'] = false;
+  document.querySelectorAll('.step-check').forEach(chk => {
+    chk.checked = false;
+  });
+
+  // 7. Настрадание
+  document.querySelectorAll('.anguish-input').forEach(inp => {
+    inp.value = 0;
+  });
+
+  // 8. Расходники
+  document.querySelectorAll('.consumables-grid input[type="checkbox"]:checked').forEach(chk => {
+    chk.checked = false;
+  });
+
+  // 9. Обновляем UI
+  updateClassInfo();
+  updateSpecInfo();
+  updateLeftMnemLock();
+  updateFollowerLock();
+  updateSpecRequirementUI();
+
+  // 10. Пересчёт
+  recalcFarm();
+}
+
+function initResetButton() {
+  const btn = document.getElementById('reset-btn');
+  if (!btn) return;
+  btn.addEventListener('click', resetAll);
+}
+
+initResetButton();

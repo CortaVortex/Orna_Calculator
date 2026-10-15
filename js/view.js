@@ -1,6 +1,19 @@
 // ============================================================
-// ОБЗОР — ЛОГИКА
+// ОБЗОР — ЛОГИКА (UI)
 // ============================================================
+
+import {
+  BASE_VIEW, VIEW_CAP,
+  parseViewBonus, getItemViewMultiplier, isViewItem,
+  getBBLevels, hasViewBonus, getFollowerViewMultiplier, getAvailableBB as calcAvailableBB,
+  isRelevantViewClass, isRelevantViewSpec,
+  MNEM_VIEW_MIN, MNEM_VIEW_MAX, getMnemViewMultiplier,
+  getViewGemsFromItems, getGemsMultiplier,
+  getStepsMultiplier,
+  isItemAllowedInSlot, getItemSlot, isTwoHanded, isBannedView,
+  calculateView, getEquipmentViewMultiplier,
+  getDynamicViewConsumables,
+} from './view-calc.js';
 
 // ============ СОСТОЯНИЕ ============
 const state = {
@@ -16,12 +29,10 @@ const state = {
   gems2: 0,
   steps3000: false,
   steps6000: false,
+  brazier: false,
   mnemView: [0, 0, 0, 0, 0, 0],
   consumablesMult: 1,
 };
-
-const BASE_VIEW = 180;
-const VIEW_CAP = 1600;
 
 // ============ ДАННЫЕ ============
 let allClasses = [];
@@ -62,25 +73,7 @@ async function loadAllData() {
   console.log('   Предметы:', allItems.length);
 }
 
-// ============ УТИЛИТЫ ============
-function parseViewBonus(effects, lang) {
-  if (!Array.isArray(effects)) return 1;
-  const key = lang === 'ru' ? 'Обзор' : 'View Distance';
-  for (const eff of effects) {
-    if (typeof eff !== 'string') continue;
-    const m = eff.match(new RegExp(`${key}[:\\s]+\\+?(\\d+(?:\\.\\d+)?)%`, 'i'));
-    if (m) return 1 + parseFloat(m[1]) / 100;
-  }
-  return 1;
-}
-
 // ============ КЛАССЫ ============
-function isRelevantClass(cls) {
-  const hasView = parseViewBonus(cls.effects, state.lang) !== 1;
-  const hasBB = (cls.bestialBondLevel || 0) > 0;
-  return hasView || hasBB;
-}
-
 function fillClassSelect() {
   const sel = document.getElementById('class-select');
   if (!sel) return;
@@ -101,7 +94,7 @@ function fillClassSelect() {
   }
 
   allClasses
-    .filter(isRelevantClass)
+    .filter(c => isRelevantViewClass(c, state.lang))
     .sort((a, b) => (a.tier || 0) - (b.tier || 0) || a.name.localeCompare(b.name))
     .forEach(c => {
       const opt = document.createElement('option');
@@ -153,13 +146,6 @@ function updateClassInfo() {
 }
 
 // ============ СПЕЦИАЛИЗАЦИИ ============
-function isRelevantSpec(spec) {
-  const hasView = (spec.viewMultiplier || 1) !== 1;
-  const hasBB = (spec.bestialBondLevel || 0) > 0;
-  const hasAmity = !!spec.unlocksSecondAmity;
-  return hasView || hasBB || hasAmity;
-}
-
 function fillSpecSelect() {
   const sel = document.getElementById('spec-select');
   if (!sel) return;
@@ -179,7 +165,7 @@ function fillSpecSelect() {
     sel.insertBefore(none, sel.firstChild);
   }
 
-  allSpecs.filter(isRelevantSpec).forEach(s => {
+  allSpecs.filter(isRelevantViewSpec).forEach(s => {
     const opt = document.createElement('option');
     opt.value = s.id;
     opt.textContent = s.name;
@@ -227,73 +213,54 @@ function updateSpecInfo() {
   recalc();
 }
 
-// ============ МНОЖИТЕЛИ ============
-function getFollowerMultiplier() {
-  const petBox = document.getElementById('pet-box');
-  if (!petBox || !petBox.dataset.mult) return 1;
-  return parseFloat(petBox.dataset.mult) || 1;
-}
-
-function getMnemViewMultiplier() {
-  let m = 1;
-  state.mnemView.forEach(v => {
-    if (v > 0) m *= (1 + v / 100);
-  });
-  return m;
-}
-
-function getGemsMultiplier() {
-  return state.gemsMultiplier || 1;
-}
-
-function getStepsMultiplier() {
-  let m = 1;
-  if (state.steps3000) m *= 1.1;
-  if (state.steps6000) m *= 1.1;
-  return m;
-}
-
-function getEquipmentMultiplier() {
-  let m = 1;
-  document.querySelectorAll('.slot[data-item-mult]').forEach(el => {
-    m *= parseFloat(el.dataset.itemMult) || 1;
-  });
-  return m;
-}
-
 // ============ ПЕРЕСЧЁТ ============
 function recalc() {
-  const mult =
-    state.classView *
-    state.specView *
-    getFollowerMultiplier() *
-    getMnemViewMultiplier() *
-    getGemsMultiplier() *
-    getStepsMultiplier() *
-    getEquipmentMultiplier() *
-    (state.consumablesMult || 1);
+  // 1. Экипировка — собираем предметы из слотов
+  const equipment = [];
+  document.querySelectorAll('.slot[data-slot]').forEach(slotEl => {
+    const key = slotEl.dataset.slot;
+    if (key === 'mnem-1' || key === 'mnem-2') return;
+    if (!slotEl.dataset.itemId) return;
 
-  const raw = BASE_VIEW * mult;
-  const capped = Math.min(raw, VIEW_CAP);
-  const isCapped = raw >= VIEW_CAP;
+    const item = allItems.find(i => String(i.id) === String(slotEl.dataset.itemId));
+    if (!item) return;
+    equipment.push({ slotKey: key, item });
+  });
 
+  // 2. Питомец
+  const petBox = document.getElementById('pet-box');
+  const followerMult = parseFloat(petBox?.dataset.mult) || 1;
+
+  // 3. Считаем
+  const result = calculateView({
+    classView: state.classView,
+    specView: state.specView,
+    followerMult,
+    mnemView: state.mnemView,
+    gemsMult: state.gemsMultiplier || 1,
+    stepsMult: getStepsMultiplier({
+      steps3000: state.steps3000,
+      steps6000: state.steps6000,
+    }) * (state.brazier ? 1.2 : 1),
+    equipmentMult: getEquipmentViewMultiplier(equipment, state.lang),
+    consumablesMult: state.consumablesMult || 1,
+  });
+
+  // 4. Вывод
   const actualViewEl = document.getElementById('actual-view');
   const baseViewEl = document.getElementById('base-view');
   const capLabelEl = document.getElementById('view-cap-label');
   const actualLineEl = actualViewEl?.closest('.result-line-actual');
 
-  if (baseViewEl) baseViewEl.textContent = `${BASE_VIEW} м`;
-  if (actualViewEl) actualViewEl.textContent = `${Math.floor(capped)} м`;
-  if (capLabelEl) capLabelEl.classList.toggle('visible', isCapped);
-  if (actualLineEl) actualLineEl.classList.toggle('is-capped', isCapped);
+  if (baseViewEl) baseViewEl.textContent = `${result.base} м`;
+  if (actualViewEl) actualViewEl.textContent = `${Math.floor(result.capped)} м`;
+  if (capLabelEl) capLabelEl.classList.toggle('visible', result.isCapped);
+  if (actualLineEl) actualLineEl.classList.toggle('is-capped', result.isCapped);
 }
 
 // ============================================================
 // МНЕМЫ
 // ============================================================
-const MNEM_VIEW_MIN = 1;
-const MNEM_VIEW_MAX = 5;
-
 function getMnemSelects(mnemId) {
   return document.querySelectorAll(`.mnem-select[data-mnem="${mnemId}"]`);
 }
@@ -383,49 +350,7 @@ function updateLeftMnemLock() {
 // ============================================================
 // ГЕММЫ
 // ============================================================
-let gemItems = [];   // кеш: геммы из парсера
-
-function getGemItemsFromCodex() {
-  return allItems
-    .filter(item => {
-      const sprite = item.sprite || '';
-      const name = item.name || '';
-      const facts = item.facts || [];
-
-      // sprite в weapons/ → это ОРУЖИЕ, не гемма
-      const isWeaponSprite = /\/weapons\//.test(sprite);
-
-      // Стандартные геммы — sprite в jewels/augments/runes
-      const isGemSprite = /\/(jewels|augments|runes)\//.test(sprite);
-
-      // Гемма по названию
-      const isGemName = /gem|jewel|символ|гемма|всевид|seer/i.test(name);
-
-      // Слот "Оружие" без сокетов (для acc-гемм типа "Гемма Всевидца")
-      const slotFact = facts.find(f => f.label === 'Слот' || f.label === 'Place');
-      const slot = slotFact?.value || '';
-      const hasSockets = facts.some(f => f.label === 'Сокеты' || f.label === 'Adornment Slots');
-      const isWeaponWithoutSockets = (slot === 'Оружие' || slot === 'Weapon') && !hasSockets;
-
-      // Исключаем оружие по sprite
-      if (isWeaponSprite) return false;
-
-      return (isGemSprite || isGemName || isWeaponWithoutSockets) && isViewItem(item);
-    })
-    .map(item => {
-      const viewEffect = item.effects?.find(e => /Обзор|View Distance/i.test(e)) || '';
-      const m = viewEffect.match(/\+?(\d+(?:\.\d+)?)%/);
-      return {
-        id: item.id,
-        name: item.name,
-        nameEn: item.name,
-        percent: m ? parseFloat(m[1]) : 0,
-        icon: item.sprite,
-      };
-    })
-    .filter(g => g.percent > 0)
-    .sort((a, b) => a.percent - b.percent);
-}
+let gemItems = [];
 
 function initGems() {
   const listEl = document.getElementById('gems-list');
@@ -434,7 +359,7 @@ function initGems() {
 
   if (!listEl) return;
 
-  gemItems = getGemItemsFromCodex();
+  gemItems = getViewGemsFromItems(allItems, state.lang);
 
   if (!gemItems.length) {
     listEl.innerHTML = '<div class="gems-empty">Нет гемм с обзором</div>';
@@ -444,36 +369,32 @@ function initGems() {
   const lang = currentLang();
 
   listEl.innerHTML = gemItems.map(gem => {
-  const name = lang === 'ru'
-    ? (gem.name || gem.nameEn || '—')
-    : (gem.nameEn || gem.name || '—');
+    const name = lang === 'ru'
+      ? (gem.name || gem.nameEn || '—')
+      : (gem.nameEn || gem.name || '—');
 
-  return `
-    <div class="gem-row">
-      <img class="gem-icon" src="${gem.icon}" alt="" onerror="this.style.display='none'">
-      <span class="gem-name">${name}</span>
-      <span class="gem-percent">+${gem.percent}%</span>
-      <input type="number" class="gem-count" data-gem-id="${gem.id}" min="0" max="99" value="0" placeholder="0">
-    </div>
-  `;
-}).join('');
+    return `
+      <div class="gem-row">
+        <img class="gem-icon" src="${gem.icon}" alt="" onerror="this.style.display='none'">
+        <span class="gem-name">${name}</span>
+        <span class="gem-percent">+${gem.percent}%</span>
+        <input type="number" class="gem-count" data-gem-id="${gem.id}" min="0" max="99" value="0" placeholder="0">
+      </div>
+    `;
+  }).join('');
 
-  // Слушаем изменения
   let totalSlots = 0;
 
   function update() {
     let used = 0;
-    let multiplier = 1;
+    const gemCounts = {};
 
     listEl.querySelectorAll('.gem-count').forEach(inp => {
       const count = parseInt(inp.value) || 0;
       used += count;
 
       const gemId = inp.dataset.gemId;
-      const gem = gemItems.find(g => g.id === gemId);
-      if (gem && count > 0) {
-        multiplier *= Math.pow(1 + gem.percent / 100, count);
-      }
+      if (gemId && count > 0) gemCounts[gemId] = count;
     });
 
     const over = used > totalSlots;
@@ -492,7 +413,7 @@ function initGems() {
       }
     }
 
-    state.gemsMultiplier = multiplier;
+    state.gemsMultiplier = getGemsMultiplier(gemCounts, gemItems);
     recalc();
   }
 
@@ -516,11 +437,17 @@ function initGems() {
 }
 
 // ============================================================
-// ШАГИ
+// ШАГИ + ЖАРОВНЯ
 // ============================================================
 function initSteps() {
   document.querySelectorAll('.step-check').forEach(chk => {
     chk.addEventListener('change', () => {
+      if (chk.classList.contains('brazier-check')) {
+        state.brazier = chk.checked;
+        recalc();
+        return;
+      }
+
       const label = chk.parentElement.textContent.trim();
       if (label.includes('3000')) state.steps3000 = chk.checked;
       if (label.includes('6000')) state.steps6000 = chk.checked;
@@ -532,8 +459,6 @@ function initSteps() {
 // ============================================================
 // РАСХОДНИКИ
 // ============================================================
-
-// Гильдия копателей — три факела (хардкод)
 const SPELUNKER_TORCHES = [
   {
     id: 'spelunker-emerald',
@@ -564,45 +489,6 @@ const SPELUNKER_TORCHES = [
   },
 ];
 
-// Динамические расходники из парсера
-function getDynamicConsumables() {
-  return allItems
-    .filter(item => {
-      const sprite = item.sprite || '';
-      const facts = item.facts || [];
-
-      // Только из useables/
-      const isUseable = /\/useables\//.test(sprite);
-      if (!isUseable) return false;
-
-      // У расходников НЕТ поля "Слот" (или оно равно "Расходник"/"Consumable")
-      const slotFact = facts.find(f => f.label === 'Слот' || f.label === 'Place');
-      const slot = (slotFact?.value || '').toLowerCase();
-
-      // Если слот есть и это НЕ расходник — отсеиваем
-      const isRealSlot = slot !== '' &&
-                        slot !== 'расходник' &&
-                        slot !== 'consumable';
-      if (isRealSlot) return false;
-
-      return isViewItem(item);
-    })
-    .map(item => {
-      const viewEffect = item.effects?.find(e => /Обзор|View Distance/i.test(e)) || '';
-      const m = viewEffect.match(/\+?(\d+(?:\.\d+)?)%/);
-      return {
-        id: item.id,
-        name: item.name,
-        nameEn: item.name,
-        effect: viewEffect,
-        effectEn: viewEffect,
-        viewPercent: m ? parseFloat(m[1]) : null,
-        icon: item.sprite,
-      };
-    });
-}
-
-// Общая функция рендера списка
 function renderConsumablesGrid(gridEl, items, prefix) {
   if (!gridEl) return;
 
@@ -613,22 +499,22 @@ function renderConsumablesGrid(gridEl, items, prefix) {
 
   const lang = currentLang();
 
-gridEl.innerHTML = items.map(item => {
-  const iconHtml = item.icon
-    ? `<img class="consumable-icon" src="${item.icon}" alt="" onerror="this.style.display='none'">`
-    : '<span class="consumable-icon consumable-icon-empty">✦</span>';
+  gridEl.innerHTML = items.map(item => {
+    const iconHtml = item.icon
+      ? `<img class="consumable-icon" src="${item.icon}" alt="" onerror="this.style.display='none'">`
+      : '<span class="consumable-icon consumable-icon-empty">✦</span>';
 
-  return `
-    <label class="consumable-item">
-      <input type="checkbox" data-consumable-id="${item.id}" data-consumable-group="${prefix}">
-      ${iconHtml}
-      <div class="consumable-info">
-        <div class="consumable-name">${lang === 'ru' ? item.name : (item.nameEn || item.name)}</div>
-        <div class="consumable-effect">${lang === 'ru' ? item.effect : (item.effectEn || item.effect)}</div>
-      </div>
-    </label>
-  `;
-}).join('');
+    return `
+      <label class="consumable-item">
+        <input type="checkbox" data-consumable-id="${item.id}" data-consumable-group="${prefix}">
+        ${iconHtml}
+        <div class="consumable-info">
+          <div class="consumable-name">${lang === 'ru' ? item.name : (item.nameEn || item.name)}</div>
+          <div class="consumable-effect">${lang === 'ru' ? item.effect : (item.effectEn || item.effect)}</div>
+        </div>
+      </label>
+    `;
+  }).join('');
 
   gridEl.querySelectorAll('input[type="checkbox"]').forEach(chk => {
     chk.addEventListener('change', () => recalcConsumables());
@@ -636,13 +522,11 @@ gridEl.innerHTML = items.map(item => {
 }
 
 function initConsumables() {
-  // Гильдия копателей
   const spelunkerGrid = document.getElementById('spelunker-grid');
   renderConsumablesGrid(spelunkerGrid, SPELUNKER_TORCHES, 'spelunker');
 
-  // Динамические расходники
   const dynamicGrid = document.getElementById('consumables-grid');
-  renderConsumablesGrid(dynamicGrid, getDynamicConsumables(), 'dynamic');
+  renderConsumablesGrid(dynamicGrid, getDynamicViewConsumables(allItems, state.lang), 'dynamic');
 }
 
 function recalcConsumables() {
@@ -656,7 +540,7 @@ function recalcConsumables() {
     if (group === 'spelunker') {
       item = SPELUNKER_TORCHES.find(i => i.id === id);
     } else {
-      item = getDynamicConsumables().find(i => i.id === id);
+      item = getDynamicViewConsumables(allItems, state.lang).find(i => i.id === id);
     }
     if (!item) return;
 
@@ -675,93 +559,6 @@ function recalcConsumables() {
 // ============================================================
 // ПРЕДМЕТЫ
 // ============================================================
-function isBanned(item) {
-  const name = item.name || '';
-  
-  // Бан по точному имени (RU и EN)
-  const BANNED_NAMES = [
-    'Пакт НепоKonqорённых',
-    'Unfelled Konqord',
-  ];
-  if (BANNED_NAMES.includes(name)) return true;
-  
-  // Или по подстроке "Konq" (на случай других вариантов)
-  if (/konq/i.test(name)) return true;
-  
-  return false;
-}
-
-function getItemSlot(item) {
-  const facts = item.facts || [];
-
-  const slotFact = facts.find(f =>
-    f.label === 'Слот' || f.label === 'Place' || f.label === 'Slot'
-  );
-  const typeFact = facts.find(f =>
-    f.label === 'Тип' || f.label === 'Type'
-  );
-
-  const slot = slotFact?.value || '';
-  const type = typeFact?.value || '';
-
-  const hasSockets = facts.some(f =>
-    f.label === 'Сокеты' ||
-    f.label === 'Adornment Slots' ||
-    f.label === 'Sockets'
-  );
-
-  const sprite = item.sprite || '';
-
-  if (/\/(jewels|augments|runes)\//.test(sprite)) return 'adornment';
-  if ((slot === 'Оружие' || slot === 'Weapon') && !hasSockets) return 'adornment';
-
-  if (slot === 'Оффхенд' || slot === 'Offhand' || slot === 'Off-hand') return 'offhand';
-  if (slot === 'Левая рука' || slot === 'Left Hand' || slot === 'Left-hand') return 'offhand';
-  if (slot === 'Вторая рука' || slot === 'Second Hand' || slot === 'Second-hand') return 'offhand';
-
-  const offhandTypes = [
-    'Щиты', 'Малые щиты', 'Факелы', 'Книги', 'Тотемы', 'Орбы',
-    'Shields', 'Small Shields', 'Torches', 'Books', 'Totems', 'Orbs',
-  ];
-  if (offhandTypes.some(t => type.includes(t))) return 'offhand';
-
-  if (slot === 'Оружие' || slot === 'Weapon')       return 'weapon';
-  if (slot === 'Голова' || slot === 'Head')         return 'head';
-  if (slot === 'Торс' || slot === 'Body')           return 'body';
-  if (slot === 'Ноги' || slot === 'Legs')           return 'legs';
-  if (slot === 'Аксессуар' || slot === 'Accessory') return 'accessory';
-
-  return 'unknown';
-}
-
-function isTwoHanded(item) {
-  if (!item) return false;
-  if (Array.isArray(item.tags)) {
-    if (item.tags.some(t => /Двуручное|Two[\s-]?Handed|Two handed/i.test(t))) {
-      return true;
-    }
-  }
-  return false;
-}
-
-function isViewItem(item) {
-  if (!Array.isArray(item.effects)) return false;
-  return item.effects.some(e =>
-    typeof e === 'string' && /Обзор|View Distance/i.test(e)
-  );
-}
-
-function getItemViewMultiplier(item) {
-  if (!Array.isArray(item.effects)) return 1;
-  const key = state.lang === 'ru' ? 'Обзор' : 'View Distance';
-  for (const eff of item.effects) {
-    if (typeof eff !== 'string') continue;
-    const m = eff.match(new RegExp(`${key}[:\\s]+\\+?(\\d+(?:\\.\\d+)?)%`, 'i'));
-    if (m) return 1 + parseFloat(m[1]) / 100;
-  }
-  return 1;
-}
-
 const equipmentSlots = {
   'weapon-1':    { allowed: ['weapon'] },
   'weapon-2':    { allowed: ['weapon', 'offhand'] },
@@ -791,7 +588,7 @@ function openSlotPicker(slotKey) {
   const items = allItems
     .filter(it =>
       isViewItem(it) &&
-      !isBanned(it) &&
+      !isBannedView(it) &&
       allowed.includes(getItemSlot(it))
     )
     .filter(it => {
@@ -822,7 +619,7 @@ function applyItemToSlot(slotKey, item) {
   if (nameEl) nameEl.textContent = item.name;
 
   if (statsEl) {
-    const mult = getItemViewMultiplier(item);
+    const mult = getItemViewMultiplier(item, state.lang);
     if (mult !== 1) {
       const lang = currentLang();
       const label = lang === 'ru' ? 'Обзор' : 'View Distance';
@@ -833,7 +630,7 @@ function applyItemToSlot(slotKey, item) {
   }
 
   slotEl.dataset.itemId = item.id;
-  slotEl.dataset.itemMult = String(getItemViewMultiplier(item));
+  slotEl.dataset.itemMult = String(getItemViewMultiplier(item, state.lang));
   slotEl.classList.add('has-item');
 
   const itemSlot = getItemSlot(item);
@@ -920,12 +717,7 @@ function clearSlot(slotKey) {
   delete slotEl.dataset.itemId;
   delete slotEl.dataset.itemMult;
   delete slotEl.dataset.sockets;
-
-  delete slotEl.dataset.sockets;
   delete slotEl.dataset.atonement;
-
-  slotEl.style.backgroundImage = '';
-  slotEl.style.backgroundBlendMode = '';
 
   slotEl.style.backgroundImage = '';
   slotEl.style.backgroundBlendMode = '';
@@ -993,7 +785,7 @@ function updateSlotQuality(slotKey) {
   }
 
   const itemId = slotEl.dataset.itemId;
-  const item = allItems.find(i => i.id === itemId);
+  const item = allItems.find(i => String(i.id) === String(itemId));
   const socketsFact = item?.facts?.find(f =>
     f.label === 'Сокеты' ||
     f.label === 'Adornment Slots' ||
@@ -1004,7 +796,6 @@ function updateSlotQuality(slotKey) {
 
   slotEl.dataset.sockets = String(total);
 
-  // Настрадание — поверх предмета
   if (quality === 'atonement') {
     slotEl.dataset.atonement = '1';
   } else {
@@ -1048,41 +839,6 @@ function initEquipmentSlots() {
 // ============================================================
 // ПИТОМЕЦ
 // ============================================================
-function getFollowerViewFromLevels(follower, bbLevel) {
-  if (bbLevel <= 0) return 1;
-
-  const sections = follower.sections || [];
-  const bbSection = sections.find(s => /Bestial Bond|Звериные узы/i.test(s.title || ''));
-  if (!bbSection || !Array.isArray(bbSection.texts)) return 1;
-
-  let m = 1;
-  for (let lvl = 1; lvl <= bbLevel; lvl++) {
-    const line = bbSection.texts.find(t =>
-      new RegExp(`^Уровень\\s*${lvl}|^Level\\s*${lvl}`, 'i').test(t)
-    );
-    if (!line) continue;
-    const key = state.lang === 'ru' ? 'Обзор' : 'View Distance';
-const match = line.match(new RegExp(`${key}[:\\s]+\\+?(\\d+(?:\\.\\d+)?)%`, 'i'));
-    if (match) m *= 1 + parseFloat(match[1]) / 100;
-  }
-  return m;
-}
-
-function getFollowerViewPercentForLevel(follower, level) {
-  const sections = follower.sections || [];
-  const bbSection = sections.find(s => /Bestial Bond|Звериные узы/i.test(s.title || ''));
-  if (!bbSection || !Array.isArray(bbSection.texts)) return 0;
-
-  const line = bbSection.texts.find(t =>
-    new RegExp(`^Уровень\\s*${level}|^Level\\s*${level}`, 'i').test(t)
-  );
-  if (!line) return 0;
-
-  const key = state.lang === 'ru' ? 'Обзор' : 'View Distance';
-  const match = line.match(new RegExp(`${key}[:\\s]+\\+?(\\d+(?:\\.\\d+)?)%`, 'i'));
-  return match ? parseFloat(match[1]) : 0;
-}
-
 function getMnemBondsLevel() {
   let max = 0;
   document.querySelectorAll('.mnem-select').forEach(sel => {
@@ -1091,25 +847,45 @@ function getMnemBondsLevel() {
   return max;
 }
 
-function getAvailableBB() {
-  const fromClass = state.classBB || 0;
-  const fromSpec = state.specBB || 0;
-  const fromMnems = getMnemBondsLevel();
-  return Math.min(3, Math.max(fromClass, fromSpec, fromMnems));
+function getAvailableBBLocal() {
+  return calcAvailableBB({
+    classBB: state.classBB || 0,
+    specBB: state.specBB || 0,
+    mnemBonds: getMnemBondsLevel(),
+  });
+}
+
+function formatFollowerMeta(follower) {
+  if (!follower) return '';
+
+  const lang = currentLang();
+  const label = lang === 'ru' ? 'Обзор' : 'View';
+
+  const lines = [];
+
+  for (let lvl = 1; lvl <= 3; lvl++) {
+    const line = getBBLevels(follower).find(t =>
+      new RegExp(`^Уровень\\s*${lvl}|^Level\\s*${lvl}`, 'i').test(t)
+    );
+    if (!line) continue;
+
+    const key = lang === 'ru' ? 'Обзор' : 'View Distance';
+    const m = line.match(new RegExp(`${key}[:\\s]+\\+?(\\d+(?:\\.\\d+)?)%`, 'i'));
+    if (!m) continue;
+
+    lines.push(`BB${lvl}: ${label} +${m[1]}%`);
+  }
+
+  return lines.join(' · ');
 }
 
 function openFollowerPicker() {
-  const availableBB = getAvailableBB();
+  const availableBB = getAvailableBBLocal();
   if (availableBB === 0) return;
 
   const pets = allFollowers
-    .filter(f => {
-      const sections = f.sections || [];
-      const bbSection = sections.find(s => /Bestial Bond|Звериные узы/i.test(s.title || ''));
-      if (!bbSection?.texts) return false;
-      const key = state.lang === 'ru' ? 'Обзор' : 'View Distance';
-      return bbSection.texts.some(t => new RegExp(key, 'i').test(t));
-    })
+    .filter(f => hasViewBonus(f, state.lang))
+    .filter(f => !isBannedView(f))
     .sort((a, b) => (a.tier || 0) - (b.tier || 0) || a.name.localeCompare(b.name));
 
   const itemsWithEmpty = [
@@ -1120,6 +896,10 @@ function openFollowerPicker() {
   Modal.open({
     title: `Питомец (доступно BB${availableBB})`,
     items: itemsWithEmpty,
+    metaFormatter: (it) => {
+      if (it.id === '__empty__') return '';
+      return formatFollowerMeta(it);
+    },
     onPick: (follower) => {
       if (follower.id === '__empty__') clearFollower();
       else applyFollower(follower, availableBB);
@@ -1136,7 +916,7 @@ function applyFollower(follower, bbLevel) {
   const petBonus = document.getElementById('pet-bonus');
   if (!petBox) return;
 
-  const mult = getFollowerViewFromLevels(follower, bbLevel);
+  const { multiplier, perLevel } = getFollowerViewMultiplier(follower, bbLevel, state.lang);
 
   if (follower.sprite && petImg) {
     petImg.src = follower.sprite;
@@ -1152,7 +932,7 @@ function applyFollower(follower, bbLevel) {
   if (petBonus) {
     const lines = [];
     for (let lvl = 1; lvl <= bbLevel; lvl++) {
-      const pct = getFollowerViewPercentForLevel(follower, lvl);
+      const pct = perLevel[lvl - 1] || 0;
       if (pct > 0) lines.push(`${lvl}:  ${pct}%`);
     }
     if (lines.length) {
@@ -1163,7 +943,7 @@ function applyFollower(follower, bbLevel) {
     }
   }
 
-  petBox.dataset.mult = String(mult);
+  petBox.dataset.mult = String(multiplier);
   petBox.dataset.followerId = follower.id;
   petBox.dataset.bbLevel = String(bbLevel);
   petBox.classList.add('has-pet');
@@ -1216,7 +996,7 @@ function updateFollowerLock() {
   const petBox = document.getElementById('pet-box');
   if (!petBox) return;
 
-  const availableBB = getAvailableBB();
+  const availableBB = getAvailableBBLocal();
   const caption = petBox.querySelector('.pet-caption');
 
   if (petBox.dataset.followerId) {
@@ -1283,20 +1063,31 @@ async function initViewPage() {
 
 initViewPage();
 
-window.addEventListener('orna-lang-changed', async () => {
-const savedState = {
-  classId: state.classId,
-  specId: state.specId,
-  followerId: null,
-  slots: {},
-  gems: {},
-};
+// ============ СМЕНА ЯЗЫКА ============
+  const savedState = {
+    classId: state.classId,
+    specId: state.specId,
+    followerId: null,
+    slots: {},
+    gems: {},
+    brazier: state.brazier,
+    steps3000: state.steps3000,
+    steps6000: state.steps6000,
+    consumables: [],   // ← чекбоксы расходников
+  };
 
-// Сохраняем геммы
-document.querySelectorAll('#gems-list .gem-count').forEach(inp => {
-  const gemId = inp.dataset.gemId;
-  if (gemId) savedState.gems[gemId] = inp.value;
-});
+  // Сохраняем чекбоксы расходников (копатели + парсерные)
+  document.querySelectorAll('.consumables-grid input[type="checkbox"]:checked').forEach(chk => {
+    savedState.consumables.push({
+      id: chk.dataset.consumableId,
+      group: chk.dataset.consumableGroup,
+    });
+  });
+
+  document.querySelectorAll('#gems-list .gem-count').forEach(inp => {
+    const gemId = inp.dataset.gemId;
+    if (gemId) savedState.gems[gemId] = inp.value;
+  });
 
   const classSel = document.getElementById('class-select');
   const specSel = document.getElementById('spec-select');
@@ -1354,7 +1145,7 @@ document.querySelectorAll('#gems-list .gem-count').forEach(inp => {
   }
 
   for (const [slotKey, data] of Object.entries(savedState.slots)) {
-    const item = allItems.find(i => i.id === data.itemId);
+    const item = allItems.find(i => String(i.id) === String(data.itemId));
     if (!item) continue;
 
     if (data.mode) {
@@ -1403,7 +1194,6 @@ document.querySelectorAll('#gems-list .gem-count').forEach(inp => {
   recalcConsumables();
   initGems();
 
-  // Восстанавливаем значения гемм
   document.querySelectorAll('#gems-list .gem-count').forEach(inp => {
     const gemId = inp.dataset.gemId;
     if (gemId && savedState.gems[gemId] != null) {
@@ -1411,15 +1201,37 @@ document.querySelectorAll('#gems-list .gem-count').forEach(inp => {
     }
   });
 
-  // Пересчитываем множитель гемм
   const totalSlots = parseInt(document.getElementById('gems-total-slots')?.textContent) || 0;
   if (window.setGemsTotalSlots) window.setGemsTotalSlots(totalSlots);
 
+  // Восстанавливаем жаровню
+  const brazierChk = document.querySelector('.brazier-check');
+  if (brazierChk) {
+    brazierChk.checked = !!savedState.brazier;
+    state.brazier = !!savedState.brazier;
+  }
+
+  // Восстанавливаем шаги
+  state.steps3000 = !!savedState.steps3000;
+  state.steps6000 = !!savedState.steps6000;
+  document.querySelectorAll('.step-check').forEach(chk => {
+    const label = chk.parentElement.textContent.trim();
+    if (label.includes('3000')) chk.checked = state.steps3000;
+    if (label.includes('6000')) chk.checked = state.steps6000;
+  });
+
+  // Восстанавливаем расходники
+  savedState.consumables.forEach(({ id, group }) => {
+    const chk = document.querySelector(
+      `.consumables-grid input[data-consumable-id="${id}"][data-consumable-group="${group}"]`
+    );
+    if (chk) chk.checked = true;
+  });
+  recalcConsumables();
+
   recalc();
-});
 
 // ============ СЛУШАТЕЛЬ СБРОСА СЛОТА ============
-// Снаружи orna-lang-changed!
 window.addEventListener('orna-slot-cleared', (e) => {
   const slotEl = e.detail.slot;
   if (slotEl) {
@@ -1429,11 +1241,81 @@ window.addEventListener('orna-slot-cleared', (e) => {
   recalc();
 });
 
-window.addEventListener('orna-slot-cleared', (e) => {
-  const slotEl = e.detail.slot;
-  if (slotEl) {
-    delete slotEl.dataset.sockets;
+// ============================================================
+// ПОЛНЫЙ СБРОС СТРАНИЦЫ
+// ============================================================
+function resetAll() {
+  const lang = currentLang();
+  const msg = lang === 'ru'
+    ? 'Сбросить всё? Это действие нельзя отменить.'
+    : 'Reset all? This action cannot be undone.';
+  if (!window.confirm(msg)) return;
+
+  // 1. Класс
+  const classSel = document.getElementById('class-select');
+  if (classSel) classSel.value = '';
+
+  // 2. Спека
+  const specSel = document.getElementById('spec-select');
+  if (specSel) specSel.value = '';
+
+  // 3. Питомец
+  clearFollower();
+
+  // 4. Слоты
+  ['weapon-1', 'weapon-2', 'head', 'body', 'legs', 'accessory-1', 'accessory-2']
+    .forEach(sk => {
+      const slotEl = document.querySelector(`[data-slot="${sk}"]`);
+      if (slotEl?.dataset.itemId) clearSlot(sk);
+    });
+
+  // 5. Мнемы
+  document.querySelectorAll('.mnem-select').forEach(sel => {
+    sel.value = '';
+  });
+  document.querySelectorAll('.mnem-input').forEach(inp => {
+    inp.value = '';
+  });
+  syncMnemState();
+
+  // 6. Геммы
+  document.querySelectorAll('#gems-list .gem-count').forEach(inp => {
+    inp.value = 0;
+  });
+  if (window.setGemsTotalSlots) {
+    const totalSlots = parseInt(document.getElementById('gems-total-slots')?.textContent) || 0;
+    window.setGemsTotalSlots(totalSlots);
   }
+
+  // 7. Шаги + жаровня
+  state.steps3000 = false;
+  state.steps6000 = false;
+  state.brazier = false;
+  document.querySelectorAll('.step-check').forEach(chk => {
+    chk.checked = false;
+  });
+
+  // 8. Расходники
+  document.querySelectorAll('.consumables-grid input[type="checkbox"]:checked').forEach(chk => {
+    chk.checked = false;
+  });
+  state.consumablesMult = 1;
+
+  // 9. Обновляем UI
+  updateClassInfo();
+  updateSpecInfo();
+  updateLeftMnemLock();
+  updateFollowerLock();
   updateTotalGemsSlots();
+
+  // 10. Пересчёт
   recalc();
-});
+}
+
+function initResetButton() {
+  const btn = document.getElementById('reset-btn');
+  if (!btn) return;
+  btn.addEventListener('click', resetAll);
+}
+
+initResetButton();

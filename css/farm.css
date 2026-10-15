@@ -208,3 +208,72 @@
   font-size: 10px;
   opacity: 0.8;
 }
+
+/* ============ ЗАВИСИМОСТЬ ОТ СПЕЦИАЛИЗАЦИИ ============ */
+.slot.requires-spec {
+  outline: 2px solid #c44;
+  outline-offset: -2px;
+}
+
+.slot.requires-spec::before {
+  content: '⚠';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  font-size: 12px;
+  color: #e55;
+  z-index: 3;
+  pointer-events: none;
+  text-shadow: 0 0 4px #000;
+}
+
+.slot.requires-spec.spec-satisfied {
+  outline: 2px solid #4a4;
+}
+
+.slot.requires-spec.spec-satisfied::before {
+  content: '✓';
+  color: #6c6;
+}
+
+.class-select.spec-required {
+  outline: 2px solid #c44;
+  outline-offset: 2px;
+}
+
+.class-select.spec-required.spec-satisfied {
+  outline: 2px solid #4a4;
+}
+
+.slot-stats.stats-requires-spec {
+  color: #c44;
+  font-weight: 600;
+}
+
+/* ============ КАП УДАЧИ ============ */
+.farm-result-line {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.farm-cap-label {
+  display: none;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #e55;
+  padding: 1px 5px;
+  border: 1px solid #e55;
+  border-radius: 4px;
+  line-height: 1.2;
+}
+
+.farm-result-card.is-capped .farm-cap-label {
+  display: inline-block;
+}
+
+.farm-result-card.is-capped .farm-result-value {
+  color: #e55;
+}

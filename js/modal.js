@@ -26,11 +26,14 @@
   const closeBtn = overlay.querySelector('.modal-close');
   const clearBtn = overlay.querySelector('.modal-clear');
 
+  // ============ СОСТОЯНИЕ ============
   let currentItems = [];
   let currentFilter = '';
   let onPick = null;
   let onClear = null;
+  let metaFormatter = null;   // ← вынесено наверх
 
+  // ============ РЕНДЕР ============
   function renderList() {
     const filtered = currentFilter
       ? currentItems.filter(it => it.name.toLowerCase().includes(currentFilter.toLowerCase()))
@@ -63,9 +66,19 @@
     });
   }
 
+  // ============ ФОРМАТ МЕТЫ ============
   function formatMeta(it) {
     const parts = [];
     if (it.tier) parts.push(`★${it.tier}`);
+
+    // Если родитель передал свой форматтер — используем его
+    if (metaFormatter) {
+      const custom = metaFormatter(it);
+      if (custom) parts.push(custom);
+      return parts.join(' · ');
+    }
+
+    // Фолбэк — старое поведение (обзор)
     if (it.effects) {
       for (const eff of it.effects) {
         if (typeof eff !== 'string') continue;
@@ -75,14 +88,15 @@
     return parts.join(' · ');
   }
 
-function open({ title, items, onPick: pickCb, onClear: clearCb }) {
-  titleEl.textContent = title || 'Выбор';
-  // Сортируем по тиру, потом по имени
-  currentItems = (items || []).slice().sort((a, b) =>
-    (a.tier || 0) - (b.tier || 0) || a.name.localeCompare(b.name)
-  );
+  // ============ ОТКРЫТИЕ / ЗАКРЫТИЕ ============
+  function open({ title, items, onPick: pickCb, onClear: clearCb, metaFormatter: metaFn }) {
+    titleEl.textContent = title || 'Выбор';
+    currentItems = (items || []).slice().sort((a, b) =>
+      (a.tier || 0) - (b.tier || 0) || a.name.localeCompare(b.name)
+    );
     onPick = pickCb;
     onClear = clearCb;
+    metaFormatter = metaFn || null;   // ← всегда сбрасываем
     currentFilter = '';
     searchEl.value = '';
     renderList();
@@ -95,6 +109,7 @@ function open({ title, items, onPick: pickCb, onClear: clearCb }) {
     document.body.style.overflow = '';
   }
 
+  // ============ СОБЫТИЯ ============
   closeBtn.addEventListener('click', close);
   overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
   searchEl.addEventListener('input', () => { currentFilter = searchEl.value; renderList(); });
