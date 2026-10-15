@@ -11,6 +11,7 @@ import {
   getFarmConsumables, getAllConsumables,
   calculateFarm,
   checkSpecRequirement,
+  HARDCODED_ITEMS,
 } from './farm-calc.js';
 
 console.log('🌾 Farm page loaded');
@@ -42,7 +43,7 @@ async function loadAllData() {
     loadJSON(`../data/specs-${lang}.json`),
     loadJSON(`../data/followers-${lang}.json`),
   ]);
-  allItems = items;
+  allItems = [...HARDCODED_ITEMS, ...items];
   allClasses = classes;
   allSpecs = specs;
   allFollowers = followers;
@@ -100,6 +101,32 @@ const EVENTS = [
     icon: 'https://playorna.com/static/img/bosses/dweller.png',
     multipliers: { orns: 1.25, gold: 1, exp: 1, luck: 1 } },
 ];
+
+// Взаимоисключающие ивенты: Орнопад и Исследование пещер
+const MUTEX_EVENTS = ['event-ornopad', 'event-cave'];
+
+function updateEventMutex() {
+  const checked = new Set();
+  MUTEX_EVENTS.forEach(id => {
+    const chk = document.querySelector(`#events-grid input[data-event-id="${id}"]`);
+    if (chk?.checked) checked.add(id);
+  });
+
+  MUTEX_EVENTS.forEach(id => {
+    const chk = document.querySelector(`#events-grid input[data-event-id="${id}"]`);
+    if (!chk) return;
+
+    const isSelected = checked.has(id);
+    const isOtherSelected = [...checked].some(x => x !== id);
+
+    chk.disabled = !isSelected && isOtherSelected;
+
+    const label = chk.closest('.consumable-item');
+    if (label) {
+      label.classList.toggle('is-mutex-disabled', chk.disabled);
+    }
+  });
+}
 
 // ============ АСТРОДЕРЕВО ============
 const ASTRAL_TREE = [
@@ -344,6 +371,11 @@ function applyFollower(follower, bbLevel) {
   const petBonus = document.getElementById('pet-bonus');
   if (!petBox) return;
 
+  // Затираем старую картинку
+  if (petImg) {
+    petImg.src = '';
+    petImg.hidden = true;
+  }
   if (follower.sprite && petImg) {
     petImg.src = follower.sprite;
     petImg.hidden = false;
@@ -489,52 +521,104 @@ function getMnemValues() {
   return result;
 }
 
+// Единая валидация input: min/max, обрезка, сброс при некорректном вводе
+function validateMnemInput(input) {
+  if (!input || input.disabled) return;
+
+  const min = parseFloat(input.min) || 0;
+  const max = parseFloat(input.max) || 100;
+  let val = parseFloat(input.value);
+
+  if (isNaN(val)) {
+    input.value = '';
+    input.classList.remove('is-error');
+    return;
+  }
+
+  if (val < 0) val = 0;
+  if (val > max) val = max;      // обрезаем до max
+  input.value = val;
+
+  const isInvalid = val > 0 && (val < min || val > max);
+  input.classList.toggle('is-error', isInvalid);
+}
+
+// Обновление состояния input при смене select (левый и правый — одинаково)
+function updateMnemInputState(sel) {
+  const mnem = sel.dataset.mnem;
+  const row = sel.dataset.row;
+  const input = document.querySelector(
+    `.mnem-input[data-mnem="${mnem}"][data-row="${row}"]`
+  );
+  if (!input) return;
+
+  const v = sel.value;
+  if (v === 'bonds' || v === '') {
+    input.value = '';
+    input.disabled = true;
+    input.placeholder = '';
+    input.classList.remove('is-error');
+  } else {
+    input.disabled = false;
+    if (v === 'acc') {
+      input.min = 5;
+      input.max = 25;
+      input.placeholder = '5–25';
+    } else {
+      input.min = 1;
+      input.max = 5;
+      input.placeholder = '1–5';
+    }
+    // Сбрасываем значение, если оно вне диапазона
+    validateMnemInput(input);
+  }
+}
+
+function refreshAllMnemOptions() {
+  // Группируем селекты по мнему (data-mnem = "1" или "2")
+  const groups = {};
+
+  document.querySelectorAll('.mnem-select').forEach(sel => {
+    const mnemId = sel.dataset.mnem || '1';
+    if (!groups[mnemId]) groups[mnemId] = [];
+    groups[mnemId].push(sel);
+  });
+
+  // Внутри каждой группы блокируем повторки
+  Object.values(groups).forEach(group => {
+    const chosen = new Set();
+    group.forEach(sel => { if (sel.value) chosen.add(sel.value); });
+
+    group.forEach(sel => {
+      const current = sel.value;
+      sel.querySelectorAll('option').forEach(opt => {
+        if (!opt.value) return;
+        opt.disabled = chosen.has(opt.value) && opt.value !== current;
+      });
+    });
+  });
+}
+
 function initMnemsFarm() {
   document.querySelectorAll('.mnem-select').forEach(sel => {
-    const mnem = sel.dataset.mnem;
-    const row = sel.dataset.row;
-    const input = document.querySelector(
-      `.mnem-input[data-mnem="${mnem}"][data-row="${row}"]`
-    );
-
-    function updateInputState() {
-      const v = sel.value;
-      if (v === 'bonds' || v === '') {
-        input.value = '';
-        input.disabled = true;
-        input.placeholder = '';
-        input.classList.remove('is-error');
-      } else {
-        input.disabled = false;
-        if (v === 'acc') {
-          input.min = 5;
-          input.max = 25;
-          input.placeholder = '5–25';
-        } else {
-          input.min = 1;
-          input.max = 5;
-          input.placeholder = '1–5';
-        }
-      }
-    }
-
-    updateInputState();
+    updateMnemInputState(sel);
 
     sel.addEventListener('change', () => {
-      updateInputState();
+      updateMnemInputState(sel);
+      refreshAllMnemOptions();
       updateFollowerLock();
       recalcFarm();
     });
+  });
 
+  document.querySelectorAll('.mnem-input').forEach(input => {
     input.addEventListener('input', () => {
-      const val = parseFloat(input.value) || 0;
-      const min = parseFloat(input.min) || 0;
-      const max = parseFloat(input.max) || 100;
-      const isInvalid = val > 0 && (val < min || val > max);
-      input.classList.toggle('is-error', isInvalid);
+      validateMnemInput(input);
       recalcFarm();
     });
   });
+
+  refreshAllMnemOptions();
 }
 
 // ============ ЗАВИСИМОСТЬ ЛЕВОГО МНЕМА ОТ СПЕЦИАЛИЗАЦИИ ============
@@ -563,8 +647,27 @@ function updateLeftMnemLock() {
       inp.disabled = true;
       inp.classList.remove('is-error');
     });
+    refreshAllMnemOptions();
   }
 }
+
+  // Если один выбран — блокируем второй
+  MUTEX_EVENTS.forEach(id => {
+    const chk = document.querySelector(`#events-grid input[data-event-id="${id}"]`);
+    if (!chk) return;
+
+    const isSelected = checked.has(id);
+    const isOtherSelected = [...checked].some(x => x !== id);
+
+    // Блокируем второй, если выбран первый
+    chk.disabled = !isSelected && isOtherSelected;
+
+    // Визуально — серый
+    const label = chk.closest('.consumable-item');
+    if (label) {
+      label.classList.toggle('is-mutex-disabled', chk.disabled);
+    }
+  });
 
 // ============ ШАГИ ============
 function initSteps() {
@@ -638,7 +741,6 @@ function renderEventsGrid(gridEl, events) {
 
 // ============ ПЕРЕСЧЁТ ============
 function recalcFarm() {
-  // 1. Настрадание
   const anguish = {
     orns: parseFloat(document.querySelector('.anguish-input[data-currency="orns"]')?.value) || 0,
     gold: parseFloat(document.querySelector('.anguish-input[data-currency="gold"]')?.value) || 0,
@@ -646,16 +748,13 @@ function recalcFarm() {
     luck: parseFloat(document.querySelector('.anguish-input[data-currency="luck"]')?.value) || 0,
   };
 
-  // 2. Специализация
   const specSel = document.getElementById('spec-select');
   const selectedSpec = allSpecs.find(s => s.id === specSel?.value);
   const specMultipliers = selectedSpec?.multipliers || null;
   const specId = selectedSpec?.id || null;
 
-  // 3. Мнемы
   const mnemVals = getMnemValues();
 
-  // 4. Экипировка
   const equipment = [];
   document.querySelectorAll('.slot[data-item-id]').forEach(slotEl => {
     const slotKey = slotEl.dataset.slot;
@@ -672,7 +771,6 @@ function recalcFarm() {
     });
   });
 
-  // 5. Питомец
   const petBox = document.getElementById('pet-box');
   let follower = null;
   if (petBox?.dataset.followerId) {
@@ -681,14 +779,13 @@ function recalcFarm() {
     if (item) follower = { item, bbLevel };
   }
 
-  // 6. Чекбоксы
+  updateEventMutex();
   const temples = collectChecked('#temples-grid', 'templeId', TEMPLES);
   const statues = collectChecked('#statues-grid', 'statueId', STATUES);
   const events  = collectChecked('#events-grid',  'eventId',  EVENTS);
   const consumables = collectChecked('#consumables-grid', 'consumableId', getAllConsumables(allItems));
   const astral  = collectChecked('#astral-grid',  'astralId', ASTRAL_TREE);
 
-  // 7. Считаем
   const results = calculateFarm({
     anguish,
     specMultipliers,
@@ -706,14 +803,12 @@ function recalcFarm() {
 
   updateFarmResults(results);
 
-  // Обновляем подписи ВСЕХ слотов с предметами
   ['weapon-1', 'weapon-2', 'head', 'body', 'legs', 'accessory-1', 'accessory-2']
     .forEach(sk => {
       const el = document.querySelector(`[data-slot="${sk}"]`);
       if (el?.dataset.itemId) refreshSlotStats(sk);
     });
 
-  // Обводка слотов и селекта спеки
   updateSpecRequirementUI();
 }
 
@@ -737,7 +832,6 @@ function updateFarmResults(results) {
   set('exp-result',  results.exp);
   set('luck-result', results.luck);
 
-  // Бейдж «КАП» у удачи
   const luckCard = document.querySelector('.farm-result-card[data-currency="luck"]');
   if (luckCard) {
     luckCard.classList.toggle('is-capped', !!results.luckCapped);
@@ -801,6 +895,11 @@ function openSlotPicker(slotKey) {
       !isBannedFarm(it) &&
       allowed.includes(getItemSlot(it))
     )
+    .filter(it => {
+      // Двуручки нельзя во вторую руку
+      if (slotKey === 'weapon-2' && isTwoHanded(it)) return false;
+      return true;
+    })
     .sort((a, b) => (a.tier || 0) - (b.tier || 0) || a.name.localeCompare(b.name));
 
   window.Modal.open({
@@ -821,7 +920,15 @@ function applyItemToFarmSlot(slotKey, item) {
   const nameEl = wrapper?.querySelector('.slot-name') || slotEl.querySelector('.slot-name');
   const qualitySel = slotEl.querySelector('.slot-quality');
 
-  if (img && item.sprite) { img.src = item.sprite; img.hidden = false; }
+  // Затираем старую картинку ПЕРЕД установкой новой
+  if (img) {
+    img.src = '';
+    img.hidden = true;
+    if (item.sprite) {
+      img.src = item.sprite;
+      img.hidden = false;
+    }
+  }
   if (nameEl) nameEl.textContent = item.name;
   if (qualitySel) qualitySel.hidden = false;
 
@@ -1162,7 +1269,6 @@ initFarmPage();
 window.addEventListener('orna-lang-changed', async () => {
   console.log('🌐 Language changed, reloading farm...');
 
-  // ============ 1. СОБИРАЕМ СОСТОЯНИЕ ============
   const savedState = {
     classId: '',
     specId: '',
@@ -1175,47 +1281,41 @@ window.addEventListener('orna-lang-changed', async () => {
     consumables: [],
   };
 
-  // Шаги
   const step3000 = document.querySelector('.step-check[data-steps="3000"]');
   const step6000 = document.querySelector('.step-check[data-steps="6000"]');
   savedState.steps['3000'] = step3000?.checked || false;
   savedState.steps['6000'] = step6000?.checked || false;
 
-  // Настрадание
   ['orns', 'gold', 'exp', 'luck'].forEach(cur => {
     const inp = document.querySelector(`.anguish-input[data-currency="${cur}"]`);
     savedState.anguish[cur] = parseFloat(inp?.value) || 0;
   });
 
-  // Чекбоксы всех групп
   const CONSUMABLE_GROUPS = [
-  { cssAttr: 'data-temple-id',     dataKey: 'templeId',     group: 'temple' },
-  { cssAttr: 'data-statue-id',     dataKey: 'statueId',     group: 'statue' },
-  { cssAttr: 'data-event-id',      dataKey: 'eventId',      group: 'event' },
-  { cssAttr: 'data-astral-id',     dataKey: 'astralId',     group: 'astral' },
-  { cssAttr: 'data-consumable-id', dataKey: 'consumableId', group: 'consumable' },
-];
+    { cssAttr: 'data-temple-id',     dataKey: 'templeId',     group: 'temple' },
+    { cssAttr: 'data-statue-id',     dataKey: 'statueId',     group: 'statue' },
+    { cssAttr: 'data-event-id',      dataKey: 'eventId',      group: 'event' },
+    { cssAttr: 'data-astral-id',     dataKey: 'astralId',     group: 'astral' },
+    { cssAttr: 'data-consumable-id', dataKey: 'consumableId', group: 'consumable' },
+  ];
 
-CONSUMABLE_GROUPS.forEach(({ cssAttr, dataKey, group }) => {
-  document.querySelectorAll(`.consumables-grid input[${cssAttr}]:checked`).forEach(chk => {
-    savedState.consumables.push({ id: chk.dataset[dataKey], group });
+  CONSUMABLE_GROUPS.forEach(({ cssAttr, dataKey, group }) => {
+    document.querySelectorAll(`.consumables-grid input[${cssAttr}]:checked`).forEach(chk => {
+      savedState.consumables.push({ id: chk.dataset[dataKey], group });
+    });
   });
-});
 
-  // Класс, спека
   const classSel = document.getElementById('class-select');
   const specSel = document.getElementById('spec-select');
   if (classSel) savedState.classId = classSel.value;
   if (specSel) savedState.specId = specSel.value;
 
-  // Питомец
   const petBox = document.getElementById('pet-box');
   if (petBox?.dataset.followerId) {
     savedState.followerId = petBox.dataset.followerId;
     savedState.followerBB = parseInt(petBox.dataset.bbLevel) || 0;
   }
 
-  // Слоты
   document.querySelectorAll('.slot[data-slot]').forEach(slotEl => {
     const key = slotEl.dataset.slot;
     if (key === 'mnem-1' || key === 'mnem-2') return;
@@ -1228,7 +1328,6 @@ CONSUMABLE_GROUPS.forEach(({ cssAttr, dataKey, group }) => {
     };
   });
 
-  // Мнемы
   document.querySelectorAll('.mnem-select').forEach(sel => {
     const input = document.querySelector(
       `.mnem-input[data-mnem="${sel.dataset.mnem}"][data-row="${sel.dataset.row}"]`
@@ -1241,7 +1340,6 @@ CONSUMABLE_GROUPS.forEach(({ cssAttr, dataKey, group }) => {
     });
   });
 
-  // ============ 2. ПЕРЕЗАГРУЖАЕМ ДАННЫЕ ============
   await loadAllData();
 
   document.querySelectorAll('select option[value=""]').forEach(opt => {
@@ -1258,14 +1356,12 @@ CONSUMABLE_GROUPS.forEach(({ cssAttr, dataKey, group }) => {
   updateClassInfo();
   updateSpecInfo();
 
-  // Питомец
   if (savedState.followerId) {
     const follower = allFollowers.find(f => f.id === savedState.followerId);
     if (follower) applyFollower(follower, savedState.followerBB);
   }
   updateFollowerLock();
 
-  // ============ 3. ПЕРЕРИСОВЫВАЕМ ВСЕ СЕКЦИИ ============
   const allConsumables = getAllConsumables(allItems);
   renderSimpleGrid(document.getElementById('consumables-grid'), allConsumables, 'consumable');
   renderSimpleGrid(document.getElementById('temples-grid'), TEMPLES, 'temple');
@@ -1273,25 +1369,25 @@ CONSUMABLE_GROUPS.forEach(({ cssAttr, dataKey, group }) => {
   renderEventsGrid(document.getElementById('events-grid'), EVENTS);
   renderSimpleGrid(document.getElementById('astral-grid'), ASTRAL_TREE, 'astral');
 
-  // ============ 4. ВОССТАНАВЛИВАЕМ ЧЕКБОКСЫ ============
-const RESTORE_GROUPS = {
-  temple:     'data-temple-id',
-  statue:     'data-statue-id',
-  event:      'data-event-id',
-  astral:     'data-astral-id',
-  consumable: 'data-consumable-id',
-};
+  const RESTORE_GROUPS = {
+    temple:     'data-temple-id',
+    statue:     'data-statue-id',
+    event:      'data-event-id',
+    astral:     'data-astral-id',
+    consumable: 'data-consumable-id',
+  };
 
-savedState.consumables.forEach(({ id, group }) => {
-  const cssAttr = RESTORE_GROUPS[group];
-  if (!cssAttr) return;
-  const chk = document.querySelector(
-    `.consumables-grid input[${cssAttr}="${id}"]`
-  );
-  if (chk) chk.checked = true;
-});
+  savedState.consumables.forEach(({ id, group }) => {
+    const cssAttr = RESTORE_GROUPS[group];
+    if (!cssAttr) return;
+    const chk = document.querySelector(
+      `.consumables-grid input[${cssAttr}="${id}"]`
+    );
+    if (chk) chk.checked = true;
+    
+    updateEventMutex();
+  });
 
-  // ============ 5. ВОССТАНАВЛИВАЕМ ШАГИ ============
   farmState.steps['3000'] = savedState.steps['3000'];
   farmState.steps['6000'] = savedState.steps['6000'];
   document.querySelectorAll('.step-check').forEach(chk => {
@@ -1300,13 +1396,11 @@ savedState.consumables.forEach(({ id, group }) => {
     if (stepVal === '6000') chk.checked = savedState.steps['6000'];
   });
 
-  // ============ 6. ВОССТАНАВЛИВАЕМ НАСТРАДАНИЕ ============
   ['orns', 'gold', 'exp', 'luck'].forEach(cur => {
     const inp = document.querySelector(`.anguish-input[data-currency="${cur}"]`);
     if (inp) inp.value = savedState.anguish[cur];
   });
 
-  // ============ 7. ВОССТАНАВЛИВАЕМ МНЕМЫ ============
   savedState.mnems.forEach(m => {
     const sel = document.querySelector(
       `.mnem-select[data-mnem="${m.mnemId}"][data-row="${m.rowId}"]`
@@ -1316,9 +1410,10 @@ savedState.consumables.forEach(({ id, group }) => {
     );
     if (sel && m.value) sel.value = m.value;
     if (input && m.num) input.value = m.num;
+    if (sel) updateMnemInputState(sel);
   });
+  refreshAllMnemOptions();
 
-  // ============ 8. ВОССТАНАВЛИВАЕМ СЛОТЫ ============
   for (const [slotKey, data] of Object.entries(savedState.slots)) {
     const item = allItems.find(i => String(i.id) === String(data.itemId));
     if (!item) continue;
@@ -1342,7 +1437,6 @@ savedState.consumables.forEach(({ id, group }) => {
     }
   }
 
-  // ============ 9. ФИНАЛЬНЫЙ ПЕРЕСЧЁТ ============
   recalcFarm();
 });
 
@@ -1363,67 +1457,66 @@ window.updateFollowerLock = updateFollowerLock;
 window.updateTwoHandedLock = updateTwoHandedLock;
 window.updateLeftMnemLock = updateLeftMnemLock;
 
-window.__farmDebug = { allItems, allClasses, allSpecs, allFollowers };
+window.__farmDebug = {
+  get allItems() { return allItems; },
+  get allClasses() { return allClasses; },
+  get allSpecs() { return allSpecs; },
+  get allFollowers() { return allFollowers; },
+};
 
 // ============================================================
 // ПОЛНЫЙ СБРОС СТРАНИЦЫ
 // ============================================================
 function resetAll() {
   const lang = currentLang();
-const msg = lang === 'ru'
-  ? 'Очистить всё? Это действие нельзя отменить.'
-  : 'Clear all? This action cannot be undone.';
+  const msg = lang === 'ru'
+    ? 'Очистить всё? Это действие нельзя отменить.'
+    : 'Clear all? This action cannot be undone.';
   if (!window.confirm(msg)) return;
 
-  // 1. Класс
   const classSel = document.getElementById('class-select');
   if (classSel) classSel.value = '';
 
-  // 2. Спека
   const specSel = document.getElementById('spec-select');
   if (specSel) specSel.value = '';
 
-  // 3. Питомец
   clearFollower();
 
-  // 4. Слоты
   ['weapon-1', 'weapon-2', 'head', 'body', 'legs', 'accessory-1', 'accessory-2']
     .forEach(sk => {
       const slotEl = document.querySelector(`[data-slot="${sk}"]`);
       if (slotEl?.dataset.itemId) clearFarmSlot(sk);
     });
 
-  // 5. Мнемы
   document.querySelectorAll('.mnem-select').forEach(sel => {
     sel.value = '';
     sel.dispatchEvent(new Event('change'));
   });
 
-  // 6. Шаги
   farmState.steps['3000'] = false;
   farmState.steps['6000'] = false;
   document.querySelectorAll('.step-check').forEach(chk => {
     chk.checked = false;
   });
 
-  // 7. Настрадание
   document.querySelectorAll('.anguish-input').forEach(inp => {
     inp.value = 0;
   });
 
-  // 8. Расходники
-  document.querySelectorAll('.consumables-grid input[type="checkbox"]:checked').forEach(chk => {
-    chk.checked = false;
-  });
+// Сбрасываем мьютекс
+document.querySelectorAll('.consumable-item.is-mutex-disabled').forEach(el => {
+  el.classList.remove('is-mutex-disabled');
+});
+document.querySelectorAll('#events-grid input[data-event-id]').forEach(chk => {
+  chk.disabled = false;
+});
 
-  // 9. Обновляем UI
   updateClassInfo();
   updateSpecInfo();
   updateLeftMnemLock();
   updateFollowerLock();
   updateSpecRequirementUI();
 
-  // 10. Пересчёт
   recalcFarm();
 }
 

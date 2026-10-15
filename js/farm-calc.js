@@ -27,6 +27,26 @@ export const QUALITY_BG = {
 
 export const DUAL_WIELD_PENALTY = 0.65;
 
+// ============ ХАРДКОД-ПРЕДМЕТЫ ============
+// Пустое одноручное оружие — для слотов без бонусов
+export const HARDCODED_ITEMS = [
+  {
+    id: '__weapon_plain__',
+    name: 'Оружие без бонусов',
+    nameEn: 'Weapon without bonuses',
+    sprite: 'https://playorna.com/static/img/weapons/was.png',
+    tier: 0,
+    effects: [],
+    facts: [
+      { label: 'Слот', value: 'Оружие' },
+      { label: 'Place', value: 'Weapon' },
+      { label: 'Тип', value: 'Мечи' },
+      { label: 'Type', value: 'Swords' },
+    ],
+    tags: [],
+  },
+];
+
 // ============ ЗАВИСИМОСТЬ ПРЕДМЕТ ↔ СПЕЦИАЛИЗАЦИЯ ============
 // Если предмет в списке — он даёт бонусы ТОЛЬКО когда активна указанная спека.
 // Без спеки — бонусы НЕ применяются, а в UI показывается красная обводка.
@@ -171,6 +191,23 @@ export function isTwoHanded(item) {
 
 // ============ СЛОТЫ ============
 export function getItemSlot(item) {
+  // Хардкод-предметы — их слот определяем по facts
+  if (item?.id?.startsWith('__')) {
+    const facts = item.facts || [];
+    const slotFact = facts.find(f =>
+      f.label === 'Слот' || f.label === 'Place' || f.label === 'Slot'
+    );
+    const slot = slotFact?.value || '';
+
+    if (slot === 'Оружие' || slot === 'Weapon')       return 'weapon';
+    if (slot === 'Голова' || slot === 'Head')         return 'head';
+    if (['Торс', 'Тело', 'Body', 'Torso'].includes(slot)) return 'body';
+    if (slot === 'Ноги' || slot === 'Legs')           return 'legs';
+    if (slot === 'Аксессуар' || slot === 'Accessory') return 'accessory';
+    return 'unknown';
+  }
+
+    // ... остальной код для парсерных предметов
   const facts = item.facts || [];
   const slotFact = facts.find(f =>
     f.label === 'Слот' || f.label === 'Place' || f.label === 'Slot'
@@ -209,6 +246,9 @@ export function getItemSlot(item) {
 }
 
 export function isFarmItem(item) {
+  // Хардкод-предметы всегда проходят
+  if (item?.id?.startsWith('__')) return true;
+
   const effects = item.effects || [];
   return effects.some(e =>
     typeof e === 'string' &&

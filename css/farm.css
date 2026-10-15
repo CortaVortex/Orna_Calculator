@@ -315,3 +315,14 @@
   color: var(--gold);
   text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
 }
+
+/* Взаимоисключающие ивенты (Орнопад / Исследование пещер) */
+.consumable-item.is-mutex-disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.consumable-item.is-mutex-disabled input {
+  cursor: not-allowed;
+}

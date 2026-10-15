@@ -136,6 +136,7 @@ function updateClassInfo() {
   bonusEl.textContent = parts.length ? parts.join(' · ') : '—';
 
   if (cls.sprite && iconEl) {
+    iconEl.src = '';
     iconEl.src = cls.sprite;
     iconEl.hidden = false;
     if (placeholder) placeholder.hidden = true;
@@ -215,7 +216,6 @@ function updateSpecInfo() {
 
 // ============ ПЕРЕСЧЁТ ============
 function recalc() {
-  // 1. Экипировка — собираем предметы из слотов
   const equipment = [];
   document.querySelectorAll('.slot[data-slot]').forEach(slotEl => {
     const key = slotEl.dataset.slot;
@@ -227,11 +227,9 @@ function recalc() {
     equipment.push({ slotKey: key, item });
   });
 
-  // 2. Питомец
   const petBox = document.getElementById('pet-box');
   const followerMult = parseFloat(petBox?.dataset.mult) || 1;
 
-  // 3. Считаем
   const result = calculateView({
     classView: state.classView,
     specView: state.specView,
@@ -246,7 +244,6 @@ function recalc() {
     consumablesMult: state.consumablesMult || 1,
   });
 
-  // 4. Вывод
   const actualViewEl = document.getElementById('actual-view');
   const baseViewEl = document.getElementById('base-view');
   const capLabelEl = document.getElementById('view-cap-label');
@@ -265,29 +262,57 @@ function getMnemSelects(mnemId) {
   return document.querySelectorAll(`.mnem-select[data-mnem="${mnemId}"]`);
 }
 
-function refreshMnemOptions(mnemId) {
-  const selects = getMnemSelects(mnemId);
-  const chosen = new Set();
-  selects.forEach(sel => { if (sel.value) chosen.add(sel.value); });
-  selects.forEach(sel => {
-    const currentValue = sel.value;
-    sel.querySelectorAll('option').forEach(opt => {
-      const v = opt.value;
-      if (!v) { opt.disabled = false; return; }
-      opt.disabled = chosen.has(v) && v !== currentValue;
+function refreshAllMnemOptions() {
+  const groups = {};
+
+  document.querySelectorAll('.mnem-select').forEach(sel => {
+    const mnemId = sel.dataset.mnem || '1';
+    if (!groups[mnemId]) groups[mnemId] = [];
+    groups[mnemId].push(sel);
+  });
+
+  Object.values(groups).forEach(group => {
+    const chosen = new Set();
+    group.forEach(sel => { if (sel.value) chosen.add(sel.value); });
+
+    group.forEach(sel => {
+      const current = sel.value;
+      sel.querySelectorAll('option').forEach(opt => {
+        if (!opt.value) return;
+        opt.disabled = chosen.has(opt.value) && opt.value !== current;
+      });
     });
   });
 }
 
 function validateMnemView(inputEl) {
-  const v = inputEl.value.trim();
-  if (v === '') { inputEl.classList.remove('is-error'); return; }
-  const n = Number(v);
-  if (Number.isNaN(n) || n < MNEM_VIEW_MIN || n > MNEM_VIEW_MAX || !Number.isInteger(n)) {
-    inputEl.classList.add('is-error');
-  } else {
+  if (!inputEl || inputEl.disabled) return;
+
+  const raw = inputEl.value.trim();
+  if (raw === '') {
     inputEl.classList.remove('is-error');
+    return;
   }
+
+  const n = Number(raw);
+
+  // Обрезка до диапазона
+  if (!Number.isNaN(n)) {
+    if (n > MNEM_VIEW_MAX) {
+      inputEl.value = MNEM_VIEW_MAX;
+    } else if (n < MNEM_VIEW_MIN && n > 0) {
+      inputEl.value = MNEM_VIEW_MIN;
+    }
+  }
+
+  const finalVal = Number(inputEl.value);
+  const isInvalid =
+    Number.isNaN(finalVal) ||
+    !Number.isInteger(finalVal) ||
+    finalVal < MNEM_VIEW_MIN ||
+    finalVal > MNEM_VIEW_MAX;
+
+  inputEl.classList.toggle('is-error', isInvalid);
 }
 
 function syncMnemState() {
@@ -309,22 +334,28 @@ function initMnems() {
     const input = document.querySelector(`.mnem-input[data-mnem="${mnemId}"][data-row="${rowId}"]`);
 
     sel.addEventListener('change', () => {
-      refreshMnemOptions(mnemId);
-      if (sel.value !== 'view') {
+      refreshAllMnemOptions();
+
+      // Всегда сбрасываем input при смене select
+      if (input) {
         input.value = '';
         input.classList.remove('is-error');
+        input.disabled = (sel.value !== 'view');
       }
+
       syncMnemState();
       updateFollowerLock();
     });
 
-    input.addEventListener('input', () => {
-      validateMnemView(input);
-      syncMnemState();
-    });
+    if (input) {
+      input.addEventListener('input', () => {
+        validateMnemView(input);
+        syncMnemState();
+      });
+    }
   });
 
-  ['1', '2'].forEach(id => refreshMnemOptions(id));
+  refreshAllMnemOptions();
 }
 
 function updateLeftMnemLock() {
@@ -336,6 +367,9 @@ function updateLeftMnemLock() {
   leftMnemSlot.querySelectorAll('.mnem-select').forEach(sel => {
     sel.disabled = !unlocked;
   });
+  leftMnemSlot.querySelectorAll('.mnem-input').forEach(inp => {
+    inp.disabled = !unlocked;
+  });
 
   if (!unlocked) {
     leftMnemSlot.querySelectorAll('.mnem-select').forEach(sel => sel.value = '');
@@ -343,6 +377,7 @@ function updateLeftMnemLock() {
       inp.value = '';
       inp.classList.remove('is-error');
     });
+    refreshAllMnemOptions();
     syncMnemState();
   }
 }
@@ -615,7 +650,15 @@ function applyItemToSlot(slotKey, item) {
   const statsEl = wrapper?.querySelector('.slot-stats') || slotEl.querySelector('.slot-stats');
   const qualitySel = slotEl.querySelector('.slot-quality');
 
-  if (img && item.sprite) { img.src = item.sprite; img.hidden = false; }
+  // Затираем старую картинку перед новой
+  if (img) {
+    img.src = '';
+    img.hidden = true;
+    if (item.sprite) {
+      img.src = item.sprite;
+      img.hidden = false;
+    }
+  }
   if (nameEl) nameEl.textContent = item.name;
 
   if (statsEl) {
@@ -918,10 +961,14 @@ function applyFollower(follower, bbLevel) {
 
   const { multiplier, perLevel } = getFollowerViewMultiplier(follower, bbLevel, state.lang);
 
-  if (follower.sprite && petImg) {
-    petImg.src = follower.sprite;
-    petImg.hidden = false;
-    if (petPlaceholder) petPlaceholder.hidden = true;
+  if (petImg) {
+    petImg.src = '';
+    petImg.hidden = true;
+    if (follower.sprite) {
+      petImg.src = follower.sprite;
+      petImg.hidden = false;
+      if (petPlaceholder) petPlaceholder.hidden = true;
+    }
   }
 
   if (petName) {
@@ -1050,6 +1097,7 @@ async function initViewPage() {
   initConsumables();
   initEquipmentSlots();
   initFollower();
+  initResetButton();
 
   const classSel = document.getElementById('class-select');
   const specSel = document.getElementById('spec-select');
@@ -1064,6 +1112,7 @@ async function initViewPage() {
 initViewPage();
 
 // ============ СМЕНА ЯЗЫКА ============
+window.addEventListener('orna-lang-changed', async () => {
   const savedState = {
     classId: state.classId,
     specId: state.specId,
@@ -1073,10 +1122,9 @@ initViewPage();
     brazier: state.brazier,
     steps3000: state.steps3000,
     steps6000: state.steps6000,
-    consumables: [],   // ← чекбоксы расходников
+    consumables: [],
   };
 
-  // Сохраняем чекбоксы расходников (копатели + парсерные)
   document.querySelectorAll('.consumables-grid input[type="checkbox"]:checked').forEach(chk => {
     savedState.consumables.push({
       id: chk.dataset.consumableId,
@@ -1188,7 +1236,7 @@ initViewPage();
   updateLeftMnemLock();
   updateFollowerLock();
 
-  ['1', '2'].forEach(id => refreshMnemOptions(id));
+  refreshAllMnemOptions();
   syncMnemState();
   initConsumables();
   recalcConsumables();
@@ -1204,14 +1252,12 @@ initViewPage();
   const totalSlots = parseInt(document.getElementById('gems-total-slots')?.textContent) || 0;
   if (window.setGemsTotalSlots) window.setGemsTotalSlots(totalSlots);
 
-  // Восстанавливаем жаровню
   const brazierChk = document.querySelector('.brazier-check');
   if (brazierChk) {
     brazierChk.checked = !!savedState.brazier;
     state.brazier = !!savedState.brazier;
   }
 
-  // Восстанавливаем шаги
   state.steps3000 = !!savedState.steps3000;
   state.steps6000 = !!savedState.steps6000;
   document.querySelectorAll('.step-check').forEach(chk => {
@@ -1220,7 +1266,6 @@ initViewPage();
     if (label.includes('6000')) chk.checked = state.steps6000;
   });
 
-  // Восстанавливаем расходники
   savedState.consumables.forEach(({ id, group }) => {
     const chk = document.querySelector(
       `.consumables-grid input[data-consumable-id="${id}"][data-consumable-group="${group}"]`
@@ -1230,6 +1275,7 @@ initViewPage();
   recalcConsumables();
 
   recalc();
+});
 
 // ============ СЛУШАТЕЛЬ СБРОСА СЛОТА ============
 window.addEventListener('orna-slot-cleared', (e) => {
@@ -1246,39 +1292,34 @@ window.addEventListener('orna-slot-cleared', (e) => {
 // ============================================================
 function resetAll() {
   const lang = currentLang();
-const msg = lang === 'ru'
-  ? 'Очистить всё? Это действие нельзя отменить.'
-  : 'Clear all? This action cannot be undone.';
+  const msg = lang === 'ru'
+    ? 'Очистить всё? Это действие нельзя отменить.'
+    : 'Clear all? This action cannot be undone.';
   if (!window.confirm(msg)) return;
 
-  // 1. Класс
   const classSel = document.getElementById('class-select');
   if (classSel) classSel.value = '';
 
-  // 2. Спека
   const specSel = document.getElementById('spec-select');
   if (specSel) specSel.value = '';
 
-  // 3. Питомец
   clearFollower();
 
-  // 4. Слоты
   ['weapon-1', 'weapon-2', 'head', 'body', 'legs', 'accessory-1', 'accessory-2']
     .forEach(sk => {
       const slotEl = document.querySelector(`[data-slot="${sk}"]`);
       if (slotEl?.dataset.itemId) clearSlot(sk);
     });
 
-  // 5. Мнемы
   document.querySelectorAll('.mnem-select').forEach(sel => {
     sel.value = '';
   });
   document.querySelectorAll('.mnem-input').forEach(inp => {
     inp.value = '';
   });
+  refreshAllMnemOptions();
   syncMnemState();
 
-  // 6. Геммы
   document.querySelectorAll('#gems-list .gem-count').forEach(inp => {
     inp.value = 0;
   });
@@ -1287,7 +1328,6 @@ const msg = lang === 'ru'
     window.setGemsTotalSlots(totalSlots);
   }
 
-  // 7. Шаги + жаровня
   state.steps3000 = false;
   state.steps6000 = false;
   state.brazier = false;
@@ -1295,20 +1335,17 @@ const msg = lang === 'ru'
     chk.checked = false;
   });
 
-  // 8. Расходники
   document.querySelectorAll('.consumables-grid input[type="checkbox"]:checked').forEach(chk => {
     chk.checked = false;
   });
   state.consumablesMult = 1;
 
-  // 9. Обновляем UI
   updateClassInfo();
   updateSpecInfo();
   updateLeftMnemLock();
   updateFollowerLock();
   updateTotalGemsSlots();
 
-  // 10. Пересчёт
   recalc();
 }
 
@@ -1317,5 +1354,3 @@ function initResetButton() {
   if (!btn) return;
   btn.addEventListener('click', resetAll);
 }
-
-initResetButton();
