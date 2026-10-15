@@ -1246,9 +1246,9 @@ window.addEventListener('orna-slot-cleared', (e) => {
 // ============================================================
 function resetAll() {
   const lang = currentLang();
-  const msg = lang === 'ru'
-    ? 'Сбросить всё? Это действие нельзя отменить.'
-    : 'Reset all? This action cannot be undone.';
+const msg = lang === 'ru'
+  ? 'Очистить всё? Это действие нельзя отменить.'
+  : 'Clear all? This action cannot be undone.';
   if (!window.confirm(msg)) return;
 
   // 1. Класс

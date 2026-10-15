@@ -257,23 +257,28 @@
   gap: 6px;
 }
 
+/* ============ КАП УДАЧИ ============ */
+.farm-result-line {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
 .farm-cap-label {
   display: none;
   font-size: 10px;
-  font-weight: 700;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: #e55;
-  padding: 1px 5px;
-  border: 1px solid #e55;
-  border-radius: 4px;
-  line-height: 1.2;
+  letter-spacing: 1px;
+  color: var(--text-dim);
+  opacity: 0.5;
 }
 
 .farm-result-card.is-capped .farm-cap-label {
-  display: inline-block;
+  display: inline;
 }
 
+/* Подсветка цифры удачи при капе — как в обзоре */
 .farm-result-card.is-capped .farm-result-value {
-  color: #e55;
+  color: var(--gold-dim);
 }

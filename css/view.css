@@ -166,7 +166,8 @@
 
 /* При срабатывании капа подсветим число, чтобы было заметно */
 .result-line-actual.is-capped .result-line-value {
-  color: var(--gold-dim);       /* приглушённый оттенок */
+  color: var(--gold);
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
 }
 
 /* ============ ПИТОМЕЦ ============ */
