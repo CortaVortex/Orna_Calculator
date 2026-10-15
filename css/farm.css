@@ -280,5 +280,6 @@
 
 /* Подсветка цифры удачи при капе — как в обзоре */
 .farm-result-card.is-capped .farm-result-value {
-  color: var(--gold-dim);
+  color: var(--gold);
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
 }
