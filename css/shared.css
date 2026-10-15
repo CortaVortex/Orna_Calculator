@@ -265,6 +265,19 @@ body {
 .slot-mnem {
   border-style: dashed;
   border-color: #3a3a3a;
+  min-width: 0;
+  max-width: 100%;
+  padding: 4px;
+  aspect-ratio: auto;
+  height: auto;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+@media (min-width: 600px) {
+  .slot-mnem { padding: 6px; }
 }
 
 .slot-head,
@@ -335,41 +348,57 @@ body {
 .mnem-rows {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
   width: 100%;
   min-width: 0;
   max-width: 100%;
-  overflow: hidden;
   justify-content: center;
+}
+
+@media (min-width: 600px) {
+  .mnem-rows { gap: 5px; }
 }
 
 .mnem-row {
   display: flex;
   flex-direction: column;
-  gap: 1px;
+  gap: 2px;
   min-width: 0;
   max-width: 100%;
-  overflow: hidden;
+}
+
+@media (min-width: 600px) {
+  .mnem-row { gap: 3px; }
 }
 
 .mnem-select {
   width: 100%;
   min-width: 0;
   max-width: 100%;
-  padding: 1px 2px;
-  font-size: 7px;
+  padding: 2px 3px;
+  font-size: 9px;
   font-family: 'Inter', sans-serif;
   color: var(--text);
   background: #0a0a0a;
   border: 1px solid var(--border);
-  border-radius: 2px;
+  border-radius: 3px;
   cursor: pointer;
   appearance: none;
   -webkit-appearance: none;
   text-overflow: ellipsis;
   box-sizing: border-box;
-  line-height: 1.1;
-  height: 14px;
+  line-height: 1.2;
+  height: auto;
+  min-height: 18px;
+}
+
+/* На широких экранах — крупнее */
+@media (min-width: 600px) {
+  .mnem-select {
+    font-size: 11px;
+    padding: 4px 6px;
+    min-height: 24px;
+  }
 }
 
 .mnem-select:focus {
@@ -396,19 +425,29 @@ body {
   width: 100%;
   min-width: 0;
   max-width: 100%;
-  padding: 1px;
-  font-size: 8px;
+  padding: 2px 3px;
+  font-size: 10px;
   font-family: 'Inter', sans-serif;
   text-align: center;
   color: var(--text);
   background: #0a0a0a;
   border: 1px solid var(--border);
-  border-radius: 2px;
+  border-radius: 3px;
   transition: all 0.15s ease;
   -moz-appearance: textfield;
   box-sizing: border-box;
-  line-height: 1.1;
-  height: 14px;
+  line-height: 1.2;
+  height: auto;
+  min-height: 18px;
+}
+
+/* На широких экранах — крупнее */
+@media (min-width: 600px) {
+  .mnem-input {
+    font-size: 12px;
+    padding: 4px 6px;
+    min-height: 24px;
+  }
 }
 
 .mnem-input::-webkit-outer-spin-button,
@@ -1471,4 +1510,10 @@ body {
 
 .reset-btn:active {
   transform: scale(0.99);
+}
+
+/* У мнемов нет slot-name и slot-stats */
+.slot-mnem .slot-name,
+.slot-mnem .slot-stats {
+  display: none;
 }
