@@ -435,15 +435,19 @@ function logStep(stat, label, before, after, steps) {
       };
     }
 
-    // 2.4. Мнем «Аксессуары»
-    if (slotKey === 'accessory-1' || slotKey === 'accessory-2') {
-      baseB = {
-        orns: boostByQuality(baseB.orns, accBoost),
-        gold: boostByQuality(baseB.gold, accBoost),
-        exp:  boostByQuality(baseB.exp,  accBoost),
-        luck: boostByQuality(baseB.luck, accBoost),
-      };
-    }
+// 2.4. Мнем «Аксессуары» — формула:
+// new = (base × quality) + ((base × quality) × amity%)
+// где base × quality уже применено выше в 2.2,
+// а amity% = (accBoost - 1) × 100
+if (slotKey === 'accessory-1' || slotKey === 'accessory-2') {
+  const amityPct = accBoost - 1;   // например, 0.25 → 25%
+  baseB = {
+    orns: baseB.orns + baseB.orns * amityPct,
+    gold: baseB.gold + baseB.gold * amityPct,
+    exp:  baseB.exp  + baseB.exp  * amityPct,
+    luck: baseB.luck + baseB.luck * amityPct,
+  };
+}
 
     // 2.5. Тэги (одинаковые для всех статов)
     const tags = [];
@@ -472,17 +476,28 @@ function logStep(stat, label, before, after, steps) {
       tags.forEach(t => { baseCoef /= t.coef; });
 
       // Формируем пошаговую формулу
-      const steps = [];
-      const basePct = Math.round((baseCoef - 1) * 1000) / 10;
-      const baseSign = basePct >= 0 ? '+' : '';
-      steps.push(`base: ${baseSign}${basePct}% (×${baseCoef.toFixed(4).replace(/\.?0+$/, '')})`);
+const steps = [];
+const basePct = Math.round((baseCoef - 1) * 1000) / 10;
+const baseSign = basePct >= 0 ? '+' : '';
+steps.push(`base: ${baseSign}${basePct}% (×${baseCoef.toFixed(4).replace(/\.?0+$/, '')})`);
 
-      let running = baseCoef;
-      tags.forEach(t => {
-        running *= t.coef;
-        const runStr = running.toFixed(4).replace(/\.?0+$/, '');
-        steps.push(`× ${t.name} ×${t.coef.toFixed(2)} → ${runStr}`);
-      });
+let running = baseCoef;
+tags.forEach(t => {
+  const prev = running;
+  running *= t.coef;
+  const prevStr = prev.toFixed(4).replace(/\.?0+$/, '');
+  const runStr = running.toFixed(4).replace(/\.?0+$/, '');
+
+  if (t.name === 'amity') {
+    // Развёрнутая формула: prev + (prev × amity%)
+    const amityPct = t.coef - 1;
+    steps.push(
+      `amity: ${prevStr} + (${prevStr} × ${amityPct.toFixed(2)}) = ${runStr}`
+    );
+  } else {
+    steps.push(`× ${t.name} ×${t.coef.toFixed(2)} → ${runStr}`);
+  }
+});
 
       // Короткий label
       const tagsShort = tags.map(t => `${t.name} ×${t.coef.toFixed(2)}`).join(', ');
