@@ -3,7 +3,18 @@
   const btn = document.getElementById('lang-toggle');
   if (!btn) return;
 
-  let lang = localStorage.getItem('orna-lang') || 'ru';
+  // Определяем язык:
+  // 1. Если в localStorage есть сохранённый — берём его.
+  // 2. Иначе — по системному языку: ru* → 'ru', иначе → 'en'.
+  function detectLang() {
+    const saved = localStorage.getItem('orna-lang');
+    if (saved === 'ru' || saved === 'en') return saved;
+
+    const browserLang = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
+    return browserLang.startsWith('ru') ? 'ru' : 'en';
+  }
+
+  let lang = detectLang();
 
   function applyLang() {
     document.querySelectorAll('[data-ru]').forEach(el => {
