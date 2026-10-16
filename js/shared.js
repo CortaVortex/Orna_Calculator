@@ -1,10 +1,11 @@
 // ============ ЯЗЫК ============
 (function initLang() {
     // === ВРЕМЕННАЯ ОТЛАДКА ===
-    console.log('=== ОТЛАДКА ЯЗЫКА ===');
-    console.log('navigator.language:', navigator.language);
-    console.log('navigator.languages:', navigator.languages);
-    console.log('localStorage orna-lang:', localStorage.getItem('orna-lang'));
+    alert(
+        'navigator.language: ' + navigator.language + '\n' +
+        'navigator.languages: ' + JSON.stringify(navigator.languages) + '\n' +
+        'localStorage orna-lang: ' + localStorage.getItem('orna-lang')
+    );
     // === КОНЕЦ ОТЛАДКИ ===
     
   const btn = document.getElementById('lang-toggle');
