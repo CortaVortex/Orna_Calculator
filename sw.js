@@ -21,6 +21,7 @@ const ASSETS = [
 
   './js/shared.js',
   './js/modal.js',
+  './js/sw-register.js',
   './js/view.js',
   './js/view-calc.js',
   './js/farm.js',

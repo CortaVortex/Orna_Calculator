@@ -1,6 +1,7 @@
 // js/sw-register.js
-// Регистрирует Service Worker с правильным путём
-// (в корне для index.html, ../sw.js для pages/*.html)
+// Регистрирует Service Worker с правильным путём:
+// - index.html в корне → './sw.js', scope './'
+// - pages/*.html       → '../sw.js', scope '../'
 
 const isLocalhost =
   location.hostname === 'localhost' ||
@@ -16,14 +17,11 @@ if (isLocalhost) {
   }
 } else if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    // Определяем путь к sw.js:
-    // - index.html в корне → './sw.js'
-    // - pages/*.html → '../sw.js'
     const inPages = location.pathname.includes('/pages/');
     const swPath = inPages ? '../sw.js' : './sw.js';
-    const scope = inPages ? '../' : './';
+    const swScope = inPages ? '../' : './';
 
-    navigator.serviceWorker.register(swPath, { scope }).then((reg) => {
+    navigator.serviceWorker.register(swPath, { scope: swScope }).then((reg) => {
       console.log('[SW] Registered:', reg.scope);
       reg.update().catch(() => {});
 
