@@ -815,6 +815,28 @@ body {
   color: var(--text-dim);
 }
 
+.app-footer p {
+  margin: 0;
+  line-height: 1.4;
+}
+
+.app-footer p + p {
+  margin-top: 6px;
+  font-size: 10px;
+  opacity: 0.75;
+}
+
+.app-footer a {
+  color: var(--gold-dim);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.app-footer a:hover {
+  color: var(--gold);
+  text-decoration: underline;
+}
+
 /* ============ ШИРОКИЕ ЭКРАНЫ ============ */
 @media (min-width: 600px) {
   body { padding: 24px 16px 60px; }
