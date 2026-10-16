@@ -15,6 +15,15 @@
   <link rel="stylesheet" href="../css/shared.css">
   <link rel="stylesheet" href="../css/farm.css">
 </head>
+
+<!-- Popup для подсказки -->
+<div class="calc-popup" id="calc-popup" hidden>
+  <div class="calc-popup-inner">
+    <button class="calc-popup-close" type="button">×</button>
+    <div class="calc-popup-body"></div>
+  </div>
+</div>
+
 <body>
 
 <header class="app-header">
@@ -229,7 +238,7 @@
       <input type="number" class="mnem-input" data-mnem="2" data-row="2">
     </div>
     <div class="mnem-row">
-      <select class="mnem-select" data-mnem="1" data-row="3">
+      <select class="mnem-select" data-mnem="2" data-row="3">
         <option value="" data-ru="— пусто —" data-en="— empty —">— пусто —</option>
         <option value="acc" data-ru="Аксессуары (5–25%)" data-en="Accessories (5–25%)">Аксессуары (5–25%)</option>
         <option value="luck" data-ru="Удача (1–5%)" data-en="Luck (1–5%)">Удача (1–5%)</option>

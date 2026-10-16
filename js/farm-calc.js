@@ -28,7 +28,6 @@ export const QUALITY_BG = {
 export const DUAL_WIELD_PENALTY = 0.65;
 
 // ============ ХАРДКОД-ПРЕДМЕТЫ ============
-// Пустое одноручное оружие — для слотов без бонусов
 export const HARDCODED_ITEMS = [
   {
     id: '__weapon_plain__',
@@ -48,8 +47,6 @@ export const HARDCODED_ITEMS = [
 ];
 
 // ============ ЗАВИСИМОСТЬ ПРЕДМЕТ ↔ СПЕЦИАЛИЗАЦИЯ ============
-// Если предмет в списке — он даёт бонусы ТОЛЬКО когда активна указанная спека.
-// Без спеки — бонусы НЕ применяются, а в UI показывается красная обводка.
 export const SPEC_DEPENDENCIES = {
   'Туника беглого купца':        ['merchant-5'],
   "Beheaded Merchant's Tunic":   ['merchant-5'],
@@ -191,7 +188,6 @@ export function isTwoHanded(item) {
 
 // ============ СЛОТЫ ============
 export function getItemSlot(item) {
-  // Хардкод-предметы — их слот определяем по facts
   if (item?.id?.startsWith('__')) {
     const facts = item.facts || [];
     const slotFact = facts.find(f =>
@@ -207,7 +203,6 @@ export function getItemSlot(item) {
     return 'unknown';
   }
 
-    // ... остальной код для парсерных предметов
   const facts = item.facts || [];
   const slotFact = facts.find(f =>
     f.label === 'Слот' || f.label === 'Place' || f.label === 'Slot'
@@ -246,7 +241,6 @@ export function getItemSlot(item) {
 }
 
 export function isFarmItem(item) {
-  // Хардкод-предметы всегда проходят
   if (item?.id?.startsWith('__')) return true;
 
   const effects = item.effects || [];
@@ -294,7 +288,7 @@ export function getFarmConsumables(allItems) {
       return {
         id: item.id,
         name: item.name,
-        nameEn: item.name,
+        nameEn: item.nameEn || item.name,
         icon: item.sprite,
         multipliers: m,
       };
@@ -311,8 +305,68 @@ export function getAllConsumables(allItems) {
     });
 }
 
+// ============ ЛОКАЛИЗАЦИЯ ЛОГА ============
+const LANG_LABELS = {
+  ru: {
+    base: 'База',
+    total: 'Итог',
+    penalty: 'штраф',
+    spec: 'Специализация',
+    follower: 'Питомец',
+    steps3000: '3000 шагов',
+    steps6000: '6000 шагов',
+    mnem: 'Осколок',
+    quality: {
+      common:       'Обычное',
+      superior:     'Хорошее',
+      famed:        'Добротное',
+      legendary:    'Эпичное',
+      ornate:       'Орнатное',
+      masterforged: 'Травленое',
+      demonforged:  'Закаленное',
+      godforged:    'Божественное',
+    },
+  },
+  en: {
+    base: 'Base',
+    total: 'Total',
+    penalty: 'penalty',
+    spec: 'Specialization',
+    follower: 'Follower',
+    steps3000: '3000 steps',
+    steps6000: '6000 steps',
+    mnem: 'Amity',
+    quality: {
+      common:       'common',
+      superior:     'superior',
+      famed:        'famed',
+      legendary:    'legendary',
+      ornate:       'ornate',
+      masterforged: 'masterforged',
+      demonforged:  'demonforged',
+      godforged:    'godforged',
+    },
+  },
+};
+
 // ============ ГЛАВНЫЙ РАСЧЁТ ============
 export function calculateFarm(input) {
+  const lang = input.lang || 'ru';
+  const L = LANG_LABELS[lang] || LANG_LABELS.ru;
+
+  // Лог для подсказки — по каждому стату
+  const log = {
+    orns: [{ label: L.base, value: 100 }],
+    gold: [{ label: L.base, value: 100 }],
+    exp:  [{ label: L.base, value: 100 }],
+    luck: [{ label: L.base, value: 100 }],
+  };
+
+function logStep(stat, label, before, after, steps) {
+  const coef = before === 0 ? 1 : after / before;
+  log[stat].push({ label, coef, before, after, steps });
+}
+
   // 1. БАЗА
   const base = {
     orns: 100 + (input.anguish?.orns || 0),
@@ -321,7 +375,7 @@ export function calculateFarm(input) {
     luck: 100 + (input.anguish?.luck || 0),
   };
 
-  // 2. ЭКИПИРОВКА — каждый предмет × качество, потом перемножаем между собой
+  // 2. ЭКИПИРОВКА
   const equipmentMult = { orns: 1, gold: 1, exp: 1, luck: 1 };
 
   const w1 = (input.equipment || []).find(e => e.slotKey === 'weapon-1');
@@ -331,7 +385,7 @@ export function calculateFarm(input) {
                        !isTwoHanded(w1.item) &&
                        !isTwoHanded(w2.item);
 
-  const mnemVals = input.mnemVals || { acc: 0, orns: 0, gold: 0, exp: 0, luck: 0, bonds: 0 };
+  const mnemVals = input.mnemVals || {};
   const accBoost = 1 + (mnemVals.acc || 0) / 100;
 
   const activeSpecId = input.specId || null;
@@ -339,13 +393,10 @@ export function calculateFarm(input) {
   (input.equipment || []).forEach(({ slotKey, item, quality }) => {
     if (!item) return;
 
-    // 2.0. Проверка зависимости от специализации
     const req = checkSpecRequirement(item, activeSpecId);
-    if (req.requires && !req.satisfied) {
-      return;   // предмет требует спеку, но её нет — не даёт бонусов
-    }
+    if (req.requires && !req.satisfied) return;
 
-    // 2.1. Базовые эффекты предмета
+    // 2.1. Базовые эффекты
     let baseB = parseFarmBonuses((item.effects || []).join(' '));
 
     // 2.2. × качество
@@ -368,7 +419,7 @@ export function calculateFarm(input) {
       };
     }
 
-    // 2.4. Мнем «Аксессуары» — для аксессуаров
+    // 2.4. Мнем «Аксессуары»
     if (slotKey === 'accessory-1' || slotKey === 'accessory-2') {
       baseB = {
         orns: boostByQuality(baseB.orns, accBoost),
@@ -378,41 +429,109 @@ export function calculateFarm(input) {
       };
     }
 
-    // 2.5. Перемножаем в equipmentMult
-    equipmentMult.orns *= baseB.orns;
-    equipmentMult.gold *= baseB.gold;
-    equipmentMult.exp  *= baseB.exp;
-    equipmentMult.luck *= baseB.luck;
+    // 2.5. Тэги (одинаковые для всех статов)
+    const tags = [];
+
+    if (quality && quality !== 'common') {
+      const qName = L.quality[quality] || quality;
+      tags.push({ name: qName, coef: qualityMult });
+    }
+    if (isWeaponSlot && bothOneHand) {
+      tags.push({ name: L.penalty, coef: DUAL_WIELD_PENALTY });
+    }
+    if ((slotKey === 'accessory-1' || slotKey === 'accessory-2') && accBoost !== 1) {
+      tags.push({ name: 'amity', coef: accBoost });
+    }
+
+    // 2.6. Перемножаем + формируем лог по каждому стату
+    ['orns', 'gold', 'exp', 'luck'].forEach(stat => {
+      const itemCoef = baseB[stat];
+      if (Math.abs(itemCoef - 1) < 1e-9) return;
+
+      const before = equipmentMult[stat];
+      const after = before * itemCoef;
+
+      // Базовый коэффициент (без качества, штрафа, amity)
+      let baseCoef = itemCoef;
+      tags.forEach(t => { baseCoef /= t.coef; });
+
+      // Формируем пошаговую формулу
+      const steps = [];
+      const basePct = Math.round((baseCoef - 1) * 1000) / 10;
+      const baseSign = basePct >= 0 ? '+' : '';
+      steps.push(`base: ${baseSign}${basePct}% (×${baseCoef.toFixed(4).replace(/\.?0+$/, '')})`);
+
+      let running = baseCoef;
+      tags.forEach(t => {
+        running *= t.coef;
+        const runStr = running.toFixed(4).replace(/\.?0+$/, '');
+        steps.push(`× ${t.name} ×${t.coef.toFixed(2)} → ${runStr}`);
+      });
+
+      // Короткий label
+      const tagsShort = tags.map(t => `${t.name} ×${t.coef.toFixed(2)}`).join(', ');
+      let label = slotKey;
+      if (tagsShort) label += ` (${tagsShort})`;
+
+      logStep(stat, label, before, after, steps);
+      equipmentMult[stat] = after;
+    });
   });
 
-  // 3. ПРОЧИЕ БОНУСЫ (спека, питомец, шаги, храмы, статуи, ивенты, расходники, астрал)
+  // 3. ПРОЧИЕ БОНУСЫ
   const otherMult = { orns: 1, gold: 1, exp: 1, luck: 1 };
 
-  function applyOther(m) {
+  function applyOther(m, label) {
     if (!m) return;
-    otherMult.orns *= m.orns ?? 1;
-    otherMult.gold *= m.gold ?? 1;
-    otherMult.exp  *= m.exp  ?? 1;
-    otherMult.luck *= m.luck ?? 1;
+    ['orns', 'gold', 'exp', 'luck'].forEach(stat => {
+      const before = otherMult[stat];
+      const after = before * (m[stat] ?? 1);
+      if (Math.abs(after - before) > 1e-9) {
+        logStep(stat, label || '—', before, after);
+        otherMult[stat] = after;
+      }
+    });
   }
 
+  // Мнемы
+const mnemList = input.mnemList || [];
+const statNames = {
+  orns: lang === 'en' ? 'Orns'  : 'Орны',
+  gold: lang === 'en' ? 'Gold'  : 'Золото',
+  exp:  lang === 'en' ? 'Exp'   : 'Опыт',
+  luck: lang === 'en' ? 'Luck'  : 'Удача',
+};
+mnemList.forEach(({ type, value }) => {
+  if (!type || !value || type === 'bonds') return;
+  if (type === 'acc') return;
+  const name = statNames[type] || type;
+  applyOther({ [type]: 1 + value / 100 }, `${L.mnem} ${name} +${value}%`);
+});
+
   if (input.specMultipliers) {
-    applyOther(input.specMultipliers);
+    applyOther(input.specMultipliers, L.spec);
   }
 
   if (input.follower && input.follower.item && input.follower.bbLevel > 0) {
-    applyOther(getFollowerMultiplier(input.follower.item, input.follower.bbLevel));
+    applyOther(
+      getFollowerMultiplier(input.follower.item, input.follower.bbLevel),
+      `${L.follower} BB${input.follower.bbLevel}`
+    );
   }
 
-  if (input.steps?.['3000']) applyOther({ exp: 1.25 });
-  if (input.steps?.['6000']) applyOther({ orns: 1.25, luck: 1.25 });
+  if (input.steps?.['3000']) applyOther({ exp: 1.25 }, L.steps3000);
+  if (input.steps?.['6000']) applyOther({ orns: 1.25, luck: 1.25 }, L.steps6000);
 
-  const applyAll = (arr) => (arr || []).forEach(x => applyOther(x.multipliers));
-  applyAll(input.temples);
-  applyAll(input.statues);
-  applyAll(input.events);
-  applyAll(input.consumables);
-  applyAll(input.astral);
+  // Храмы, статуи, ивенты, расходники, астрал — используем name / nameEn
+  const applyList = (arr) => (arr || []).forEach(x => {
+    const n = (lang === 'en' && x.nameEn) ? x.nameEn : x.name;
+    applyOther(x.multipliers, n);
+  });
+  applyList(input.temples);
+  applyList(input.statues);
+  applyList(input.events);
+  applyList(input.consumables);
+  applyList(input.astral);
 
   // 4. ИТОГ
   const LUCK_CAP = 400;
@@ -425,7 +544,8 @@ export function calculateFarm(input) {
     gold: base.gold * equipmentMult.gold * otherMult.gold,
     exp:  base.exp  * equipmentMult.exp  * otherMult.exp,
     luck,
-    luckRaw,          // ← для определения «достигнут ли кап»
-    luckCapped: luckRaw > LUCK_CAP,   // ← флаг: обрезано
+    luckRaw,
+    luckCapped: luckRaw > LUCK_CAP,
+    log,
   };
 }

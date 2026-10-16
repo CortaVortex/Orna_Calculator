@@ -371,7 +371,6 @@ function applyFollower(follower, bbLevel) {
   const petBonus = document.getElementById('pet-bonus');
   if (!petBox) return;
 
-  // Затираем старую картинку
   if (petImg) {
     petImg.src = '';
     petImg.hidden = true;
@@ -500,7 +499,6 @@ function initFollower() {
 // ============ МНЕМЫ ============
 function getMnemValues() {
   const result = { acc: 0, orns: 0, gold: 0, exp: 0, luck: 0, bonds: 0 };
-
   document.querySelectorAll('.mnem-select').forEach(sel => {
     const row = sel.dataset.row;
     const mnem = sel.dataset.mnem;
@@ -509,7 +507,6 @@ function getMnemValues() {
     );
     const value = sel.value;
     if (!value) return;
-
     if (value === 'bonds') {
       result.bonds += 1;
     } else {
@@ -517,11 +514,25 @@ function getMnemValues() {
       if (pct > 0) result[value] += pct;
     }
   });
-
   return result;
 }
 
-// Единая валидация input: min/max, обрезка, сброс при некорректном вводе
+function getMnemList() {
+  const list = [];
+  document.querySelectorAll('.mnem-select').forEach(sel => {
+    const row = sel.dataset.row;
+    const mnem = sel.dataset.mnem;
+    const input = document.querySelector(
+      `.mnem-input[data-mnem="${mnem}"][data-row="${row}"]`
+    );
+    const type = sel.value;
+    if (!type || type === 'bonds') return;
+    const pct = parseFloat(input?.value) || 0;
+    if (pct > 0) list.push({ type, value: pct });
+  });
+  return list;
+}
+
 function validateMnemInput(input) {
   if (!input || input.disabled) return;
 
@@ -536,14 +547,13 @@ function validateMnemInput(input) {
   }
 
   if (val < 0) val = 0;
-  if (val > max) val = max;      // обрезаем до max
+  if (val > max) val = max;
   input.value = val;
 
   const isInvalid = val > 0 && (val < min || val > max);
   input.classList.toggle('is-error', isInvalid);
 }
 
-// Обновление состояния input при смене select (левый и правый — одинаково)
 function updateMnemInputState(sel) {
   const mnem = sel.dataset.mnem;
   const row = sel.dataset.row;
@@ -569,13 +579,11 @@ function updateMnemInputState(sel) {
       input.max = 5;
       input.placeholder = '1–5';
     }
-    // Сбрасываем значение, если оно вне диапазона
     validateMnemInput(input);
   }
 }
 
 function refreshAllMnemOptions() {
-  // Группируем селекты по мнему (data-mnem = "1" или "2")
   const groups = {};
 
   document.querySelectorAll('.mnem-select').forEach(sel => {
@@ -584,7 +592,6 @@ function refreshAllMnemOptions() {
     groups[mnemId].push(sel);
   });
 
-  // Внутри каждой группы блокируем повторки
   Object.values(groups).forEach(group => {
     const chosen = new Set();
     group.forEach(sel => { if (sel.value) chosen.add(sel.value); });
@@ -650,24 +657,6 @@ function updateLeftMnemLock() {
     refreshAllMnemOptions();
   }
 }
-
-  // Если один выбран — блокируем второй
-  MUTEX_EVENTS.forEach(id => {
-    const chk = document.querySelector(`#events-grid input[data-event-id="${id}"]`);
-    if (!chk) return;
-
-    const isSelected = checked.has(id);
-    const isOtherSelected = [...checked].some(x => x !== id);
-
-    // Блокируем второй, если выбран первый
-    chk.disabled = !isSelected && isOtherSelected;
-
-    // Визуально — серый
-    const label = chk.closest('.consumable-item');
-    if (label) {
-      label.classList.toggle('is-mutex-disabled', chk.disabled);
-    }
-  });
 
 // ============ ШАГИ ============
 function initSteps() {
@@ -754,6 +743,7 @@ function recalcFarm() {
   const specId = selectedSpec?.id || null;
 
   const mnemVals = getMnemValues();
+  const mnemList = getMnemList();
 
   const equipment = [];
   document.querySelectorAll('.slot[data-item-id]').forEach(slotEl => {
@@ -787,10 +777,12 @@ function recalcFarm() {
   const astral  = collectChecked('#astral-grid',  'astralId', ASTRAL_TREE);
 
   const results = calculateFarm({
+    lang: currentLang(),
     anguish,
     specMultipliers,
     specId,
     mnemVals,
+    mnemList,
     equipment,
     follower,
     steps: farmState.steps,
@@ -836,6 +828,90 @@ function updateFarmResults(results) {
   if (luckCard) {
     luckCard.classList.toggle('is-capped', !!results.luckCapped);
   }
+
+  // Клик по карточке → popup с деталями
+  ['orns', 'gold', 'exp', 'luck'].forEach(stat => {
+    const card = document.querySelector(`.farm-result-card[data-currency="${stat}"]`);
+    if (!card) return;
+    if (card.dataset.boundCalc === '1') {
+      card.dataset.calcStat = stat;
+      return;
+    }
+    card.dataset.boundCalc = '1';
+    card.dataset.calcStat = stat;
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', () => {
+      showCalcPopup(stat);
+    });
+  });
+
+  window.__lastCalcResults = results;
+}
+
+// ============ POPUP РАСЧЁТА ============
+function showCalcPopup(stat) {
+  const popup = document.getElementById('calc-popup');
+  if (!popup) return;
+
+  const results = window.__lastCalcResults;
+  if (!results) return;
+
+  const log = results.log?.[stat] || [];
+  const lang = currentLang();
+
+  const names = {
+    ru: { orns: 'Орны', gold: 'Золото', exp: 'Опыт', luck: 'Удача' },
+    en: { orns: 'Orns', gold: 'Gold', exp: 'Exp', luck: 'Luck' },
+  };
+  const n = names[lang] || names.ru;
+  const total = results[stat];
+
+  let html = `<div class="calc-popup-title">${n[stat]} — ${Math.round(total)}% <span style="opacity: 0.5; font-size: 0.8em;">(× ${(total/100).toFixed(5).replace(/\.?0+$/, '')})</span></div>`;
+
+log.forEach(step => {
+  if (step.coef !== undefined) {
+    const coefStr = step.coef.toFixed(4).replace(/\.?0+$/, '');
+    html += `
+      <div class="calc-popup-step">
+        <div class="calc-popup-step-row">
+          <span class="calc-popup-step-label">${step.label}</span>
+          <span class="calc-popup-step-value">× ${coefStr}</span>
+        </div>
+        ${step.steps ? `
+          <div class="calc-popup-step-formula">
+            ${step.steps.map(s => `<div>${s}</div>`).join('')}
+          </div>
+        ` : ''}
+      </div>
+    `;
+  } else {
+    html += `
+      <div class="calc-popup-step">
+        <div class="calc-popup-step-row">
+          <span class="calc-popup-step-label">${step.label}</span>
+          <span class="calc-popup-step-value">${step.value}</span>
+        </div>
+      </div>
+    `;
+  }
+});
+
+const totalCoef = (total / 100).toFixed(5).replace(/\.?0+$/, '');
+const totalPct = Math.round(total * 1000) / 1000;
+html += `
+  <div class="calc-popup-total">
+    <span>Итог</span>
+    <span>× ${totalCoef} = ${totalPct}%</span>
+  </div>
+`;
+
+  popup.querySelector('.calc-popup-body').innerHTML = html;
+  popup.hidden = false;
+}
+
+function closeCalcPopup() {
+  const popup = document.getElementById('calc-popup');
+  if (popup) popup.hidden = true;
 }
 
 // ============ ЭКИПИРОВКА ============
@@ -896,7 +972,6 @@ function openSlotPicker(slotKey) {
       allowed.includes(getItemSlot(it))
     )
     .filter(it => {
-      // Двуручки нельзя во вторую руку
       if (slotKey === 'weapon-2' && isTwoHanded(it)) return false;
       return true;
     })
@@ -920,7 +995,6 @@ function applyItemToFarmSlot(slotKey, item) {
   const nameEl = wrapper?.querySelector('.slot-name') || slotEl.querySelector('.slot-name');
   const qualitySel = slotEl.querySelector('.slot-quality');
 
-  // Затираем старую картинку ПЕРЕД установкой новой
   if (img) {
     img.src = '';
     img.hidden = true;
@@ -938,6 +1012,7 @@ function applyItemToFarmSlot(slotKey, item) {
   updateSlotQuality(slotKey);
   ensureSlotReset(slotEl);
   updateTwoHandedLock(slotKey, item);
+  updateTwoHandedPenaltyBadge();
   recalcFarm();
 }
 
@@ -1045,6 +1120,31 @@ function isBothOneHand() {
             !isTwoHanded(w1Item) && !isTwoHanded(w2Item));
 }
 
+// ============ БЕЙДЖ ШТРАФА ДВУРУЧЕК ============
+function updateTwoHandedPenaltyBadge() {
+  const bothOneHand = isBothOneHand();
+  ['weapon-1', 'weapon-2'].forEach(sk => {
+    const slotEl = document.querySelector(`[data-slot="${sk}"]`);
+    if (!slotEl) return;
+
+    let badge = slotEl.querySelector('.slot-penalty-badge');
+
+    if (bothOneHand) {
+      if (!badge) {
+        badge = document.createElement('div');
+        badge.className = 'slot-penalty-badge';
+        badge.textContent = '−35%';
+        badge.title = currentLang() === 'ru'
+          ? 'Штраф за два одноручных оружия (сила × 0.65)'
+          : 'Dual wield penalty (strength × 0.65)';
+        slotEl.appendChild(badge);
+      }
+    } else if (badge) {
+      badge.remove();
+    }
+  });
+}
+
 function updateSpecRequirementUI() {
   const specSel = document.getElementById('spec-select');
   const activeSpecId = specSel?.value || null;
@@ -1122,6 +1222,9 @@ function clearFarmSlot(slotKey) {
   const resetBtn = slotEl.querySelector('.slot-reset');
   if (resetBtn) resetBtn.remove();
 
+  const badge = slotEl.querySelector('.slot-penalty-badge');
+  if (badge) badge.remove();
+
   if (slotKey === 'weapon-1' || slotKey === 'weapon-2') {
     const otherKey = slotKey === 'weapon-1' ? 'weapon-2' : 'weapon-1';
     const otherSlot = document.querySelector(`[data-slot="${otherKey}"]`);
@@ -1134,6 +1237,7 @@ function clearFarmSlot(slotKey) {
     }
   }
 
+  updateTwoHandedPenaltyBadge();
   recalcFarm();
 }
 
@@ -1260,6 +1364,15 @@ async function initFarmPage() {
     });
   });
 
+  // Popup — обработчики закрытия
+  const popup = document.getElementById('calc-popup');
+  if (popup) {
+    popup.querySelector('.calc-popup-close')?.addEventListener('click', closeCalcPopup);
+    popup.addEventListener('click', (e) => {
+      if (e.target === popup) closeCalcPopup();
+    });
+  }
+
   recalcFarm();
 }
 
@@ -1384,9 +1497,8 @@ window.addEventListener('orna-lang-changed', async () => {
       `.consumables-grid input[${cssAttr}="${id}"]`
     );
     if (chk) chk.checked = true;
-    
-    updateEventMutex();
   });
+  updateEventMutex();
 
   farmState.steps['3000'] = savedState.steps['3000'];
   farmState.steps['6000'] = savedState.steps['6000'];
@@ -1437,6 +1549,7 @@ window.addEventListener('orna-lang-changed', async () => {
     }
   }
 
+  updateTwoHandedPenaltyBadge();
   recalcFarm();
 });
 
@@ -1503,19 +1616,19 @@ function resetAll() {
     inp.value = 0;
   });
 
-// Сбрасываем мьютекс
-document.querySelectorAll('.consumable-item.is-mutex-disabled').forEach(el => {
-  el.classList.remove('is-mutex-disabled');
-});
-document.querySelectorAll('#events-grid input[data-event-id]').forEach(chk => {
-  chk.disabled = false;
-});
+  document.querySelectorAll('.consumable-item.is-mutex-disabled').forEach(el => {
+    el.classList.remove('is-mutex-disabled');
+  });
+  document.querySelectorAll('#events-grid input[data-event-id]').forEach(chk => {
+    chk.disabled = false;
+  });
 
   updateClassInfo();
   updateSpecInfo();
   updateLeftMnemLock();
   updateFollowerLock();
   updateSpecRequirementUI();
+  updateTwoHandedPenaltyBadge();
 
   recalcFarm();
 }
