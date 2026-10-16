@@ -1640,11 +1640,25 @@ function resetAll() {
     inp.value = 0;
   });
 
+  // Снимаем ВСЕ галочки в группах прочих бонусов
+  const CONSUMABLE_GROUPS = [
+    'data-temple-id',
+    'data-statue-id',
+    'data-event-id',
+    'data-astral-id',
+    'data-consumable-id',
+  ];
+
+  CONSUMABLE_GROUPS.forEach(attr => {
+    document.querySelectorAll(`.consumables-grid input[${attr}]`).forEach(chk => {
+      chk.checked = false;
+      chk.disabled = false;
+    });
+  });
+
+  // Убираем визуальное затемнение мьютекс-ивентов
   document.querySelectorAll('.consumable-item.is-mutex-disabled').forEach(el => {
     el.classList.remove('is-mutex-disabled');
-  });
-  document.querySelectorAll('#events-grid input[data-event-id]').forEach(chk => {
-    chk.disabled = false;
   });
 
   updateClassInfo();
