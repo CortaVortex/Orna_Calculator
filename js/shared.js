@@ -10,13 +10,12 @@ function detectLang() {
   const saved = localStorage.getItem('orna-lang');
   if (saved === 'ru' || saved === 'en') return saved;
 
-  // Проверяем все языки — если хоть один русский, ставим ru
-  // Это надёжнее, чем один navigator.language
-  const langs = navigator.languages && navigator.languages.length
+  // Берём все языки, которые знает браузер
+  const langs = (navigator.languages && navigator.languages.length)
     ? navigator.languages
     : [navigator.language || navigator.userLanguage || 'en'];
 
-  // Берём первый язык — он приоритетный
+  // Первый язык — приоритетный
   const first = langs[0].toLowerCase();
   return first.startsWith('ru') ? 'ru' : 'en';
 }
