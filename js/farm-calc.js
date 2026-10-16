@@ -382,11 +382,13 @@ function logStep(stat, label, before, after, steps) {
   const ang = input.anguish?.[stat] || 0;
   if (ang > 0) {
     const sign = ang >= 0 ? '+' : '';
+    // Округляем до 2 знаков, чтобы float-погрешность не лезла в UI
+    const after = Math.round((100 + ang) * 100) / 100;
     log[stat].push({
       label: `${L.anguish} ${sign}${ang}%`,
-      add: ang,           // ← ПРИБАВКА, не множитель
+      add: ang,
       before: 100,
-      after: 100 + ang,
+      after,
     });
   }
 });

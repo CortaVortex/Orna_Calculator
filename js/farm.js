@@ -872,14 +872,16 @@ log.forEach(step => {
   if (step.add !== undefined) {
     // ПРИБАВКА (Настрадание)
     const sign = step.add >= 0 ? '+' : '';
+    const afterStr = Math.round(step.after * 100) / 100;   // ← округление до 2 знаков
     html += `
       <div class="calc-popup-step">
         <div class="calc-popup-step-row">
           <span class="calc-popup-step-label">${step.label}</span>
-          <span class="calc-popup-step-value">${sign}${step.add}%  →  ${step.after}%</span>
+          <span class="calc-popup-step-value">${sign}${step.add}%  →  ${afterStr}%</span>
         </div>
       </div>
     `;
+
   } else if (step.coef !== undefined) {
     // МНОЖИТЕЛЬ (экипировка, мнемы, храмы...)
     const coefStr = step.coef.toFixed(4).replace(/\.?0+$/, '');
@@ -1368,14 +1370,28 @@ async function initFarmPage() {
   initMnemsFarm();
   initFarmEquipment();
 
-  document.querySelectorAll('.anguish-input').forEach(inp => {
-    inp.addEventListener('input', () => {
-      let v = parseFloat(inp.value);
-      if (isNaN(v) || v < 0) v = 0;
-      inp.value = v;
-      recalcFarm();
-    });
+document.querySelectorAll('.anguish-input').forEach(inp => {
+  inp.addEventListener('input', () => {
+    // Разрешаем только цифры, точку и запятую
+    inp.value = inp.value.replace(',', '.').replace(/[^0-9.]/g, '');
+
+    // Не обрезаем ввод, пока пользователь печатает
+    const v = parseFloat(inp.value);
+    if (inp.value !== '' && (isNaN(v) || v < 0)) {
+      inp.value = '0';
+    }
+
+    recalcFarm();
   });
+
+  // При потере фокуса — нормализуем значение
+  inp.addEventListener('blur', () => {
+    let v = parseFloat(inp.value);
+    if (isNaN(v) || v < 0) v = 0;
+    inp.value = v;
+    recalcFarm();
+  });
+});
 
   // Popup — обработчики закрытия
   const popup = document.getElementById('calc-popup');
