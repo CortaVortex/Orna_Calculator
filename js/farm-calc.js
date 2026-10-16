@@ -316,6 +316,7 @@ const LANG_LABELS = {
     steps3000: '3000 шагов',
     steps6000: '6000 шагов',
     mnem: 'Осколок',
+    anguish: 'Настрадание',
     quality: {
       common:       'Обычное',
       superior:     'Хорошее',
@@ -336,6 +337,7 @@ const LANG_LABELS = {
     steps3000: '3000 steps',
     steps6000: '6000 steps',
     mnem: 'Amity',
+    anguish: 'Anguish',
     quality: {
       common:       'common',
       superior:     'superior',
@@ -374,6 +376,20 @@ function logStep(stat, label, before, after, steps) {
     exp:  100 + (input.anguish?.exp  || 0),
     luck: 100 + (input.anguish?.luck || 0),
   };
+
+// Логируем настрадание — как ПРИБАВКУ
+['orns', 'gold', 'exp', 'luck'].forEach(stat => {
+  const ang = input.anguish?.[stat] || 0;
+  if (ang > 0) {
+    const sign = ang >= 0 ? '+' : '';
+    log[stat].push({
+      label: `${L.anguish} ${sign}${ang}%`,
+      add: ang,           // ← ПРИБАВКА, не множитель
+      before: 100,
+      after: 100 + ang,
+    });
+  }
+});
 
   // 2. ЭКИПИРОВКА
   const equipmentMult = { orns: 1, gold: 1, exp: 1, luck: 1 };

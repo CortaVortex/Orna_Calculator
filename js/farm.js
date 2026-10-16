@@ -869,7 +869,19 @@ function showCalcPopup(stat) {
   let html = `<div class="calc-popup-title">${n[stat]} — ${Math.round(total)}% <span style="opacity: 0.5; font-size: 0.8em;">(× ${(total/100).toFixed(5).replace(/\.?0+$/, '')})</span></div>`;
 
 log.forEach(step => {
-  if (step.coef !== undefined) {
+  if (step.add !== undefined) {
+    // ПРИБАВКА (Настрадание)
+    const sign = step.add >= 0 ? '+' : '';
+    html += `
+      <div class="calc-popup-step">
+        <div class="calc-popup-step-row">
+          <span class="calc-popup-step-label">${step.label}</span>
+          <span class="calc-popup-step-value">${sign}${step.add}%  →  ${step.after}%</span>
+        </div>
+      </div>
+    `;
+  } else if (step.coef !== undefined) {
+    // МНОЖИТЕЛЬ (экипировка, мнемы, храмы...)
     const coefStr = step.coef.toFixed(4).replace(/\.?0+$/, '');
     html += `
       <div class="calc-popup-step">
@@ -885,6 +897,7 @@ log.forEach(step => {
       </div>
     `;
   } else {
+    // Простая запись (База)
     html += `
       <div class="calc-popup-step">
         <div class="calc-popup-step-row">
