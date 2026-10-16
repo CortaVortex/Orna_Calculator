@@ -460,3 +460,13 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.calc-popup-step-anguish {
+  background: rgba(255, 200, 0, 0.08);
+  border-left: 2px solid rgba(255, 200, 0, 0.5);
+}
+
+.calc-popup-add {
+  color: #ffc800;
+  font-weight: 600;
+}

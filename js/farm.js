@@ -102,7 +102,6 @@ const EVENTS = [
     multipliers: { orns: 1.25, gold: 1, exp: 1, luck: 1 } },
 ];
 
-// Взаимоисключающие ивенты: Орнопад и Исследование пещер
 const MUTEX_EVENTS = ['event-ornopad', 'event-cave'];
 
 function updateEventMutex() {
@@ -829,7 +828,6 @@ function updateFarmResults(results) {
     luckCard.classList.toggle('is-capped', !!results.luckCapped);
   }
 
-  // Клик по карточке → popup с деталями
   ['orns', 'gold', 'exp', 'luck'].forEach(stat => {
     const card = document.querySelector(`.farm-result-card[data-currency="${stat}"]`);
     if (!card) return;
@@ -868,57 +866,56 @@ function showCalcPopup(stat) {
 
   let html = `<div class="calc-popup-title">${n[stat]} — ${Math.round(total)}% <span style="opacity: 0.5; font-size: 0.8em;">(× ${(total/100).toFixed(5).replace(/\.?0+$/, '')})</span></div>`;
 
-log.forEach(step => {
-  if (step.add !== undefined) {
-    // ПРИБАВКА (Настрадание)
-    const sign = step.add >= 0 ? '+' : '';
-    const afterStr = Math.round(step.after * 100) / 100;   // ← округление до 2 знаков
-    html += `
-      <div class="calc-popup-step">
-        <div class="calc-popup-step-row">
-          <span class="calc-popup-step-label">${step.label}</span>
-          <span class="calc-popup-step-value">${sign}${step.add}%  →  ${afterStr}%</span>
-        </div>
-      </div>
-    `;
-
-  } else if (step.coef !== undefined) {
-    // МНОЖИТЕЛЬ (экипировка, мнемы, храмы...)
-    const coefStr = step.coef.toFixed(4).replace(/\.?0+$/, '');
-    html += `
-      <div class="calc-popup-step">
-        <div class="calc-popup-step-row">
-          <span class="calc-popup-step-label">${step.label}</span>
-          <span class="calc-popup-step-value">× ${coefStr}</span>
-        </div>
-        ${step.steps ? `
-          <div class="calc-popup-step-formula">
-            ${step.steps.map(s => `<div>${s}</div>`).join('')}
+  log.forEach(step => {
+    if (step.add !== undefined) {
+      const sign = step.add >= 0 ? '+' : '';
+      const before = Math.round(step.before * 100) / 100;
+      const after  = Math.round(step.after  * 100) / 100;
+      html += `
+        <div class="calc-popup-step calc-popup-step-anguish">
+          <div class="calc-popup-step-row">
+            <span class="calc-popup-step-label">${step.label}</span>
+            <span class="calc-popup-step-value">
+              ${before}% <span class="calc-popup-add">${sign}${step.add}%</span> = ${after}%
+            </span>
           </div>
-        ` : ''}
-      </div>
-    `;
-  } else {
-    // Простая запись (База)
-    html += `
-      <div class="calc-popup-step">
-        <div class="calc-popup-step-row">
-          <span class="calc-popup-step-label">${step.label}</span>
-          <span class="calc-popup-step-value">${step.value}</span>
         </div>
-      </div>
-    `;
-  }
-});
+      `;
+    } else if (step.coef !== undefined) {
+      const coefStr = step.coef.toFixed(4).replace(/\.?0+$/, '');
+      html += `
+        <div class="calc-popup-step">
+          <div class="calc-popup-step-row">
+            <span class="calc-popup-step-label">${step.label}</span>
+            <span class="calc-popup-step-value">× ${coefStr}</span>
+          </div>
+          ${step.steps ? `
+            <div class="calc-popup-step-formula">
+              ${step.steps.map(s => `<div>${s}</div>`).join('')}
+            </div>
+          ` : ''}
+        </div>
+      `;
+    } else {
+      html += `
+        <div class="calc-popup-step">
+          <div class="calc-popup-step-row">
+            <span class="calc-popup-step-label">${step.label}</span>
+            <span class="calc-popup-step-value">${step.value}</span>
+          </div>
+        </div>
+      `;
+    }
+  });
 
-const totalCoef = (total / 100).toFixed(5).replace(/\.?0+$/, '');
-const totalPct = Math.round(total * 1000) / 1000;
-html += `
-  <div class="calc-popup-total">
-    <span>Итог</span>
-    <span>× ${totalCoef} = ${totalPct}%</span>
-  </div>
-`;
+  const totalCoef = (total / 100).toFixed(5).replace(/\.?0+$/, '');
+  const totalPct = Math.round(total * 1000) / 1000;
+  html += `
+    <div class="calc-popup-total">
+      <span>Итог</span>
+      <span>× ${totalCoef} = ${totalPct}%</span>
+    </div>
+  `;
 
   popup.querySelector('.calc-popup-body').innerHTML = html;
   popup.hidden = false;
@@ -1109,15 +1106,17 @@ function refreshSlotStats(slotKey) {
     };
   }
 
+  // ✅ ИСПРАВЛЕНО: amity применяется ТОЛЬКО к статам с бонусом
   if (slotKey === 'accessory-1' || slotKey === 'accessory-2') {
     const mnemVals = getMnemValues();
     const accBoost = 1 + (mnemVals.acc || 0) / 100;
-    base = {
-      orns: boostByQuality(base.orns, accBoost),
-      gold: boostByQuality(base.gold, accBoost),
-      exp:  boostByQuality(base.exp,  accBoost),
-      luck: boostByQuality(base.luck, accBoost),
-    };
+    if (Math.abs(accBoost - 1) > 1e-9) {
+      ['orns', 'gold', 'exp', 'luck'].forEach(stat => {
+        if (base[stat] !== 1) {
+          base[stat] = base[stat] + base[stat] * (accBoost - 1);
+        }
+      });
+    }
   }
 
   statsEl.textContent = formatEffect({ multipliers: base }, currentLang());
@@ -1370,30 +1369,26 @@ async function initFarmPage() {
   initMnemsFarm();
   initFarmEquipment();
 
-document.querySelectorAll('.anguish-input').forEach(inp => {
-  inp.addEventListener('input', () => {
-    // Разрешаем только цифры, точку и запятую
-    inp.value = inp.value.replace(',', '.').replace(/[^0-9.]/g, '');
+  document.querySelectorAll('.anguish-input').forEach(inp => {
+    inp.addEventListener('input', () => {
+      inp.value = inp.value.replace(',', '.').replace(/[^0-9.]/g, '');
 
-    // Не обрезаем ввод, пока пользователь печатает
-    const v = parseFloat(inp.value);
-    if (inp.value !== '' && (isNaN(v) || v < 0)) {
-      inp.value = '0';
-    }
+      const v = parseFloat(inp.value);
+      if (inp.value !== '' && (isNaN(v) || v < 0)) {
+        inp.value = '0';
+      }
 
-    recalcFarm();
+      recalcFarm();
+    });
+
+    inp.addEventListener('blur', () => {
+      let v = parseFloat(inp.value);
+      if (isNaN(v) || v < 0) v = 0;
+      inp.value = v;
+      recalcFarm();
+    });
   });
 
-  // При потере фокуса — нормализуем значение
-  inp.addEventListener('blur', () => {
-    let v = parseFloat(inp.value);
-    if (isNaN(v) || v < 0) v = 0;
-    inp.value = v;
-    recalcFarm();
-  });
-});
-
-  // Popup — обработчики закрытия
   const popup = document.getElementById('calc-popup');
   if (popup) {
     popup.querySelector('.calc-popup-close')?.addEventListener('click', closeCalcPopup);

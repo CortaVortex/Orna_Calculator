@@ -356,6 +356,14 @@ export function calculateFarm(input) {
   const lang = input.lang || 'ru';
   const L = LANG_LABELS[lang] || LANG_LABELS.ru;
 
+  // Настрадание — прибавка В КОНЦЕ, а не в базе
+  const anguish = {
+    orns: input.anguish?.orns || 0,
+    gold: input.anguish?.gold || 0,
+    exp:  input.anguish?.exp  || 0,
+    luck: input.anguish?.luck || 0,
+  };
+
   // Лог для подсказки — по каждому стату
   const log = {
     orns: [{ label: L.base, value: 100 }],
@@ -364,34 +372,13 @@ export function calculateFarm(input) {
     luck: [{ label: L.base, value: 100 }],
   };
 
-function logStep(stat, label, before, after, steps) {
-  const coef = before === 0 ? 1 : after / before;
-  log[stat].push({ label, coef, before, after, steps });
-}
-
-  // 1. БАЗА
-  const base = {
-    orns: 100 + (input.anguish?.orns || 0),
-    gold: 100 + (input.anguish?.gold || 0),
-    exp:  100 + (input.anguish?.exp  || 0),
-    luck: 100 + (input.anguish?.luck || 0),
-  };
-
-// Логируем настрадание — как ПРИБАВКУ
-['orns', 'gold', 'exp', 'luck'].forEach(stat => {
-  const ang = input.anguish?.[stat] || 0;
-  if (ang > 0) {
-    const sign = ang >= 0 ? '+' : '';
-    // Округляем до 2 знаков, чтобы float-погрешность не лезла в UI
-    const after = Math.round((100 + ang) * 100) / 100;
-    log[stat].push({
-      label: `${L.anguish} ${sign}${ang}%`,
-      add: ang,
-      before: 100,
-      after,
-    });
+  function logStep(stat, label, before, after, steps) {
+    const coef = before === 0 ? 1 : after / before;
+    log[stat].push({ label, coef, before, after, steps });
   }
-});
+
+  // 1. БАЗА — всегда 100, без настрадания
+  const base = { orns: 100, gold: 100, exp: 100, luck: 100 };
 
   // 2. ЭКИПИРОВКА
   const equipmentMult = { orns: 1, gold: 1, exp: 1, luck: 1 };
@@ -437,21 +424,19 @@ function logStep(stat, label, before, after, steps) {
       };
     }
 
-// 2.4. Мнем «Аксессуары» — формула:
-// new = (base × quality) + ((base × quality) × amity%)
-// где base × quality уже применено выше в 2.2,
-// а amity% = (accBoost - 1) × 100
-if (slotKey === 'accessory-1' || slotKey === 'accessory-2') {
-  const amityPct = accBoost - 1;   // например, 0.25 → 25%
-  baseB = {
-    orns: baseB.orns + baseB.orns * amityPct,
-    gold: baseB.gold + baseB.gold * amityPct,
-    exp:  baseB.exp  + baseB.exp  * amityPct,
-    luck: baseB.luck + baseB.luck * amityPct,
-  };
-}
+    // 2.4. Мнем «Аксессуары» — только для статов, у которых ЕСТЬ бонус
+    if (slotKey === 'accessory-1' || slotKey === 'accessory-2') {
+      const amityPct = accBoost - 1;
+      if (Math.abs(amityPct) > 1e-9) {
+        ['orns', 'gold', 'exp', 'luck'].forEach(stat => {
+          if (baseB[stat] !== 1) {
+            baseB[stat] = baseB[stat] + baseB[stat] * amityPct;
+          }
+        });
+      }
+    }
 
-    // 2.5. Тэги (одинаковые для всех статов)
+    // 2.5. Тэги
     const tags = [];
 
     if (quality && quality !== 'common') {
@@ -462,10 +447,16 @@ if (slotKey === 'accessory-1' || slotKey === 'accessory-2') {
       tags.push({ name: L.penalty, coef: DUAL_WIELD_PENALTY });
     }
     if ((slotKey === 'accessory-1' || slotKey === 'accessory-2') && accBoost !== 1) {
-      tags.push({ name: 'amity', coef: accBoost });
+      // Тег amity добавляем ТОЛЬКО если хотя бы один стат получил бонус
+      const anyStatBoosted = ['orns', 'gold', 'exp', 'luck'].some(stat => {
+        return baseB[stat] !== 1;
+      });
+      if (anyStatBoosted) {
+        tags.push({ name: 'amity', coef: accBoost });
+      }
     }
 
-    // 2.6. Перемножаем + формируем лог по каждому стату
+    // 2.6. Перемножаем + формируем лог
     ['orns', 'gold', 'exp', 'luck'].forEach(stat => {
       const itemCoef = baseB[stat];
       if (Math.abs(itemCoef - 1) < 1e-9) return;
@@ -473,35 +464,31 @@ if (slotKey === 'accessory-1' || slotKey === 'accessory-2') {
       const before = equipmentMult[stat];
       const after = before * itemCoef;
 
-      // Базовый коэффициент (без качества, штрафа, amity)
       let baseCoef = itemCoef;
       tags.forEach(t => { baseCoef /= t.coef; });
 
-      // Формируем пошаговую формулу
-const steps = [];
-const basePct = Math.round((baseCoef - 1) * 1000) / 10;
-const baseSign = basePct >= 0 ? '+' : '';
-steps.push(`base: ${baseSign}${basePct}% (×${baseCoef.toFixed(4).replace(/\.?0+$/, '')})`);
+      const steps = [];
+      const basePct = Math.round((baseCoef - 1) * 1000) / 10;
+      const baseSign = basePct >= 0 ? '+' : '';
+      steps.push(`base: ${baseSign}${basePct}% (×${baseCoef.toFixed(4).replace(/\.?0+$/, '')})`);
 
-let running = baseCoef;
-tags.forEach(t => {
-  const prev = running;
-  running *= t.coef;
-  const prevStr = prev.toFixed(4).replace(/\.?0+$/, '');
-  const runStr = running.toFixed(4).replace(/\.?0+$/, '');
+      let running = baseCoef;
+      tags.forEach(t => {
+        const prev = running;
+        running *= t.coef;
+        const prevStr = prev.toFixed(4).replace(/\.?0+$/, '');
+        const runStr = running.toFixed(4).replace(/\.?0+$/, '');
 
-  if (t.name === 'amity') {
-    // Развёрнутая формула: prev + (prev × amity%)
-    const amityPct = t.coef - 1;
-    steps.push(
-      `amity: ${prevStr} + (${prevStr} × ${amityPct.toFixed(2)}) = ${runStr}`
-    );
-  } else {
-    steps.push(`× ${t.name} ×${t.coef.toFixed(2)} → ${runStr}`);
-  }
-});
+        if (t.name === 'amity') {
+          const amityPct = t.coef - 1;
+          steps.push(
+            `amity: ${prevStr} + (${prevStr} × ${amityPct.toFixed(2)}) = ${runStr}`
+          );
+        } else {
+          steps.push(`× ${t.name} ×${t.coef.toFixed(2)} → ${runStr}`);
+        }
+      });
 
-      // Короткий label
       const tagsShort = tags.map(t => `${t.name} ×${t.coef.toFixed(2)}`).join(', ');
       let label = slotKey;
       if (tagsShort) label += ` (${tagsShort})`;
@@ -527,19 +514,19 @@ tags.forEach(t => {
   }
 
   // Мнемы
-const mnemList = input.mnemList || [];
-const statNames = {
-  orns: lang === 'en' ? 'Orns'  : 'Орны',
-  gold: lang === 'en' ? 'Gold'  : 'Золото',
-  exp:  lang === 'en' ? 'Exp'   : 'Опыт',
-  luck: lang === 'en' ? 'Luck'  : 'Удача',
-};
-mnemList.forEach(({ type, value }) => {
-  if (!type || !value || type === 'bonds') return;
-  if (type === 'acc') return;
-  const name = statNames[type] || type;
-  applyOther({ [type]: 1 + value / 100 }, `${L.mnem} ${name} +${value}%`);
-});
+  const mnemList = input.mnemList || [];
+  const statNames = {
+    orns: lang === 'en' ? 'Orns'  : 'Орны',
+    gold: lang === 'en' ? 'Gold'  : 'Золото',
+    exp:  lang === 'en' ? 'Exp'   : 'Опыт',
+    luck: lang === 'en' ? 'Luck'  : 'Удача',
+  };
+  mnemList.forEach(({ type, value }) => {
+    if (!type || !value || type === 'bonds') return;
+    if (type === 'acc') return;
+    const name = statNames[type] || type;
+    applyOther({ [type]: 1 + value / 100 }, `${L.mnem} ${name} +${value}%`);
+  });
 
   if (input.specMultipliers) {
     applyOther(input.specMultipliers, L.spec);
@@ -555,7 +542,6 @@ mnemList.forEach(({ type, value }) => {
   if (input.steps?.['3000']) applyOther({ exp: 1.25 }, L.steps3000);
   if (input.steps?.['6000']) applyOther({ orns: 1.25, luck: 1.25 }, L.steps6000);
 
-  // Храмы, статуи, ивенты, расходники, астрал — используем name / nameEn
   const applyList = (arr) => (arr || []).forEach(x => {
     const n = (lang === 'en' && x.nameEn) ? x.nameEn : x.name;
     applyOther(x.multipliers, n);
@@ -566,19 +552,45 @@ mnemList.forEach(({ type, value }) => {
   applyList(input.consumables);
   applyList(input.astral);
 
-  // 4. ИТОГ
+  // 4. ИТОГ: (100 × множители) + настрадание
   const LUCK_CAP = 400;
 
-  const luckRaw = base.luck * equipmentMult.luck * otherMult.luck;
+  const result = {
+    orns: 100 * equipmentMult.orns * otherMult.orns + anguish.orns,
+    gold: 100 * equipmentMult.gold * otherMult.gold + anguish.gold,
+    exp:  100 * equipmentMult.exp  * otherMult.exp  + anguish.exp,
+    luck: 100 * equipmentMult.luck * otherMult.luck + anguish.luck,
+  };
+
+  // Логируем настрадание ПОСЛЕДНИМ шагом
+  ['orns', 'gold', 'exp', 'luck'].forEach(stat => {
+    const ang = anguish[stat];
+    if (ang === 0) return;
+
+    const before = result[stat] - ang;
+    const after  = result[stat];
+    const sign   = ang >= 0 ? '+' : '';
+
+    log[stat].push({
+      label: `${L.anguish} ${sign}${ang}%`,
+      add: ang,
+      before,
+      after,
+    });
+  });
+
+  // Удача — капаем 400%
+  const luckRaw = result.luck;
+  const luckCapped = luckRaw > LUCK_CAP;
   const luck = Math.min(luckRaw, LUCK_CAP);
 
   return {
-    orns: base.orns * equipmentMult.orns * otherMult.orns,
-    gold: base.gold * equipmentMult.gold * otherMult.gold,
-    exp:  base.exp  * equipmentMult.exp  * otherMult.exp,
+    orns: result.orns,
+    gold: result.gold,
+    exp:  result.exp,
     luck,
     luckRaw,
-    luckCapped: luckRaw > LUCK_CAP,
+    luckCapped,
     log,
   };
 }
