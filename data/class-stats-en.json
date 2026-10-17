@@ -1,0 +1,21 @@
+{
+  "_comment": "Class Base Stats for Lv 250. H = HP, A = Mana, U = Ward. pvp_hp = HP in PVP",
+  "54": { "name": "Gilgamesh", "hp": 12509, "pvp_hp": 25018, "mana": 823, "ward": 6666 },
+  "74": { "name": "Gilgamesh Hercules", "hp": 12509, "pvp_hp": 25018, "mana": 743, "ward": 6626 },
+  "75": { "name": "Gilgamesh Ursa", "hp": 22516, "pvp_hp": 45032, "mana": 826, "ward": 4668 },
+  "55": { "name": "Heretic", "hp": 11162, "pvp_hp": 22324, "mana": 3023, "ward": 7093 },
+  "76": { "name": "Heretic Ara", "hp": 11162, "pvp_hp": 22324, "mana": 3023, "ward": 7093 },
+  "77": { "name": "Heretic Corvus", "hp": 11162, "pvp_hp": 22324, "mana": 3023, "ward": 7093 },
+  "56": { "name": "Realmshifter", "hp": 10108, "pvp_hp": 20216, "mana": 727, "ward": 5418 },
+  "79": { "name": "Realmshifter Dorado", "hp": 12129, "pvp_hp": 24258, "mana": 872, "ward": 6501 },
+  "78": { "name": "Realmshifter Corvus", "hp": 9097, "pvp_hp": 18194, "mana": 654, "ward": 4876 },
+  "57": { "name": "Beowulf", "hp": 11430, "pvp_hp": 22860, "mana": 1822, "ward": 6626 },
+  "80": { "name": "Beowulf Hydrus", "hp": 14859, "pvp_hp": 29718, "mana": 2363, "ward": 8611 },
+  "81": { "name": "Beowulf Auriga", "hp": 10287, "pvp_hp": 20574, "mana": 1822, "ward": 6055 },
+  "63": { "name": "Grand Summoner", "hp": 6459, "pvp_hp": 12918, "mana": 2134, "ward": 4297 },
+  "82": { "name": "Grand Summoner Hydrus", "hp": 7750, "pvp_hp": 15500, "mana": 1707, "ward": 4729 },
+  "83": { "name": "Grand Summoner Auriga", "hp": 6459, "pvp_hp": 12918, "mana": 2561, "ward": 4510 },
+  "58": { "name": "Deity", "hp": 12740, "pvp_hp": 25480, "mana": 2499, "ward": 7620 },
+  "84": { "name": "Deity Ara", "hp": 11466, "pvp_hp": 22932, "mana": 2499, "ward": 6983 },
+  "85": { "name": "Deity Ursa", "hp": 12740, "pvp_hp": 25480, "mana": 2249, "ward": 7495 }
+}
