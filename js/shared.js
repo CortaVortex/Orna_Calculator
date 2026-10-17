@@ -1,46 +1,60 @@
-// ============ ЯЗЫК ============
+// ========== ЯЗЫК ==========
 (function initLang() {
-    
-  const btn = document.getElementById('lang-toggle');
-  if (!btn) return;
+    const btns = document.querySelectorAll('[data-lang]');
+    if (!btns.length) return;
 
-  // Определяем язык:
-  // 1. Если в localStorage есть сохранённый — берём его.
-  // 2. Иначе — по системному языку: ru* → 'ru', иначе → 'en'.
-function detectLang() {
-  const saved = localStorage.getItem('orna-lang');
-  if (saved === 'ru' || saved === 'en') return saved;
+    // Определяем язык:
+    // 1. Если в localStorage есть сохранённый — берём его.
+    // 2. Иначе — по системному языку: ru* → 'ru', иначе — 'en'.
+    function detectLang() {
+        const saved = localStorage.getItem('orna-lang');
+        if (saved === 'ru' || saved === 'en') return saved;
 
-  // Берём все языки, которые знает браузер
-  const langs = (navigator.languages && navigator.languages.length)
-    ? navigator.languages
-    : [navigator.language || navigator.userLanguage || 'en'];
+        const browserLang = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
+        return browserLang.startsWith('ru') ? 'ru' : 'en';
+    }
 
-  // Первый язык — приоритетный
-  const first = langs[0].toLowerCase();
-  return first.startsWith('ru') ? 'ru' : 'en';
-}
+    let lang = detectLang();
 
-  let lang = detectLang();
+    function applyLang() {
+        // Меняем тексты на странице
+        document.querySelectorAll('[data-ru]').forEach(el => {
+            el.textContent = el.dataset[lang];
+        });
+        
+        // Меняем атрибут lang у тега <html>
+        document.documentElement.lang = lang;
+        
+        // Сохраняем выбор
+        localStorage.setItem('orna-lang', lang);
 
-  function applyLang() {
-    document.querySelectorAll('[data-ru]').forEach(el => {
-      el.textContent = el.dataset[lang];
+        // Подсвечиваем активную кнопку (флаг)
+        btns.forEach(btn => {
+            if (btn.dataset.lang === lang) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+
+        // Отправляем событие для других скриптов (farm.js, view.js и т.д.)
+        window.dispatchEvent(new CustomEvent('orna-lang-changed', { detail: { lang } }));
+    }
+
+    // Вешаем обработчики на все кнопки с флагами
+    btns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const newLang = btn.dataset.lang;
+            if (lang === newLang) return; // Если язык уже этот — ничего не делаем
+            
+            lang = newLang;
+            applyLang();
+        });
     });
-    document.documentElement.lang = lang;
-    btn.textContent = lang === 'ru' ? 'EN' : 'RU';
-    localStorage.setItem('orna-lang', lang);
 
-    window.dispatchEvent(new CustomEvent('orna-lang-changed', { detail: { lang } }));
-  }
-
-  btn.addEventListener('click', () => {
-    lang = lang === 'ru' ? 'en' : 'ru';
     applyLang();
-  });
-
-  applyLang();
 })();
+
 
 // ============ УТИЛИТЫ ============
 window.formatNumber = function(n) {

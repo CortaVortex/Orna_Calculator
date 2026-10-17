@@ -280,3 +280,42 @@
 
 .slot.has-item .slot-reset { display: flex; }
 .slot-reset:hover { color: #d46a5a; border-color: #d46a5a; }
+
+/* ============ КАСТОМНЫЕ СЕЛЕКТЫ ============ */
+.custom-select-row {
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s;
+}
+.custom-select-row:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+.custom-select-display {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.custom-select-text {
+  font-size: 14px;
+  color: #888;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.custom-select-text.custom-select-has-value {
+  color: #fff;
+}
+.custom-select-arrow {
+  font-size: 10px;
+  color: #666;
+  margin-left: 8px;
+}
+.bonus-positive {
+  color: #4caf50;
+  font-weight: 500;
+}
+.bonus-negative {
+  color: #f44336;
+  font-weight: 500;
+}

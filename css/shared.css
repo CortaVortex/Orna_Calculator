@@ -1539,3 +1539,137 @@ body {
 .slot-mnem .slot-stats {
   display: none;
 }
+
+/* ============ ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКА (ФЛАГИ) ============ */
+.lang-switcher {
+  display: flex;
+  gap: 8px; /* Расстояние между флагами */
+  margin-left: 12px;
+  align-items: center;
+}
+
+.lang-btn-ru,
+.lang-btn-en {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  padding: 0;
+  width: 28px;
+  height: 20px; /* Пропорции флага */
+  cursor: pointer;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  opacity: 0.5; /* Неактивные флаги чуть бледнее */
+}
+
+.lang-btn-ru:hover,
+.lang-btn-en:hover {
+  opacity: 0.8;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Активный флаг */
+.lang-btn-ru.active,
+.lang-btn-en.active {
+  opacity: 1;
+  border-color: #d4af37; /* Золотая рамка (под цвет заголовков) */
+  box-shadow: 0 0 6px rgba(212, 175, 55, 0.3); /* Легкое свечение */
+}
+
+/* Сами картинки внутри кнопок */
+.lang-btn-ru img,
+.lang-btn-en img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Чтобы флаг заполнил кнопку */
+  display: block;
+}
+
+/* ============ ШАПКА С НАЗВАНИЕМ И ФЛАГАМИ ============ */
+.app-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 10px 0;
+}
+
+.lang-switcher {
+  display: flex;
+  gap: 6px;
+  margin-left: 12px; /* Отступ от текста */
+  /* Если нужно абсолютное позиционирование: */
+  /* position: absolute; */
+  /* left: calc(50% + 110px); */ /* Подогнать под ширину текста */
+}
+
+.app-title {
+  margin: 0;
+  font-size: 24px; /* Или как у тебя было */
+  line-height: 1;
+}
+
+.app-title-link {
+  text-decoration: none;
+  color: inherit; /* Цвет заголовка */
+}
+
+/* ============ ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКА (ФЛАГИ) ============ */
+.lang-switcher {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.lang-btn-ru,
+.lang-btn-en {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  padding: 0;
+  width: 26px;
+  height: 18px;
+  cursor: pointer;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  opacity: 0.4; /* Неактивный флаг бледный */
+}
+
+.lang-btn-ru:hover,
+.lang-btn-en:hover {
+  opacity: 0.8;
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* Активный флаг */
+.lang-btn-ru.active,
+.lang-btn-en.active {
+  opacity: 1;
+  border-color: #d4af37; /* Золотая рамка */
+  box-shadow: 0 0 5px rgba(212, 175, 55, 0.3);
+}
+
+.lang-btn-ru img,
+.lang-btn-en img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.placeholder-text {
+  color: var(--text-dim);
+  font-size: 13px;
+  font-style: italic;
+}
+
+.ward-content {
+  padding: 20px 0;
+  text-align: center;
+}

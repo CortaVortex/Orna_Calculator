@@ -23,17 +23,31 @@
 
 <header class="app-header">
   <div class="app-title-row">
-    <a href="index.html" class="app-title-link">
-      <h1>Orna Calculator</h1>
-    </a>
-    <button id="lang-toggle" class="lang-btn" title="Switch language / Сменить язык">EN</button>
+    <h1 class="app-title">
+      <a href="index.html" class="app-title-link">Orna Calculator</a>
+    </h1>
+    
+    <div class="lang-switcher">
+      <button type="button" class="lang-btn-ru" data-lang="ru" title="Русский">
+        <img src="https://playorna.com/static/img/flags/russia.png" alt="RU">
+      </button>
+      <button type="button" class="lang-btn-en" data-lang="en" title="English">
+        <img src="https://playorna.com/static/img/flags/us.png" alt="EN">
+      </button>
+    </div>
   </div>
+
   <nav class="tabs-nav">
     <a href="pages/view.html" class="tab-link" data-ru="Обзор" data-en="View">Обзор</a>
     <a href="pages/farm.html" class="tab-link" data-ru="Фарм" data-en="Farm">Фарм</a>
     <a href="pages/ward.html" class="tab-link" data-ru="Вард" data-en="Ward">Вард</a>
+    <a href="pages/towers.html" class="tab-link" data-ru="Башни" data-en="Towers">Башни</a>
+    <a href="pages/memory.html" class="tab-link" data-ru="Мнемы" data-en="Memory">Мнемы</a>
+    <a href="pages/debuffs.html" class="tab-link" data-ru="Дебаффы" data-en="Debuffs">Дебаффы</a>
   </nav>
 </header>
+
+<main class="app-main">
 
   <main class="app-main">
 
@@ -118,6 +132,16 @@
   При нажатии на итоговую цифру можно посмотреть логику расчёта.
 </p>
 
+    </section>
+
+    <!-- ============ В РАЗРАБОТКЕ ============ -->
+    <section class="panel">
+      <h2 class="panel-title" data-ru="Сайт в разработке" data-en="Site in development">Сайт в разработке</h2>
+      <p class="home-text" 
+         data-ru="Проект активно развивается! В планах — добавление новых калькуляторов и полезных инструментов для игроков Orna."
+         data-en="The project is actively growing! We plan to add new calculators and useful tools for Orna players.">
+        Проект активно развивается! В планах — добавление новых калькуляторов и полезных инструментов для игроков Orna.
+      </p>
     </section>
 
     <!-- ============ УСТАНОВКА ============ -->

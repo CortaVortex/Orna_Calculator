@@ -22,15 +22,27 @@
 
 <header class="app-header">
   <div class="app-title-row">
-    <a href="../index.html" class="app-title-link">
-      <h1>Orna Calculator</h1>
-    </a>
-    <button id="lang-toggle" class="lang-btn" title="Switch language / Сменить язык">EN</button>
+    <h1 class="app-title">
+      <a href="../index.html" class="app-title-link">Orna Calculator</a>
+    </h1>
+    
+    <div class="lang-switcher">
+      <button type="button" class="lang-btn-ru" data-lang="ru" title="Русский">
+        <img src="https://playorna.com/static/img/flags/russia.png" alt="RU">
+      </button>
+      <button type="button" class="lang-btn-en" data-lang="en" title="English">
+        <img src="https://playorna.com/static/img/flags/us.png" alt="EN">
+      </button>
+    </div>
   </div>
+
   <nav class="tabs-nav">
     <a href="view.html" class="tab-link" data-ru="Обзор" data-en="View">Обзор</a>
     <a href="farm.html" class="tab-link" data-ru="Фарм" data-en="Farm">Фарм</a>
-    <a href="ward.html" class="tab-link" data-ru="Вард" data-en="Ward">Вард</a>
+    <a href="ward.html" class="tab-link active" data-ru="Вард" data-en="Ward">Вард</a>
+    <a href="towers.html" class="tab-link" data-ru="Башни" data-en="Towers">Башни</a>
+    <a href="memory.html" class="tab-link" data-ru="Мнемы" data-en="Memory">Мнемы</a>
+    <a href="debuffs.html" class="tab-link" data-ru="Дебаффы" data-en="Debuffs">Дебаффы</a>
   </nav>
 </header>
 

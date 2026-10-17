@@ -21,17 +21,28 @@
 <body>
 
 <header class="app-header">
-<div class="app-title-row">
-  <a href="../index.html" class="app-title-link">
-    <h1>Orna Calculator</h1>
-  </a>
-  <button id="lang-toggle" class="lang-btn" title="Switch language / Сменить язык">EN</button>
-</div>
+  <div class="app-title-row">
+    <h1 class="app-title">
+      <a href="../index.html" class="app-title-link">Orna Calculator</a>
+    </h1>
+    
+    <div class="lang-switcher">
+      <button type="button" class="lang-btn-ru" data-lang="ru" title="Русский">
+        <img src="https://playorna.com/static/img/flags/russia.png" alt="RU">
+      </button>
+      <button type="button" class="lang-btn-en" data-lang="en" title="English">
+        <img src="https://playorna.com/static/img/flags/us.png" alt="EN">
+      </button>
+    </div>
+  </div>
 
   <nav class="tabs-nav">
-    <a href="view.html" class="tab-link" data-ru="Обзор" data-en="View">Обзор</a>
+    <a href="view.html" class="tab-link active" data-ru="Обзор" data-en="View">Обзор</a>
     <a href="farm.html" class="tab-link" data-ru="Фарм" data-en="Farm">Фарм</a>
     <a href="ward.html" class="tab-link" data-ru="Вард" data-en="Ward">Вард</a>
+    <a href="towers.html" class="tab-link" data-ru="Башни" data-en="Towers">Башни</a>
+    <a href="memory.html" class="tab-link" data-ru="Мнемы" data-en="Memory">Мнемы</a>
+    <a href="debuffs.html" class="tab-link" data-ru="Дебаффы" data-en="Debuffs">Дебаффы</a>
   </nav>
 </header>
 
@@ -57,37 +68,48 @@
   <button type="button" id="reset-btn" class="reset-btn" data-ru="Очистить всё" data-en="Clear all">Очистить всё</button>
 </div>
 
-    <!-- ============ КЛАСС, СПЕЦИАЛИЗАЦИЯ, ПИТОМЕЦ ============ -->
+        <!-- ============ КЛАСС, СПЕЦИАЛИЗАЦИЯ, ПИТОМЕЦ ============ -->
     <section class="panel">
       <h2 class="panel-title" data-ru="Класс и питомец" data-en="Class & Follower">Класс и питомец</h2>
+      <span class="panel-title-note" data-ru="· только с бонусами" data-en="· bonuses only">· только с бонусами</span>
 
       <div class="class-pet-layout">
         <div class="class-stack">
+          
+          <!-- КЛАСС -->
           <div class="class-block">
             <span class="class-caption" data-ru="Класс" data-en="Class">Класс</span>
-            <div class="class-row">
+            <div class="class-row custom-select-row" id="class-row-trigger">
               <div class="class-icon-wrap">
                 <img class="class-icon" id="class-icon" alt="" hidden>
-                <span class="class-icon-placeholder">?</span>
+                <span class="class-icon-placeholder" id="class-icon-placeholder">?</span>
               </div>
-              <select class="class-select" id="class-select"></select>
-              <span class="class-bonus" id="class-bonus">—</span>
+              <div class="custom-select-display">
+                <span class="custom-select-text" id="class-text" data-ru="— нет —" data-en="— none —">— нет —</span>
+                <span class="class-bonus" id="class-bonus">—</span>
+              </div>
+              <span class="custom-select-arrow">▼</span>
             </div>
           </div>
 
+          <!-- СПЕЦИАЛИЗАЦИЯ -->
           <div class="class-block">
             <span class="class-caption" data-ru="Специализация" data-en="Specialization">Специализация</span>
-            <div class="class-row">
+            <div class="class-row custom-select-row" id="spec-row-trigger">
               <div class="class-icon-wrap">
                 <img class="class-icon" id="spec-icon" alt="" hidden>
-                <span class="class-icon-placeholder">?</span>
+                <span class="class-icon-placeholder" id="spec-icon-placeholder">?</span>
               </div>
-              <select class="class-select" id="spec-select"></select>
-              <span class="class-bonus" id="spec-bonus">—</span>
+              <div class="custom-select-display">
+                <span class="custom-select-text" id="spec-text" data-ru="— нет —" data-en="— none —">— нет —</span>
+                <span class="class-bonus" id="spec-bonus">—</span>
+              </div>
+              <span class="custom-select-arrow">▼</span>
             </div>
           </div>
         </div>
 
+        <!-- ПИТОМЕЦ -->
         <div class="pet-box" id="pet-box" role="button" tabindex="0">
           <span class="pet-caption" data-ru="Питомец" data-en="Follower">Питомец</span>
           <div class="pet-image-wrap">

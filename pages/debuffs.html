@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <link rel="manifest" href="../manifest.webmanifest">
+  <meta name="theme-color" content="#0a0a0a">
+  <link rel="apple-touch-icon" href="../img/logo/icon-256.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Orna Calculator — Debuffs</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Unicase:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../css/shared.css">
+</head>
+
+<script src="../js/sw-register.js"></script>
+
+<body>
+
+<header class="app-header">
+  <div class="app-title-row">
+    <h1 class="app-title">
+      <a href="../index.html" class="app-title-link">Orna Calculator</a>
+    </h1>
+    
+    <div class="lang-switcher">
+      <button type="button" class="lang-btn-ru" data-lang="ru" title="Русский">
+        <img src="https://playorna.com/static/img/flags/russia.png" alt="RU">
+      </button>
+      <button type="button" class="lang-btn-en" data-lang="en" title="English">
+        <img src="https://playorna.com/static/img/flags/us.png" alt="EN">
+      </button>
+    </div>
+  </div>
+
+  <nav class="tabs-nav">
+    <a href="view.html" class="tab-link" data-ru="Обзор" data-en="View">Обзор</a>
+    <a href="farm.html" class="tab-link" data-ru="Фарм" data-en="Farm">Фарм</a>
+    <a href="ward.html" class="tab-link" data-ru="Вард" data-en="Ward">Вард</a>
+    <a href="towers.html" class="tab-link" data-ru="Башни" data-en="Towers">Башни</a>
+    <a href="memory.html" class="tab-link" data-ru="Мнемы" data-en="Memory">Мнемы</a>
+    <a href="debuffs.html" class="tab-link active" data-ru="Дебаффы" data-en="Debuffs">Дебаффы</a>
+  </nav>
+</header>
+
+<main class="app-main">
+  <section class="panel">
+    <h2 class="panel-title" data-ru="Калькулятор дебаффов" data-en="Debuffs Calculator">Калькулятор дебаффов</h2>
+    <div class="ward-content">
+      <p class="placeholder-text" data-ru="(заготовка — содержимое появится позже)" data-en="(placeholder — content coming soon)">
+        (заготовка — содержимое появится позже)
+      </p>
+    </div>
+  </section>
+</main>
+
+<footer class="app-footer">
+  <p data-ru="Сделано для игроков Orna • Не связано с Northern Forge" data-en="Made for Orna players • Not affiliated with Northern Forge">
+    Сделано для игроков Orna • Не связано с Northern Forge
+  </p>
+  <p>
+    <span data-ru="Все изображения принадлежат Northern Forge и взяты с официального сайта" data-en="All images belong to Northern Forge and are taken from the official website">
+      Все изображения принадлежат Northern Forge и взяты с официального сайта
+    </span>
+    <a href="https://playorna.com" target="_blank" rel="noopener">playorna.com</a>
+  </p>
+</footer>
+
+<script src="../js/shared.js"></script>
+</body>
+</html>

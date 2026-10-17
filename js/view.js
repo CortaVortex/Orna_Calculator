@@ -73,51 +73,93 @@ async function loadAllData() {
   console.log('   Предметы:', allItems.length);
 }
 
-// ============ КЛАССЫ ============
-function fillClassSelect() {
-  const sel = document.getElementById('class-select');
-  if (!sel) return;
+// ============ КЛАССЫ И СПЕЦИАЛИЗАЦИИ (НОВЫЙ UI) ============
+function formatListBonuses(entity, type, lang) {
+  const parts = [];
+  const n = {
+    ru: { view: 'Обзор', bb: 'Узы', amity: 'второй осколок' },
+    en: { view: 'View', bb: 'Bonds', amity: '2nd Amity' },
+  }[lang] || { view: 'View', bb: 'Bonds', amity: '2nd Amity' };
 
-  const current = sel.value;
-
-  Array.from(sel.options).forEach(opt => {
-    if (opt.value) sel.removeChild(opt);
-  });
-
-  if (!sel.querySelector('option[value=""]')) {
-    const none = document.createElement('option');
-    none.value = '';
-    none.textContent = '— нет —';
-    none.dataset.ru = '— нет —';
-    none.dataset.en = '— none —';
-    sel.insertBefore(none, sel.firstChild);
+  if (entity.bestialBondLevel > 0) {
+    parts.push(`<span class="bonus-positive">★ ${n.bb} ${entity.bestialBondLevel}</span>`);
   }
 
-  allClasses
-    .filter(c => isRelevantViewClass(c, state.lang))
-    .sort((a, b) => (a.tier || 0) - (b.tier || 0) || a.name.localeCompare(b.name))
-    .forEach(c => {
-      const opt = document.createElement('option');
-      opt.value = c.id;
-      opt.textContent = `★${c.tier || '?'} ${c.name}`;
-      opt.dataset.sprite = c.sprite || '';
-      opt.dataset.tier = c.tier || '';
-      sel.appendChild(opt);
-    });
+  if (type === 'spec' && entity.unlocksSecondAmity) {
+    parts.push(`<span class="bonus-positive">+${n.amity}</span>`);
+  }
 
-  if (current) sel.value = current;
+  const viewMult = parseViewBonus(entity.effects, lang);
+  if (viewMult !== 1) {
+    const pct = Math.round((viewMult - 1) * 100);
+    const cls = pct >= 0 ? 'bonus-positive' : 'bonus-negative';
+    const sign = pct >= 0 ? '+' : '';
+    parts.push(`<span class="${cls}">${n.view}: ${sign}${pct}%</span>`);
+  }
+
+  return parts.join(' · ');
 }
 
-function updateClassInfo() {
-  const sel = document.getElementById('class-select');
-  const bonusEl = document.getElementById('class-bonus');
-  const iconEl = document.getElementById('class-icon');
-  const placeholder = iconEl?.parentElement.querySelector('.class-icon-placeholder');
-  if (!sel || !bonusEl) return;
+function openClassPicker() {
+  const lang = currentLang();
+  const classes = allClasses
+    .filter(c => isRelevantViewClass(c, lang))
+    .sort((a, b) => (a.tier || 0) - (b.tier || 0) || a.name.localeCompare(b.name));
 
-  const cls = allClasses.find(c => String(c.id) === sel.value);
+  const itemsWithEmpty = [
+    { id: '__empty__', name: lang === 'ru' ? '— нет —' : '— none —', sprite: '' },
+    ...classes
+  ];
+
+  window.Modal.open({
+    title: lang === 'ru' ? 'Класс' : 'Class',
+    items: itemsWithEmpty,
+    metaFormatter: (it) => {
+      if (it.id === '__empty__') return '';
+      return formatListBonuses(it, 'class', lang);
+    },
+    onPick: (cls) => applyClass(cls.id === '__empty__' ? '' : cls.id),
+    onClear: () => applyClass('')
+  });
+}
+
+function openSpecPicker() {
+  const lang = currentLang();
+  const specs = allSpecs
+    .filter(s => isRelevantViewSpec(s))
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+  const itemsWithEmpty = [
+    { id: '__empty__', name: lang === 'ru' ? '— нет —' : '— none —', sprite: '' },
+    ...specs
+  ];
+
+  window.Modal.open({
+    title: lang === 'ru' ? 'Специализация' : 'Specialization',
+    items: itemsWithEmpty,
+    metaFormatter: (it) => {
+      if (it.id === '__empty__') return '';
+      return formatListBonuses(it, 'spec', lang);
+    },
+    onPick: (spec) => applySpec(spec.id === '__empty__' ? '' : spec.id),
+    onClear: () => applySpec('')
+  });
+}
+
+function applyClass(clsId) {
+  state.classId = clsId;
+  const cls = allClasses.find(c => String(c.id) === String(clsId));
+  const lang = currentLang();
+  
+  const iconEl = document.getElementById('class-icon');
+  const placeholder = document.getElementById('class-icon-placeholder');
+  const textEl = document.getElementById('class-text');
+  const bonusEl = document.getElementById('class-bonus');
+
   if (!cls) {
     state.classId = null; state.classView = 1; state.classBB = 0;
+    textEl.textContent = lang === 'ru' ? '— нет —' : '— none —';
+    textEl.classList.remove('custom-select-has-value');
     bonusEl.textContent = '—';
     if (iconEl) { iconEl.hidden = true; iconEl.removeAttribute('src'); }
     if (placeholder) placeholder.hidden = false;
@@ -127,66 +169,45 @@ function updateClassInfo() {
   }
 
   state.classId = cls.id;
-  state.classView = parseViewBonus(cls.effects, state.lang);
+  state.classView = parseViewBonus(cls.effects, lang);
   state.classBB = cls.bestialBondLevel || 0;
+
+  textEl.textContent = `★${cls.tier || '?'} ${cls.name}`;
+  textEl.classList.add('custom-select-has-value');
+  
+  if (cls.sprite && iconEl) {
+    iconEl.src = cls.sprite;
+    iconEl.hidden = false;
+    if (placeholder) placeholder.hidden = true;
+  } else {
+     if (iconEl) { iconEl.hidden = true; iconEl.removeAttribute('src'); }
+     if (placeholder) placeholder.hidden = false;
+  }
 
   const parts = [];
   if (state.classView !== 1) parts.push(`Обзор ${Math.round((state.classView - 1) * 100)}%`);
   if (state.classBB > 0) parts.push(`Узы ${state.classBB}`);
   bonusEl.textContent = parts.length ? parts.join(' · ') : '—';
 
-  if (cls.sprite && iconEl) {
-    iconEl.src = '';
-    iconEl.src = cls.sprite;
-    iconEl.hidden = false;
-    if (placeholder) placeholder.hidden = true;
-  }
-
   updateFollowerLock();
   recalc();
 }
 
-// ============ СПЕЦИАЛИЗАЦИИ ============
-function fillSpecSelect() {
-  const sel = document.getElementById('spec-select');
-  if (!sel) return;
+function applySpec(specId) {
+  state.specId = specId;
+  const spec = allSpecs.find(s => s.id === specId);
+  const lang = currentLang();
 
-  const current = sel.value;
-
-  Array.from(sel.options).forEach(opt => {
-    if (opt.value) sel.removeChild(opt);
-  });
-
-  if (!sel.querySelector('option[value=""]')) {
-    const none = document.createElement('option');
-    none.value = '';
-    none.textContent = '— нет —';
-    none.dataset.ru = '— нет —';
-    none.dataset.en = '— none —';
-    sel.insertBefore(none, sel.firstChild);
-  }
-
-  allSpecs.filter(isRelevantViewSpec).forEach(s => {
-    const opt = document.createElement('option');
-    opt.value = s.id;
-    opt.textContent = s.name;
-    sel.appendChild(opt);
-  });
-
-  if (current) sel.value = current;
-}
-
-function updateSpecInfo() {
-  const sel = document.getElementById('spec-select');
-  const bonusEl = document.getElementById('spec-bonus');
   const iconEl = document.getElementById('spec-icon');
-  const placeholder = iconEl?.parentElement.querySelector('.class-icon-placeholder');
-  if (!sel || !bonusEl) return;
+  const placeholder = document.getElementById('spec-icon-placeholder');
+  const textEl = document.getElementById('spec-text');
+  const bonusEl = document.getElementById('spec-bonus');
 
-  const spec = allSpecs.find(s => s.id === sel.value);
   if (!spec) {
     state.specId = null; state.specView = 1; state.specBB = 0; state.specAmity = false;
-    bonusEl.textContent = '—';
+    textEl.textContent = lang === 'ru' ? '— нет —' : '— none —';
+    textEl.classList.remove('custom-select-has-value');
+    bonusEl.innerHTML = '—';
     if (iconEl) { iconEl.hidden = true; iconEl.removeAttribute('src'); }
     if (placeholder) placeholder.hidden = false;
     updateLeftMnemLock();
@@ -200,14 +221,23 @@ function updateSpecInfo() {
   state.specBB = spec.bestialBondLevel || 0;
   state.specAmity = !!spec.unlocksSecondAmity;
 
+  textEl.textContent = spec.name;
+  textEl.classList.add('custom-select-has-value');
+
+  if (spec.sprite && iconEl) {
+    iconEl.src = spec.sprite;
+    iconEl.hidden = false;
+    if (placeholder) placeholder.hidden = true;
+  } else {
+     if (iconEl) { iconEl.hidden = true; iconEl.removeAttribute('src'); }
+     if (placeholder) placeholder.hidden = false;
+  }
+
   const parts = [];
   if (state.specView !== 1) parts.push(`Обзор ${Math.round((state.specView - 1) * 100)}%`);
   if (state.specBB > 0) parts.push(`Узы ${state.specBB}`);
-  if (state.specAmity) parts.push('+Amity');
-  bonusEl.textContent = parts.length ? parts.join(' · ') : '—';
-
-  if (iconEl) { iconEl.hidden = true; iconEl.removeAttribute('src'); }
-  if (placeholder) placeholder.hidden = false;
+  if (state.specAmity) parts.push(lang === 'ru' ? '+второй осколок' : '+2nd Amity');
+  bonusEl.innerHTML = parts.length ? parts.join('<br>') : '—';
 
   updateLeftMnemLock();
   updateFollowerLock();
@@ -296,7 +326,6 @@ function validateMnemView(inputEl) {
 
   const n = Number(raw);
 
-  // Обрезка до диапазона
   if (!Number.isNaN(n)) {
     if (n > MNEM_VIEW_MAX) {
       inputEl.value = MNEM_VIEW_MAX;
@@ -336,7 +365,6 @@ function initMnems() {
     sel.addEventListener('change', () => {
       refreshAllMnemOptions();
 
-      // Всегда сбрасываем input при смене select
       if (input) {
         input.value = '';
         input.classList.remove('is-error');
@@ -632,7 +660,7 @@ function openSlotPicker(slotKey) {
     })
     .sort((a, b) => (a.tier || 0) - (b.tier || 0) || a.name.localeCompare(b.name));
 
-  Modal.open({
+  window.Modal.open({
     title: 'Выбор предмета',
     items,
     onPick: (item) => applyItemToSlot(slotKey, item),
@@ -650,7 +678,6 @@ function applyItemToSlot(slotKey, item) {
   const statsEl = wrapper?.querySelector('.slot-stats') || slotEl.querySelector('.slot-stats');
   const qualitySel = slotEl.querySelector('.slot-quality');
 
-  // Затираем старую картинку перед новой
   if (img) {
     img.src = '';
     img.hidden = true;
@@ -936,7 +963,7 @@ function openFollowerPicker() {
     ...pets,
   ];
 
-  Modal.open({
+  window.Modal.open({
     title: `Питомец (доступно BB${availableBB})`,
     items: itemsWithEmpty,
     metaFormatter: (it) => {
@@ -1089,8 +1116,14 @@ function initFollower() {
 async function initViewPage() {
   await loadAllData();
 
-  fillClassSelect();
-  fillSpecSelect();
+  // Вешаем клики на новые селекты
+  document.getElementById('class-row-trigger')?.addEventListener('click', openClassPicker);
+  document.getElementById('spec-row-trigger')?.addEventListener('click', openSpecPicker);
+
+  // Инициализируем пустое состояние
+  applyClass('');
+  applySpec('');
+
   initMnems();
   initGems();
   initSteps();
@@ -1099,13 +1132,6 @@ async function initViewPage() {
   initFollower();
   initResetButton();
 
-  const classSel = document.getElementById('class-select');
-  const specSel = document.getElementById('spec-select');
-  classSel?.addEventListener('change', updateClassInfo);
-  specSel?.addEventListener('change', updateSpecInfo);
-
-  updateClassInfo();
-  updateSpecInfo();
   recalc();
 }
 
@@ -1136,11 +1162,6 @@ window.addEventListener('orna-lang-changed', async () => {
     const gemId = inp.dataset.gemId;
     if (gemId) savedState.gems[gemId] = inp.value;
   });
-
-  const classSel = document.getElementById('class-select');
-  const specSel = document.getElementById('spec-select');
-  if (classSel) savedState.classId = classSel.value;
-  if (specSel) savedState.specId = specSel.value;
 
   const petBox = document.getElementById('pet-box');
   if (petBox?.dataset.followerId) {
@@ -1175,22 +1196,8 @@ window.addEventListener('orna-lang-changed', async () => {
 
   await loadAllData();
 
-  document.querySelectorAll('select option[value=""]').forEach(opt => {
-    const lang = currentLang();
-    opt.textContent = opt.dataset[lang] || opt.dataset.ru || opt.textContent;
-  });
-
-  fillClassSelect();
-  fillSpecSelect();
-
-  if (classSel && savedState.classId) {
-    classSel.value = savedState.classId;
-    updateClassInfo();
-  }
-  if (specSel && savedState.specId) {
-    specSel.value = savedState.specId;
-    updateSpecInfo();
-  }
+  applyClass(savedState.classId || '');
+  applySpec(savedState.specId || '');
 
   for (const [slotKey, data] of Object.entries(savedState.slots)) {
     const item = allItems.find(i => String(i.id) === String(data.itemId));
@@ -1297,12 +1304,8 @@ function resetAll() {
     : 'Clear all? This action cannot be undone.';
   if (!window.confirm(msg)) return;
 
-  const classSel = document.getElementById('class-select');
-  if (classSel) classSel.value = '';
-
-  const specSel = document.getElementById('spec-select');
-  if (specSel) specSel.value = '';
-
+  applyClass('');
+  applySpec('');
   clearFollower();
 
   ['weapon-1', 'weapon-2', 'head', 'body', 'legs', 'accessory-1', 'accessory-2']

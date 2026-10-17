@@ -58,6 +58,8 @@ async function loadAllData() {
 // ============ СОСТОЯНИЕ ============
 const farmState = {
   steps: { 3000: false, 6000: false },
+  selectedClassId: '',
+  selectedSpecId: '',
 };
 
 // ============ ХРАМЫ ============
@@ -85,19 +87,19 @@ const STATUES = [
 
 // ============ ИВЕНТЫ ============
 const EVENTS = [
-  { id: 'event-enlightenment', name: 'Дни просветления', nameEn: 'Exp event',
+  { id: 'event-enlightenment', name: 'Дни просветления', nameEn: 'Days of Enlightenment',
     icon: 'https://playorna.com/static/img/items/exp.png',
     multipliers: { orns: 1, gold: 1, exp: 1.25, luck: 1 } },
-  { id: 'event-happy', name: 'Счастливые дни', nameEn: 'Lucky event',
+  { id: 'event-happy', name: 'Счастливые дни', nameEn: 'Happy Days',
     icon: 'https://playorna.com/static/img/items/loot.png',
     multipliers: { orns: 1, gold: 1, exp: 1, luck: 1.2 } },
-  { id: 'event-ornabirth', name: 'Орнабилей', nameEn: 'Ornaversary!',
+  { id: 'event-ornabirth', name: 'Орнабилей', nameEn: 'Ornabirth',
     icon: 'https://playorna.com/static/img/packs/nfs/odie_2024.png',
     multipliers: { orns: 1.2, gold: 1.2, exp: 1.2, luck: 1 } },
-  { id: 'event-ornopad', name: 'Орнопад', nameEn: 'Orn event',
+  { id: 'event-ornopad', name: 'Орнопад', nameEn: 'Ornopad',
     icon: 'https://playorna.com/static/img/items/orns.png',
     multipliers: { orns: 1.25, gold: 1, exp: 1, luck: 1 } },
-  { id: 'event-cave', name: 'Исследование пещер', nameEn: 'Spelunking event',
+  { id: 'event-cave', name: 'Исследование пещер', nameEn: 'Cave Exploration',
     icon: 'https://playorna.com/static/img/bosses/dweller.png',
     multipliers: { orns: 1.25, gold: 1, exp: 1, luck: 1 } },
 ];
@@ -155,71 +157,11 @@ function isBannedFarm(item) {
   return false;
 }
 
-// ============ КЛАССЫ ============
+// ============ КЛАССЫ И СПЕЦИАЛИЗАЦИИ ============
 function isRelevantFarmClass(cls) {
   return (cls.bestialBondLevel || 0) > 0;
 }
 
-function fillClassSelect() {
-  const sel = document.getElementById('class-select');
-  if (!sel) return;
-  const current = sel.value;
-  Array.from(sel.options).forEach(opt => { if (opt.value) sel.removeChild(opt); });
-
-  if (!sel.querySelector('option[value=""]')) {
-    const none = document.createElement('option');
-    none.value = '';
-    none.textContent = '— нет —';
-    none.dataset.ru = '— нет —';
-    none.dataset.en = '— none —';
-    sel.insertBefore(none, sel.firstChild);
-  }
-
-  allClasses
-    .filter(isRelevantFarmClass)
-    .sort((a, b) => (a.tier || 0) - (b.tier || 0) || a.name.localeCompare(b.name))
-    .forEach(c => {
-      const opt = document.createElement('option');
-      opt.value = c.id;
-      opt.textContent = `★${c.tier || '?'} ${c.name}`;
-      opt.dataset.sprite = c.sprite || '';
-      opt.dataset.tier = c.tier || '';
-      sel.appendChild(opt);
-    });
-
-  if (current) sel.value = current;
-}
-
-function updateClassInfo() {
-  const sel = document.getElementById('class-select');
-  const bonusEl = document.getElementById('class-bonus');
-  const iconEl = document.getElementById('class-icon');
-  const placeholder = iconEl?.parentElement.querySelector('.class-icon-placeholder');
-  if (!sel || !bonusEl) return;
-
-  const cls = allClasses.find(c => String(c.id) === sel.value);
-  if (!cls) {
-    bonusEl.textContent = '—';
-    if (iconEl) { iconEl.hidden = true; iconEl.removeAttribute('src'); }
-    if (placeholder) placeholder.hidden = false;
-    recalcFarm();
-    return;
-  }
-
-  const parts = [];
-  if (cls.bestialBondLevel > 0) parts.push(`Узы ${cls.bestialBondLevel}`);
-  bonusEl.textContent = parts.length ? parts.join(' · ') : '—';
-
-  if (cls.sprite && iconEl) {
-    iconEl.src = cls.sprite;
-    iconEl.hidden = false;
-    if (placeholder) placeholder.hidden = true;
-  }
-
-  recalcFarm();
-}
-
-// ============ СПЕЦИАЛИЗАЦИИ ============
 function isRelevantFarmSpec(spec) {
   const hasBB = (spec.bestialBondLevel || 0) > 0;
   const hasAmity = !!spec.unlocksSecondAmity;
@@ -228,65 +170,195 @@ function isRelevantFarmSpec(spec) {
   return hasBB || hasAmity || hasMult;
 }
 
-function fillSpecSelect() {
-  const sel = document.getElementById('spec-select');
-  if (!sel) return;
-  const current = sel.value;
-  Array.from(sel.options).forEach(opt => { if (opt.value) sel.removeChild(opt); });
+// Форматирование бонусов для списков (с зеленым/красным цветом)
+function formatListBonuses(entity, type, lang) {
+  const parts = [];
+  const n = {
+    ru: { orns: 'Орны', gold: 'Золото', exp: 'Опыт', luck: 'Удача', bb: 'Узы', amity: 'второй осколок' },
+    en: { orns: 'Orns', gold: 'Gold', exp: 'Exp', luck: 'Luck', bb: 'Bonds', amity: '2nd Amity' },
+  }[lang] || { orns: 'Orns', gold: 'Gold', exp: 'Exp', luck: 'Luck', bb: 'Bonds', amity: '2nd Amity' };
 
-  if (!sel.querySelector('option[value=""]')) {
-    const none = document.createElement('option');
-    none.value = '';
-    none.textContent = '— нет —';
-    none.dataset.ru = '— нет —';
-    none.dataset.en = '— none —';
-    sel.insertBefore(none, sel.firstChild);
+  // Узы
+  if (entity.bestialBondLevel > 0) {
+    parts.push(`<span class="bonus-positive">★ ${n.bb} ${entity.bestialBondLevel}</span>`);
   }
 
-  allSpecs.filter(isRelevantFarmSpec).forEach(s => {
-    const opt = document.createElement('option');
-    opt.value = s.id;
-    opt.textContent = s.name;
-    sel.appendChild(opt);
-  });
+  // Амити (второй осколок)
+  if (type === 'spec' && entity.unlocksSecondAmity) {
+    parts.push(`<span class="bonus-positive">+${n.amity}</span>`);
+  }
 
-  if (current) sel.value = current;
+  // Множители
+  const m = entity.multipliers;
+  if (m) {
+    ['orns', 'gold', 'exp', 'luck'].forEach(key => {
+      const val = m[key];
+      if (val != null && val !== 1) {
+        const pct = Math.round((val - 1) * 100);
+        const cls = pct >= 0 ? 'bonus-positive' : 'bonus-negative';
+        const sign = pct >= 0 ? '+' : '';
+        parts.push(`<span class="${cls}">${n[key]}: ${sign}${pct}%</span>`);
+      }
+    });
+  }
+
+  return parts.join(' · ');
 }
 
-function updateSpecInfo() {
-  const sel = document.getElementById('spec-select');
-  const bonusEl = document.getElementById('spec-bonus');
-  if (!sel || !bonusEl) return;
+function openClassPicker() {
+  const lang = currentLang();
+  const classes = allClasses
+    .filter(isRelevantFarmClass)
+    .sort((a, b) => (a.tier || 0) - (b.tier || 0) || a.name.localeCompare(b.name));
 
-  const spec = allSpecs.find(s => s.id === sel.value);
-  if (!spec) {
-    bonusEl.innerHTML = '—';
-    recalcFarm();
-    return;
+  const itemsWithEmpty = [
+    { id: '__empty__', name: lang === 'ru' ? '— нет —' : '— none —', sprite: '' },
+    ...classes
+  ];
+
+  window.Modal.open({
+    title: lang === 'ru' ? 'Класс' : 'Class',
+    items: itemsWithEmpty,
+    metaFormatter: (it) => {
+      if (it.id === '__empty__') return '';
+      return formatListBonuses(it, 'class', lang);
+    },
+    onPick: (cls) => applyClass(cls.id === '__empty__' ? '' : cls.id),
+    onClear: () => applyClass('')
+  });
+}
+
+function openSpecPicker() {
+  const lang = currentLang();
+  const specs = allSpecs
+    .filter(isRelevantFarmSpec)
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+  const itemsWithEmpty = [
+    { id: '__empty__', name: lang === 'ru' ? '— нет —' : '— none —', sprite: '' },
+    ...specs
+  ];
+
+  window.Modal.open({
+    title: lang === 'ru' ? 'Специализация' : 'Specialization',
+    items: itemsWithEmpty,
+    metaFormatter: (it) => {
+      if (it.id === '__empty__') return '';
+      return formatListBonuses(it, 'spec', lang);
+    },
+    onPick: (spec) => applySpec(spec.id === '__empty__' ? '' : spec.id),
+    onClear: () => applySpec('')
+  });
+}
+
+// ============ ПРИМЕНЕНИЕ КЛАССА / СПЕЦИАЛИЗАЦИИ ============
+function applyClass(clsId) {
+  farmState.selectedClassId = clsId;
+  const cls = allClasses.find(c => String(c.id) === String(clsId));
+  const lang = currentLang();
+  
+  const iconEl = document.getElementById('class-icon');
+  const placeholder = document.getElementById('class-icon-placeholder');
+  const textEl = document.getElementById('class-text');
+  const bonusEl = document.getElementById('class-bonus');
+
+  if (!cls) {
+    textEl.textContent = lang === 'ru' ? '— нет —' : '— none —';
+    textEl.classList.remove('custom-select-has-value');
+    bonusEl.textContent = '—';
+    if (iconEl) { iconEl.hidden = true; iconEl.removeAttribute('src'); }
+    if (placeholder) placeholder.hidden = false;
+  } else {
+    textEl.textContent = `★${cls.tier || '?'} ${cls.name}`;
+    textEl.classList.add('custom-select-has-value');
+    
+    // Иконка
+    if (cls.sprite && iconEl) {
+      iconEl.src = cls.sprite;
+      iconEl.hidden = false;
+      if (placeholder) placeholder.hidden = true;
+    } else {
+       if (iconEl) { iconEl.hidden = true; iconEl.removeAttribute('src'); }
+       if (placeholder) placeholder.hidden = false;
+    }
+
+    // Бонусы текстом
+    const parts = [];
+    if (cls.bestialBondLevel > 0) parts.push(`Узы ${cls.bestialBondLevel}`);
+    bonusEl.textContent = parts.length ? parts.join(' · ') : '—';
   }
 
-  const parts = [];
-  if (spec.bestialBondLevel > 0) parts.push(`Узы ${spec.bestialBondLevel}`);
-  if (spec.unlocksSecondAmity) parts.push('+Amity');
-
-  const m = spec.multipliers;
-  if (m) {
-    if (m.orns !== 1) parts.push(`Орны ${m.orns >= 1 ? '+' : ''}${Math.round((m.orns - 1) * 100)}%`);
-    if (m.gold !== 1) parts.push(`Золото ${m.gold >= 1 ? '+' : ''}${Math.round((m.gold - 1) * 100)}%`);
-    if (m.exp !== 1)  parts.push(`Опыт ${m.exp >= 1 ? '+' : ''}${Math.round((m.exp - 1) * 100)}%`);
-    if (m.luck !== 1) parts.push(`Удача ${m.luck >= 1 ? '+' : ''}${Math.round((m.luck - 1) * 100)}%`);
-  }
-
-  bonusEl.innerHTML = parts.length ? parts.join('<br>') : '—';
+  updateFollowerLock();
   recalcFarm();
+}
+
+function applySpec(specId) {
+  farmState.selectedSpecId = specId;
+  const spec = allSpecs.find(s => s.id === specId);
+  const lang = currentLang();
+
+  const iconEl = document.getElementById('spec-icon');
+  const placeholder = document.getElementById('spec-icon-placeholder');
+  const textEl = document.getElementById('spec-text');
+  const bonusEl = document.getElementById('spec-bonus');
+
+  if (!spec) {
+    textEl.textContent = lang === 'ru' ? '— нет —' : '— none —';
+    textEl.classList.remove('custom-select-has-value');
+    bonusEl.innerHTML = '—';
+    if (iconEl) { iconEl.hidden = true; iconEl.removeAttribute('src'); }
+    if (placeholder) placeholder.hidden = false;
+  } else {
+    textEl.textContent = spec.name;
+    textEl.classList.add('custom-select-has-value');
+
+    if (spec.sprite && iconEl) {
+      iconEl.src = spec.sprite;
+      iconEl.hidden = false;
+      if (placeholder) placeholder.hidden = true;
+    } else {
+       if (iconEl) { iconEl.hidden = true; iconEl.removeAttribute('src'); }
+       if (placeholder) placeholder.hidden = false;
+    }
+
+      const parts = [];
+    if (spec.bestialBondLevel > 0) parts.push(`Узы ${spec.bestialBondLevel}`);
+    if (spec.unlocksSecondAmity) parts.push(currentLang() === 'ru' ? '+второй осколок' : '+2nd Amity');
+    
+    const m = spec.multipliers;
+    if (m) {
+      if (m.orns !== 1) parts.push(`Орны ${m.orns >= 1 ? '+' : ''}${Math.round((m.orns - 1) * 100)}%`);
+      if (m.gold !== 1) parts.push(`Золото ${m.gold >= 1 ? '+' : ''}${Math.round((m.gold - 1) * 100)}%`);
+      if (m.exp !== 1)  parts.push(`Опыт ${m.exp >= 1 ? '+' : ''}${Math.round((m.exp - 1) * 100)}%`);
+      if (m.luck !== 1) parts.push(`Удача ${m.luck >= 1 ? '+' : ''}${Math.round((m.luck - 1) * 100)}%`);
+    }
+    
+    bonusEl.innerHTML = parts.length ? parts.join('<br>') : '—';
+  }
+
+  updateLeftMnemLock();
+  updateFollowerLock();
+  recalcFarm();
+}
+
+// ============ ИНИЦИАЛИЗАЦИЯ ТРИГГЕРОВ ============
+function initClassSelect() {
+  const classTrigger = document.getElementById('class-row-trigger');
+  const specTrigger = document.getElementById('spec-row-trigger');
+
+  if (classTrigger) {
+    classTrigger.addEventListener('click', openClassPicker);
+  }
+  if (specTrigger) {
+    specTrigger.addEventListener('click', openSpecPicker);
+  }
 }
 
 // ============ ПИТОМЕЦ ============
 function getAvailableBB() {
-  const classSel = document.getElementById('class-select');
-  const specSel = document.getElementById('spec-select');
-  const cls = allClasses.find(c => String(c.id) === classSel?.value);
-  const spec = allSpecs.find(s => s.id === specSel?.value);
+  const cls = allClasses.find(c => String(c.id) === String(farmState.selectedClassId));
+  const spec = allSpecs.find(s => s.id === farmState.selectedSpecId);
+  
   const fromClass = cls?.bestialBondLevel || 0;
   const fromSpec = spec?.bestialBondLevel || 0;
 
@@ -322,8 +394,9 @@ function formatFollowerMeta(follower, availableBB) {
       const v = m[key];
       if (v != null && v !== 1) {
         const pct = Math.round((v - 1) * 100);
+        const cls = pct >= 0 ? 'bonus-positive' : 'bonus-negative';
         const sign = pct >= 0 ? '+' : '';
-        parts.push(`${n[key]} ${sign}${pct}%`);
+        parts.push(`<span class="${cls}">${n[key]} ${sign}${pct}%</span>`);
       }
     });
 
@@ -337,13 +410,14 @@ function openFollowerPicker() {
   const availableBB = getAvailableBB();
   if (availableBB === 0) return;
 
+  const lang = currentLang();
   const pets = allFollowers
     .filter(hasFarmBonus)
     .filter(f => !isBannedFarm(f))
     .sort((a, b) => (a.tier || 0) - (b.tier || 0) || a.name.localeCompare(b.name));
 
   const itemsWithEmpty = [
-    { id: '__empty__', name: 'Пусто', sprite: '', tier: null, effects: [] },
+    { id: '__empty__', name: lang === 'ru' ? 'Пусто' : 'Empty', sprite: '', tier: null, effects: [] },
     ...pets,
   ];
 
@@ -458,6 +532,7 @@ function updateFollowerLock() {
 
   const availableBB = getAvailableBB();
   const caption = petBox.querySelector('.pet-caption');
+  const lang = currentLang();
 
   if (petBox.dataset.followerId) {
     const savedBB = parseInt(petBox.dataset.bbLevel) || 0;
@@ -474,13 +549,11 @@ function updateFollowerLock() {
     petBox.classList.add('pet-locked');
     if (petBox.dataset.followerId) clearFollower();
     if (caption) {
-      const lang = currentLang();
       caption.textContent = lang === 'ru' ? 'Питомец (нужны узы)' : 'Follower (bonds needed)';
     }
   } else {
     petBox.classList.remove('pet-locked');
     if (caption) {
-      const lang = currentLang();
       caption.textContent = lang === 'ru' ? 'Питомец' : 'Follower';
     }
   }
@@ -634,8 +707,7 @@ function updateLeftMnemLock() {
   const leftMnemSlot = document.querySelector('[data-slot="mnem-1"]');
   if (!leftMnemSlot) return;
 
-  const specSel = document.getElementById('spec-select');
-  const unlocked = ORACLE_SPECS.includes(specSel?.value);
+  const unlocked = ORACLE_SPECS.includes(farmState.selectedSpecId);
 
   leftMnemSlot.classList.toggle('is-locked', !unlocked);
 
@@ -736,8 +808,7 @@ function recalcFarm() {
     luck: parseFloat(document.querySelector('.anguish-input[data-currency="luck"]')?.value) || 0,
   };
 
-  const specSel = document.getElementById('spec-select');
-  const selectedSpec = allSpecs.find(s => s.id === specSel?.value);
+  const selectedSpec = allSpecs.find(s => s.id === farmState.selectedSpecId);
   const specMultipliers = selectedSpec?.multipliers || null;
   const specId = selectedSpec?.id || null;
 
@@ -1070,8 +1141,7 @@ function refreshSlotStats(slotKey) {
     return;
   }
 
-  const specSel = document.getElementById('spec-select');
-  const activeSpecId = specSel?.value || null;
+  const activeSpecId = farmState.selectedSpecId || null;
   const req = checkSpecRequirement(item, activeSpecId);
 
   if (req.requires && !req.satisfied) {
@@ -1106,7 +1176,6 @@ function refreshSlotStats(slotKey) {
     };
   }
 
-  // ✅ ИСПРАВЛЕНО: amity применяется ТОЛЬКО к статам с бонусом
   if (slotKey === 'accessory-1' || slotKey === 'accessory-2') {
     const mnemVals = getMnemValues();
     const accBoost = 1 + (mnemVals.acc || 0) / 100;
@@ -1160,8 +1229,7 @@ function updateTwoHandedPenaltyBadge() {
 }
 
 function updateSpecRequirementUI() {
-  const specSel = document.getElementById('spec-select');
-  const activeSpecId = specSel?.value || null;
+  const activeSpecId = farmState.selectedSpecId || null;
 
   let anyRequires = false;
   let allSatisfied = true;
@@ -1189,9 +1257,10 @@ function updateSpecRequirementUI() {
     }
   });
 
-  if (specSel) {
-    specSel.classList.toggle('spec-required', anyRequires);
-    specSel.classList.toggle('spec-satisfied', anyRequires && allSatisfied);
+  const specTrigger = document.getElementById('spec-row-trigger');
+  if (specTrigger) {
+    specTrigger.classList.toggle('spec-required', anyRequires);
+    specTrigger.classList.toggle('spec-satisfied', anyRequires && allSatisfied);
   }
 }
 
@@ -1334,27 +1403,11 @@ function updateTwoHandedLock(slotKey, item) {
 async function initFarmPage() {
   await loadAllData();
 
-  fillClassSelect();
-  fillSpecSelect();
-
-  const classSel = document.getElementById('class-select');
-  const specSel = document.getElementById('spec-select');
-
-  classSel?.addEventListener('change', () => {
-    updateClassInfo();
-    updateFollowerLock();
-  });
-  specSel?.addEventListener('change', () => {
-    updateSpecInfo();
-    updateLeftMnemLock();
-    updateFollowerLock();
-  });
-
-  updateClassInfo();
-  updateSpecInfo();
-  updateLeftMnemLock();
-  updateFollowerLock();
+  initClassSelect();
   initFollower();
+  
+  applyClass('');
+  applySpec('');
 
   renderSimpleGrid(document.getElementById('temples-grid'), TEMPLES, 'temple');
   renderSimpleGrid(document.getElementById('statues-grid'), STATUES, 'statue');
@@ -1372,12 +1425,10 @@ async function initFarmPage() {
   document.querySelectorAll('.anguish-input').forEach(inp => {
     inp.addEventListener('input', () => {
       inp.value = inp.value.replace(',', '.').replace(/[^0-9.]/g, '');
-
       const v = parseFloat(inp.value);
       if (inp.value !== '' && (isNaN(v) || v < 0)) {
         inp.value = '0';
       }
-
       recalcFarm();
     });
 
@@ -1407,8 +1458,8 @@ window.addEventListener('orna-lang-changed', async () => {
   console.log('🌐 Language changed, reloading farm...');
 
   const savedState = {
-    classId: '',
-    specId: '',
+    classId: farmState.selectedClassId,
+    specId: farmState.selectedSpecId,
     followerId: null,
     followerBB: 0,
     slots: {},
@@ -1442,11 +1493,6 @@ window.addEventListener('orna-lang-changed', async () => {
     });
   });
 
-  const classSel = document.getElementById('class-select');
-  const specSel = document.getElementById('spec-select');
-  if (classSel) savedState.classId = classSel.value;
-  if (specSel) savedState.specId = specSel.value;
-
   const petBox = document.getElementById('pet-box');
   if (petBox?.dataset.followerId) {
     savedState.followerId = petBox.dataset.followerId;
@@ -1479,19 +1525,15 @@ window.addEventListener('orna-lang-changed', async () => {
 
   await loadAllData();
 
-  document.querySelectorAll('select option[value=""]').forEach(opt => {
-    const lang = currentLang();
-    opt.textContent = opt.dataset[lang] || opt.dataset.ru || opt.textContent;
+  // Обновляем статичный текст (placeholder-ы)
+  document.querySelectorAll('[data-ru][data-en]').forEach(el => {
+    if (el.tagName !== 'OPTION') {
+      el.textContent = el.dataset[currentLang()] || el.dataset.ru || el.textContent;
+    }
   });
 
-  fillClassSelect();
-  fillSpecSelect();
-
-  if (classSel && savedState.classId) classSel.value = savedState.classId;
-  if (specSel && savedState.specId) specSel.value = savedState.specId;
-
-  updateClassInfo();
-  updateSpecInfo();
+  applyClass(savedState.classId);
+  applySpec(savedState.specId);
 
   if (savedState.followerId) {
     const follower = allFollowers.find(f => f.id === savedState.followerId);
@@ -1588,11 +1630,11 @@ window.updateSlotQuality = updateSlotQuality;
 window.recalcFarm = recalcFarm;
 window.formatEffect = formatEffect;
 window.initFarmPage = initFarmPage;
-window.updateClassInfo = updateClassInfo;
-window.updateSpecInfo = updateSpecInfo;
 window.updateFollowerLock = updateFollowerLock;
 window.updateTwoHandedLock = updateTwoHandedLock;
 window.updateLeftMnemLock = updateLeftMnemLock;
+window.applyClass = applyClass;
+window.applySpec = applySpec;
 
 window.__farmDebug = {
   get allItems() { return allItems; },
@@ -1611,12 +1653,8 @@ function resetAll() {
     : 'Clear all? This action cannot be undone.';
   if (!window.confirm(msg)) return;
 
-  const classSel = document.getElementById('class-select');
-  if (classSel) classSel.value = '';
-
-  const specSel = document.getElementById('spec-select');
-  if (specSel) specSel.value = '';
-
+  applyClass('');
+  applySpec('');
   clearFollower();
 
   ['weapon-1', 'weapon-2', 'head', 'body', 'legs', 'accessory-1', 'accessory-2']
@@ -1640,7 +1678,6 @@ function resetAll() {
     inp.value = 0;
   });
 
-  // Снимаем ВСЕ галочки в группах прочих бонусов
   const CONSUMABLE_GROUPS = [
     'data-temple-id',
     'data-statue-id',
@@ -1656,13 +1693,10 @@ function resetAll() {
     });
   });
 
-  // Убираем визуальное затемнение мьютекс-ивентов
   document.querySelectorAll('.consumable-item.is-mutex-disabled').forEach(el => {
     el.classList.remove('is-mutex-disabled');
   });
 
-  updateClassInfo();
-  updateSpecInfo();
   updateLeftMnemLock();
   updateFollowerLock();
   updateSpecRequirementUI();
