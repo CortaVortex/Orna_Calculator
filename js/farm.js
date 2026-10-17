@@ -1047,6 +1047,7 @@ function formatFarmMeta(item) {
 
 function openSlotPicker(slotKey) {
   const allowed = getSlotAllowed(slotKey);
+  const lang = currentLang(); // <--- ДОБАВИТЬ
 
   const items = allItems
     .filter(it =>
@@ -1061,7 +1062,7 @@ function openSlotPicker(slotKey) {
     .sort((a, b) => (a.tier || 0) - (b.tier || 0) || a.name.localeCompare(b.name));
 
   window.Modal.open({
-    title: 'Выбор предмета',
+    title: lang === 'ru' ? 'Выбор предмета' : 'Select item', // <--- ЗАМЕНИТЬ
     items,
     metaFormatter: formatFarmMeta,
     onPick: (item) => applyItemToFarmSlot(slotKey, item),

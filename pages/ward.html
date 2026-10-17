@@ -1,18 +1,14 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <!-- Favicon & Icons -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Orna Calculator — Ward</title>
+
   <link rel="icon" type="image/png" href="../img/logo/icon-256.png">
   <link rel="apple-touch-icon" href="../img/logo/icon-256.png">
   <link rel="manifest" href="../manifest.webmanifest">
   <meta name="theme-color" content="#0a0a0a">
-  
-  <link rel="manifest" href="../manifest.webmanifest">
-<meta name="theme-color" content="#0a0a0a">
-<link rel="apple-touch-icon" href="../img/logo/icon-256.png">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Orna Calculator — Ward</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,10 +18,20 @@
   <link rel="stylesheet" href="../css/ward.css">
 </head>
 
-<script src="../js/sw-register.js"></script>
-
 <body>
 
+<!-- Popup для подсказки -->
+<div class="calc-popup" id="calc-popup" hidden>
+  <div class="calc-popup-inner">
+    <button class="calc-popup-close" type="button">×</button>
+    
+    <div class="calc-popup-title" id="calc-popup-title"></div>
+    <div class="calc-popup-body" id="calc-popup-body"></div>
+    
+  </div>
+</div>
+
+<!-- ============ ШАПКА САЙТА ============ -->
 <header class="app-header">
   <div class="app-title-row">
     <h1 class="app-title">
@@ -37,7 +43,7 @@
         <img src="https://playorna.com/static/img/flags/russia.png" alt="RU">
       </button>
       <button type="button" class="lang-btn-en" data-lang="en" title="English">
-        <img src="https://playorna.com/static/img/flags/us.png" alt="EN">
+        <img src="https://playorna.com/static/img/flags/uk.png" alt="EN">
       </button>
     </div>
   </div>
@@ -52,36 +58,267 @@
   </nav>
 </header>
 
-  <main class="app-main">
+<main class="app-main">
 
-    <!-- ============ ВАРД ============ -->
-    <section class="panel">
-      <h2 class="panel-title" data-ru="Калькулятор варда" data-en="Ward Calculator">Калькулятор варда</h2>
+  <!-- ============ РЕЗУЛЬТАТ + ПРЕДУПРЕЖДЕНИЕ ============ -->
+  <section class="panel panel-result">
+    <div class="ward-result">
+      <div class="ward-result-label" data-ru="Варда" data-en="Ward">Варда</div>
+      <div class="ward-result-value" id="ward-result">0</div>
+    </div>
+    <div class="ward-warning">
+      <span data-ru="Числа могут минимально отличаться от значений в игре."
+            data-en="Numbers may slightly differ from in-game values.">
+        Числа могут минимально отличаться от значений в игре.
+      </span>
+    </div>
+  </section>
 
-      <div class="ward-content">
-        <p class="placeholder-text" data-ru="(заготовка — содержимое появится позже)" data-en="(placeholder — content coming soon)">
-          (заготовка — содержимое появится позже)
-        </p>
+  <!-- ============ КНОПКА СБРОСА ============ -->
+  <div class="reset-row">
+    <button type="button" id="reset-btn" class="reset-btn" data-ru="Очистить всё" data-en="Clear all">Очистить всё</button>
+  </div>
+
+  <!-- ============ БАЗОВЫЕ СТАТЫ ============ -->
+  <section class="panel">
+    <h2 class="panel-title" data-ru="Базовые статы" data-en="Base Stats">Базовые статы</h2>
+
+    <div class="ward-stats-row" style="grid-template-columns: 1fr 1fr 1fr;">
+      <div class="ward-stat-box">
+        <span class="ward-stat-label" data-ru="Хп" data-en="HP">Хп</span>
+        <input type="text" inputmode="decimal" id="input-hp" class="ward-input stat-input" value="0">
       </div>
-    </section>
+      <div class="ward-stat-box">
+        <span class="ward-stat-label" data-ru="Мана" data-en="Mana">Мана</span>
+        <input type="text" inputmode="decimal" id="input-mana" class="ward-input stat-input" value="0">
+      </div>
+      <div class="ward-stat-box">
+        <span class="ward-stat-label" data-ru="AL" data-en="AL">AL</span>
+        <input type="text" inputmode="decimal" id="input-al" class="ward-input stat-input" value="0">
+      </div>
+    </div>
+    <div class="ward-stats-note" data-ru="Берите значения с голого персонажа в игре" data-en="Take values from a naked character in-game">
+      Берите значения с голого персонажа в игре
+    </div>
+  </section>
 
-  </main>
+  <!-- ============ СПОЙЛЕР: КАЛЬКУЛЯТОР ЧИСТЫХ СТАТОВ ============ -->
+  <details class="panel clean-spoiler">
+    <summary class="clean-spoiler-title">
+      <span data-ru="Калькулятор чистых статов шмотки" data-en="Clean Stats Calculator">Калькулятор чистых статов шмотки</span>
+      <span class="spoiler-arrow">▼</span>
+    </summary>
+    
+    <div class="clean-spoiler-content">
+      
+      <!-- Строка ввода (4 колонки) -->
+      <div class="clean-row">
+        <label class="eq-field">
+          <span class="eq-field-label">Слот</span>
+          <select class="clean-slot-select" id="clean-slot-select">
+            <option value="head" data-ru="Голова" data-en="Head">Голова</option>
+            <option value="body" data-ru="Торс" data-en="Torso">Торс</option>
+            <option value="legs" data-ru="Ноги" data-en="Legs">Ноги</option>
+            <option value="weapon-1" data-ru="Правая" data-en="Right">Правая</option>
+            <option value="weapon-2" data-ru="Левая" data-en="Left">Левая</option>
+          </select>
+        </label>
+        <label class="eq-field">
+          <span class="eq-field-label label-hp" data-ru="Хп" data-en="HP">Хп</span>
+          <input type="text" inputmode="decimal" id="clean-input-hp" class="ward-input" value="0">
+        </label>
+        <label class="eq-field">
+          <span class="eq-field-label label-mana" data-ru="Мана" data-en="Mana">Мана</span>
+          <input type="text" inputmode="decimal" id="clean-input-mana" class="ward-input" value="0">
+        </label>
+        <label class="eq-field">
+          <span class="eq-field-label label-ward" data-ru="Вард %" data-en="Ward %">Вард %</span>
+          <input type="text" inputmode="decimal" id="clean-input-ward" class="ward-input" value="0">
+        </label>
+      </div>
 
+      <!-- Геммы -->
+      <h3 class="clean-subtitle" data-ru="Гемы внутри шмотки" data-en="Gems inside">Гемы внутри шмотки</h3>
+      <div class="ward-gems-list" id="clean-gems-list"></div>
+      <button type="button" class="add-row-btn" id="clean-add-gem">
+        <span data-ru="+ Добавить гем" data-en="+ Add gem">+ Добавить гем</span>
+      </button>
+
+      <!-- Результат -->
+      <div class="clean-result-box">
+        <span data-ru="Чистые статы:" data-en="Clean stats:">Чистые статы:</span>
+        <strong id="clean-result-text">0 / 0 / 0%</strong>
+      </div>
+
+      <!-- Кнопка "Заполнить" -->
+      <button type="button" class="reset-btn apply-clean-btn" id="apply-clean-btn">
+        <span data-ru="Заполнить" data-en="Apply">Заполнить</span>
+      </button>
+    </div>
+  </details>
+
+  <!-- ============ ЭКИПИРОВКА ============ -->
+  <section class="panel" style="position: relative;">
+    <h2 class="panel-title" style="display: flex; align-items: baseline; gap: 8px; padding-right: 30px;">
+      <span data-ru="Экипировка" data-en="Equipment">Экипировка</span>
+      <span class="panel-title-note" data-ru="Чистые статы · Экипированное" data-en="Clean stats · Equipped" style="font-size: 11px; color: var(--text-dim); font-weight: normal; text-transform: none;">Чистые статы · Экипированное</span>
+    </h2>
+    
+    <!-- КНОПКА ПОМОЩИ -->
+    <button type="button" id="equip-help-btn" class="help-btn" title="Помощь">?</button>
+
+    <div class="equipment-rows">
+      <!-- Голова -->
+      <div class="equipment-row" data-slot="head">
+        <span class="equipment-label" data-ru="Голова" data-en="Head">Голова</span>
+        <div class="equipment-fields">
+          <label class="eq-field"><span class="eq-field-label label-hp" data-ru="Хп" data-en="HP">Хп</span><input type="text" inputmode="decimal" class="ward-input eq-hp" value="0"></label>
+          <label class="eq-field"><span class="eq-field-label label-mana" data-ru="Мана" data-en="Mana">Мана</span><input type="text" inputmode="decimal" class="ward-input eq-mana" value="0"></label>
+          <label class="eq-field"><span class="eq-field-label label-ward" data-ru="Вард %" data-en="Ward %">Вард %</span><input type="text" inputmode="decimal" class="ward-input eq-ward" value="0"></label>
+        </div>
+        <div class="eq-clean-stats"></div>
+      </div>
+
+      <!-- Торс -->
+      <div class="equipment-row" data-slot="body">
+        <span class="equipment-label" data-ru="Торс" data-en="Torso">Торс</span>
+        <div class="equipment-fields">
+          <label class="eq-field"><span class="eq-field-label label-hp" data-ru="Хп" data-en="HP">Хп</span><input type="text" inputmode="decimal" class="ward-input eq-hp" value="0"></label>
+          <label class="eq-field"><span class="eq-field-label label-mana" data-ru="Мана" data-en="Mana">Мана</span><input type="text" inputmode="decimal" class="ward-input eq-mana" value="0"></label>
+          <label class="eq-field"><span class="eq-field-label label-ward" data-ru="Вард %" data-en="Ward %">Вард %</span><input type="text" inputmode="decimal" class="ward-input eq-ward" value="0"></label>
+        </div>
+        <div class="eq-clean-stats"></div>
+      </div>
+
+      <!-- Ноги -->
+      <div class="equipment-row" data-slot="legs">
+        <span class="equipment-label" data-ru="Ноги" data-en="Legs">Ноги</span>
+        <div class="equipment-fields">
+          <label class="eq-field"><span class="eq-field-label label-hp" data-ru="Хп" data-en="HP">Хп</span><input type="text" inputmode="decimal" class="ward-input eq-hp" value="0"></label>
+          <label class="eq-field"><span class="eq-field-label label-mana" data-ru="Мана" data-en="Mana">Мана</span><input type="text" inputmode="decimal" class="ward-input eq-mana" value="0"></label>
+          <label class="eq-field"><span class="eq-field-label label-ward" data-ru="Вард %" data-en="Ward %">Вард %</span><input type="text" inputmode="decimal" class="ward-input eq-ward" value="0"></label>
+        </div>
+        <div class="eq-clean-stats"></div>
+      </div>
+
+      <!-- Правая рука -->
+      <div class="equipment-row" data-slot="weapon-1">
+        <span class="equipment-label" data-ru="Правая рука" data-en="Right Hand">Правая рука</span>
+        <div class="equipment-fields">
+          <label class="eq-field"><span class="eq-field-label label-hp" data-ru="Хп" data-en="HP">Хп</span><input type="text" inputmode="decimal" class="ward-input eq-hp" value="0"></label>
+          <label class="eq-field"><span class="eq-field-label label-mana" data-ru="Мана" data-en="Mana">Мана</span><input type="text" inputmode="decimal" class="ward-input eq-mana" value="0"></label>
+          <label class="eq-field"><span class="eq-field-label label-ward" data-ru="Вард %" data-en="Ward %">Вард %</span><input type="text" inputmode="decimal" class="ward-input eq-ward" value="0"></label>
+        </div>
+        <div class="eq-clean-stats"></div>
+      </div>
+
+      <!-- Левая рука -->
+      <div class="equipment-row" data-slot="weapon-2">
+        <span class="equipment-label" data-ru="Левая рука" data-en="Left Hand">Левая рука</span>
+        <div class="equipment-fields">
+          <label class="eq-field"><span class="eq-field-label label-hp" data-ru="Хп" data-en="HP">Хп</span><input type="text" inputmode="decimal" class="ward-input eq-hp" value="0"></label>
+          <label class="eq-field"><span class="eq-field-label label-mana" data-ru="Мана" data-en="Mana">Мана</span><input type="text" inputmode="decimal" class="ward-input eq-mana" value="0"></label>
+          <label class="eq-field"><span class="eq-field-label label-ward" data-ru="Вард %" data-en="Ward %">Вард %</span><input type="text" inputmode="decimal" class="ward-input eq-ward" value="0"></label>
+        </div>
+        <div class="eq-clean-stats"></div>
+      </div>
+
+      <!-- Аксессуар 1 -->
+      <div class="equipment-row" data-slot="accessory-1">
+        <span class="equipment-label" data-ru="Аксессуар 1" data-en="Accessory 1">Аксессуар 1</span>
+        <div class="equipment-fields">
+          <label class="eq-field"><span class="eq-field-label label-hp" data-ru="Хп" data-en="HP">Хп</span><input type="text" inputmode="decimal" class="ward-input eq-hp" value="0"></label>
+          <label class="eq-field"><span class="eq-field-label label-mana" data-ru="Мана" data-en="Mana">Мана</span><input type="text" inputmode="decimal" class="ward-input eq-mana" value="0"></label>
+          <label class="eq-field"><span class="eq-field-label label-ward" data-ru="Вард %" data-en="Ward %">Вард %</span><input type="text" inputmode="decimal" class="ward-input eq-ward" value="0"></label>
+        </div>
+        <div class="eq-clean-stats"></div>
+      </div>
+
+      <!-- Аксессуар 2 -->
+      <div class="equipment-row" data-slot="accessory-2">
+        <span class="equipment-label" data-ru="Аксессуар 2" data-en="Accessory 2">Аксессуар 2</span>
+        <div class="equipment-fields">
+          <label class="eq-field"><span class="eq-field-label label-hp" data-ru="Хп" data-en="HP">Хп</span><input type="text" inputmode="decimal" class="ward-input eq-hp" value="0"></label>
+          <label class="eq-field"><span class="eq-field-label label-mana" data-ru="Мана" data-en="Mana">Мана</span><input type="text" inputmode="decimal" class="ward-input eq-mana" value="0"></label>
+          <label class="eq-field"><span class="eq-field-label label-ward" data-ru="Вард %" data-en="Ward %">Вард %</span><input type="text" inputmode="decimal" class="ward-input eq-ward" value="0"></label>
+        </div>
+        <div class="eq-clean-stats"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ГЕМЫ: БЛОКИ-АККОРДЕОНЫ ============ -->
+  <section class="panel">
+    <h2 class="panel-title" data-ru="Геммы" data-en="Adornments">Гемы</h2>
+
+    <!-- Оружие -->
+    <details class="gem-accordion">
+      <summary class="gem-accordion-title">
+        <span data-ru="Оружие" data-en="Weapon">Оружие</span>
+        <span class="spoiler-arrow">▼</span>
+      </summary>
+      <div class="ward-gems-list" id="gems-weapon-list"></div>
+      <button type="button" class="add-row-btn" data-group="weapon">
+        <span data-ru="+ Добавить гемму" data-en="+ Add adornment">+ Добавить гемму</span>
+      </button>
+    </details>
+
+    <!-- Голова -->
+    <details class="gem-accordion">
+      <summary class="gem-accordion-title">
+        <span data-ru="Голова" data-en="Head">Голова</span>
+        <span class="spoiler-arrow">▼</span>
+      </summary>
+      <div class="ward-gems-list" id="gems-head-list"></div>
+      <button type="button" class="add-row-btn" data-group="head">
+        <span data-ru="+ Добавить гемму" data-en="+ Add adornment">+ Добавить гемму</span>
+      </button>
+    </details>
+
+    <!-- Торс -->
+    <details class="gem-accordion">
+      <summary class="gem-accordion-title">
+        <span data-ru="Торс" data-en="Torso">Торс</span>
+        <span class="spoiler-arrow">▼</span>
+      </summary>
+      <div class="ward-gems-list" id="gems-body-list"></div>
+      <button type="button" class="add-row-btn" data-group="body">
+        <span data-ru="+ Добавить гемму" data-en="+ Add adornment">+ Добавить гемму</span>
+      </button>
+    </details>
+
+    <!-- Ноги -->
+    <details class="gem-accordion">
+      <summary class="gem-accordion-title">
+        <span data-ru="Ноги" data-en="Legs">Ноги</span>
+        <span class="spoiler-arrow">▼</span>
+      </summary>
+      <div class="ward-gems-list" id="gems-legs-list"></div>
+      <button type="button" class="add-row-btn" data-group="legs">
+        <span data-ru="+ Добавить гемму" data-en="+ Add adornment">+ Добавить гемму</span>
+      </button>
+    </details>
+  </section>
+
+</main>
+
+<!-- ============ ПОДВАЛ САЙТА ============ -->
 <footer class="app-footer">
-  <p data-ru="Сделано для игроков Orna • Не связано с Northern Forge"
-     data-en="Made for Orna players • Not affiliated with Northern Forge">
+  <p data-ru="Сделано для игроков Orna • Не связано с Northern Forge" data-en="Made for Orna players • Not affiliated with Northern Forge">
     Сделано для игроков Orna • Не связано с Northern Forge
   </p>
   <p>
-    <span data-ru="Все изображения принадлежат Northern Forge и взяты с официального сайта"
-          data-en="All images belong to Northern Forge and are taken from the official website">
+    <span data-ru="Все изображения принадлежат Northern Forge и взяты с официального сайта" data-en="All images belong to Northern Forge and are taken from the official website">
       Все изображения принадлежат Northern Forge и взяты с официального сайта
     </span>
     <a href="https://playorna.com" target="_blank" rel="noopener">playorna.com</a>
   </p>
 </footer>
 
-  <script src="../js/shared.js"></script>
-  <script src="../js/ward.js"></script>
+<!-- ============ ПОДКЛЮЧЕНИЕ СКРИПТОВ ============ -->
+<script src="../js/shared.js"></script>
+<script src="../js/modal.js"></script>
+<script src="../js/sw-register.js"></script>
+<script type="module" src="../js/ward.js"></script>
 </body>
 </html>
