@@ -32,8 +32,20 @@ function createGemRow(group, data = null) {
   row.className = 'gem-row';
   row.dataset.group = group;
 
+  // Если группа "weapon", добавляем селект выбора слота
+  let slotSelectHtml = '';
+  if (group === 'weapon') {
+    slotSelectHtml = `
+      <select class="gem-slot-select" style="margin-right: 4px;">
+        <option value="weapon-1" data-ru="Правое" data-en="Right">Правое</option>
+        <option value="weapon-2" data-ru="Левое" data-en="Left">Левое</option>
+      </select>
+    `;
+  }
+
   row.innerHTML = `
     <span class="gem-label">${num}</span>
+    ${slotSelectHtml}
     <div class="gem-field">
       <span class="gem-field-label" data-ru="Кол-во" data-en="Count">${lang === 'ru' ? 'Кол-во' : 'Count'}</span>
       <input type="number" min="1" class="ward-input gem-count" value="1">
@@ -57,8 +69,11 @@ function createGemRow(group, data = null) {
     row.querySelector('.gem-count').value = data.count || 1;
     row.querySelector('.gem-hp').value = data.hp || 0;
     row.querySelector('.gem-mana').value = data.mana || 0;
-    // ИСПРАВЛЕНО: data.ward вместо data.wardPct
     row.querySelector('.gem-ward').value = data.ward || 0; 
+    
+    if (group === 'weapon' && data.slot) {
+      row.querySelector('.gem-slot-select').value = data.slot;
+    }
   }
 
   row.querySelectorAll('input[type="text"]').forEach(inp => {
@@ -89,7 +104,11 @@ function readGems(listId) {
   const rows = list.querySelectorAll('.gem-row');
   const result = [];
   rows.forEach(row => {
-    const slot = listId.replace('gems-', '').replace('-list', '');
+    // Если есть селект (только в оружии), берем слот оттуда. 
+    // Иначе берем ID из списка (например, gems-head-list -> head)
+    const select = row.querySelector('.gem-slot-select');
+    const slot = select ? select.value : listId.replace('gems-', '').replace('-list', '');
+
     result.push({
       slot: slot,
       count: parseFloat(row.querySelector('.gem-count')?.value) || 0,
@@ -373,12 +392,13 @@ document.getElementById('calc-popup')?.addEventListener('click', (e) => {
 window.addEventListener('orna-lang-changed', () => {
   state.lang = currentLang();
   
-  const savedGems = {};
+const savedGems = {};
   document.querySelectorAll('.ward-gems-list').forEach(list => {
     const id = list.id;
     savedGems[id] = [];
     list.querySelectorAll('.gem-row').forEach(row => {
       savedGems[id].push({
+        slot: row.querySelector('.gem-slot-select')?.value || null, // <--- Сохраняем слот
         count: row.querySelector('.gem-count')?.value,
         hp: row.querySelector('.gem-hp')?.value,
         mana: row.querySelector('.gem-mana')?.value,
@@ -408,6 +428,14 @@ window.addEventListener('orna-lang-changed', () => {
     const enText = el.getAttribute('data-en');
     if (ruText && enText) {
       el.textContent = state.lang === 'ru' ? ruText : enText;
+    }
+  });
+
+  document.querySelectorAll('option[data-ru][data-en]').forEach(opt => {
+    const ruText = opt.getAttribute('data-ru');
+    const enText = opt.getAttribute('data-en');
+    if (ruText && enText) {
+      opt.textContent = state.lang === 'ru' ? ruText : enText;
     }
   });
 
