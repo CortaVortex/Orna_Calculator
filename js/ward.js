@@ -128,8 +128,7 @@ function recalc() {
   });
 
   const resultEl = document.getElementById('ward-result');
-  const locale = state.lang === 'ru' ? 'ru-RU' : 'en-US';
-  if (resultEl) resultEl.textContent = total.toLocaleString(locale);
+  if (resultEl) resultEl.textContent = total.toLocaleString('ru-RU');
 }
 
 // ============ СПОЙЛЕР: ЧИСТЫЕ СТАТЫ ============
