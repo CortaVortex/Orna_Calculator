@@ -87,19 +87,19 @@ const STATUES = [
 
 // ============ ИВЕНТЫ ============
 const EVENTS = [
-  { id: 'event-enlightenment', name: 'Дни просветления', nameEn: 'Days of Enlightenment',
+  { id: 'event-enlightenment', name: 'Дни просветления', nameEn: 'Exp event',
     icon: 'https://playorna.com/static/img/items/exp.png',
     multipliers: { orns: 1, gold: 1, exp: 1.25, luck: 1 } },
-  { id: 'event-happy', name: 'Счастливые дни', nameEn: 'Happy Days',
+  { id: 'event-happy', name: 'Счастливые дни', nameEn: 'Lucky event',
     icon: 'https://playorna.com/static/img/items/loot.png',
     multipliers: { orns: 1, gold: 1, exp: 1, luck: 1.2 } },
-  { id: 'event-ornabirth', name: 'Орнабилей', nameEn: 'Ornabirth',
+  { id: 'event-ornabirth', name: 'Орнабилей', nameEn: 'Ornaversary!',
     icon: 'https://playorna.com/static/img/packs/nfs/odie_2024.png',
     multipliers: { orns: 1.2, gold: 1.2, exp: 1.2, luck: 1 } },
-  { id: 'event-ornopad', name: 'Орнопад', nameEn: 'Ornopad',
+  { id: 'event-ornopad', name: 'Орнопад', nameEn: 'Orn event',
     icon: 'https://playorna.com/static/img/items/orns.png',
     multipliers: { orns: 1.25, gold: 1, exp: 1, luck: 1 } },
-  { id: 'event-cave', name: 'Исследование пещер', nameEn: 'Cave Exploration',
+  { id: 'event-cave', name: 'Исследование пещер', nameEn: 'Spelunking event',
     icon: 'https://playorna.com/static/img/bosses/dweller.png',
     multipliers: { orns: 1.25, gold: 1, exp: 1, luck: 1 } },
 ];
